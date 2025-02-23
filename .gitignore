@@ -2,7 +2,6 @@
 hs_err_pid*
 replay_pid*
 
-README.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -30,3 +29,4 @@ node_modules
 dist
 dist-ssr
 *.local
+/front/test-results.json
