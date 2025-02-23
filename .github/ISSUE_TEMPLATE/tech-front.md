@@ -1,8 +1,10 @@
 ---
-name: ✨ Tech Front-end
+name: "✨ Tech Front-end"
+about: Décrire les spécifications techniques pour le Front-end
 title: "[TECH FRONT] "
-labels: ["Front"]
-assignees: []
+labels: Front
+assignees: ''
+
 ---
 
 # Création du composant d’affichage et modification

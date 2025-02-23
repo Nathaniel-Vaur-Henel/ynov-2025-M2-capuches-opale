@@ -1,8 +1,10 @@
 ---
-name: 🛠️ Tech Back-end
+name: "\U0001F6E0️ Tech Back-end"
+about: Décrire les spécifications techniques pour le Back-end
 title: "[TECH BACK] "
-labels: ["Back"]
-assignees: []
+labels: Back
+assignees: ''
+
 ---
 
 # Création des endpoints API

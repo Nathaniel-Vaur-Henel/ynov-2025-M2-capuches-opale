@@ -1,9 +1,10 @@
 ---
-name: 📖 User Story
+name: "\U0001F4D6 User Story"
 about: Décrire une nouvelle fonctionnalité ou besoin utilisateur
 title: "[USER STORY] "
-labels: ["user story"]
-assignees: []
+labels: ''
+assignees: ''
+
 ---
 
 # En tant que
@@ -13,4 +14,4 @@ assignees: []
 <!-- Décris l'action ou la fonctionnalité attendue -->  
 
 # Afin
-<!-- Décris l'objectif ou le bénéfice attendu -->  
+<!-- Décris l'objectif ou le bénéfice attendu -->
