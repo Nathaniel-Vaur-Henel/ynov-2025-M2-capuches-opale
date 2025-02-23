@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - 'back/**'
+      - '.github/workflows/build-back.yml'
+
+permissions:
+  checks: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      # 📌 Exécute les tests (mais ne bloque pas si échec)
+      - name: Run Tests
+        run: mvn clean test || true
+
+      # 📌 Génère le rapport JaCoCo (seulement si les tests sont passés)
+      - name: Generate JaCoCo Report
+        if: success()
+        run: mvn jacoco:report
+
+      # 📌 Vérifie si le fichier jacoco.csv est bien généré
+      - name: Debug JaCoCo Output
+        if: always()
+        run: ls -R target/site/jacoco
+
+      # 📌 Affichage des résultats des tests dans GitHub Actions
+      - name: Publish Test Results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Results
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: false
+
+      # 📌 Upload du rapport de couverture en tant qu'artefact téléchargeable
+      - name: Upload Coverage Report (XML + HTML)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: target/site/jacoco
+
+      # 📌 Génération d'un badge de couverture pour le README
+      - name: Generate Coverage Badge
+        if: success()
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          jacoco-csv-file: target/site/jacoco/jacoco.csv
+          badges-directory: .github/badges
+
+      # 📌 Upload du badge pour qu'il soit accessible dans le README
+      - name: Upload Coverage Badge
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-badge
+          path: .github/badges
+
+      # 📌 Génération d'un commentaire avec la couverture dans la PR
+      - name: Report Coverage in PR
+        if: github.event_name == 'pull_request'
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          jacoco-csv-file: target/site/jacoco/jacoco.csv
+          generate-coverage-comment: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}

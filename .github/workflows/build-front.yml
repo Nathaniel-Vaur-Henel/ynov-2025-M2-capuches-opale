@@ -1,0 +1,47 @@
+name: Build and Test React App
+
+on:
+  push:
+    paths:
+      - 'front/**'
+      - '.github/workflows/build-front.yml'
+
+permissions:
+  checks: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Save test results
+        if: always()
+        run: npm test -- --json --outputFile=test-results.json
+
+      - name: Publish test summary
+        if: always()
+        run: |
+          echo "## Résumé des tests" > $GITHUB_STEP_SUMMARY
+          echo "\`\`\`json" >> $GITHUB_STEP_SUMMARY
+          cat test-results.json >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
