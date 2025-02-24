@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import { RootLayout } from "./components/layout/RootLayout";
-import Aventuriers from "./components/pages/Aventuriers";
+import Adventurers from "./components/pages/Adventurers";
 import Home from "./components/pages/Home";
 import NotFound from "./components/pages/NotFound";
-import Requetes from "./components/pages/Requetes";
+import Requests from "./components/pages/Requests";
 
 export const router = createBrowserRouter([
 	{
@@ -17,11 +17,11 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: "aventuriers",
-				element: <Aventuriers />,
+				element: <Adventurers />,
 			},
 			{
 				path: "requetes",
-				element: <Requetes />,
+				element: <Requests />,
 			},
 		],
 	},
