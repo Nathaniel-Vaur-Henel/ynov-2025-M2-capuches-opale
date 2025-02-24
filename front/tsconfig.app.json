@@ -22,7 +22,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "types": ["vitest", "@testing-library/jest-dom"],
-    "allowSyntheticDefaultImports": true
   },
   "include": ["src"]
 }

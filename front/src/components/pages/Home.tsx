@@ -1,4 +1,3 @@
-import React from "react";
 import logo from "../../assets/logo-capuches-opale.png";
 import background from "../../assets/background-capuches-opale.webp";
 
