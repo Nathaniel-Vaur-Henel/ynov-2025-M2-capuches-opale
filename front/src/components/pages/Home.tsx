@@ -19,7 +19,7 @@ export default function Home() {
       </div>
 
       {/* Contenu */}
-      <div className="relative w-full max-w-4xl bg-gray-800 bg-opacity-90 p-8 rounded-xl shadow-lg border border-gray-700 transform hover:scale-105 transition duration-500">
+      <div className="relative w-full max-w-3xl bg-gray-800 bg-opacity-90 p-6 rounded-xl shadow-lg border border-gray-700 transform hover:scale-105 transition duration-500">
         <h1 className="text-6xl font-extrabold mb-6 text-indigo-400 drop-shadow-lg text-center">
           Bienvenue chez{" "}
           <span className="text-indigo-500">Les Capuches d'Opale</span>
