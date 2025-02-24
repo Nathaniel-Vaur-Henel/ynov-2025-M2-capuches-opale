@@ -31,6 +31,19 @@ export default function Home() {
           légende !
         </p>
       </div>
+      {/* Contenu */}
+      <div className="relative w-full max-w-3xl bg-gray-800 bg-opacity-90 p-6 rounded-xl shadow-lg border border-gray-700 transform hover:scale-105 transition duration-500">
+        <h1 className="text-6xl font-extrabold mb-6 text-indigo-400 drop-shadow-lg text-center">
+          Bienvenue chez{" "}
+          <span className="text-indigo-500">Les Capuches d'Opale</span>
+        </h1>
+        <p className="text-lg text-gray-300 leading-relaxed text-center">
+          Nous sommes une guilde d'aventuriers en pleine expansion, regroupant
+          archers, barbares, paladins, mages et bien d'autres talents.
+          Rejoignez-nous pour explorer de nouvelles quêtes et forger votre
+          légende !
+        </p>
+      </div>
 
       {/* Logo avec animation */}
       <div className="relative flex justify-center">
