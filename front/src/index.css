@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 :root {
+	--background: #ffffff;
+	--foreground: #000000;
+	--primary: #1976d2;
+	--primary-foreground: #ffffff;
+	--secondary: #f5f5f5;
+	--secondary-foreground: #000000;
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 	line-height: 1.5;
 	font-weight: 400;
@@ -15,6 +21,17 @@
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #121212;
+		--foreground: #ffffff;
+		--primary: #90caf9;
+		--primary-foreground: #000000;
+		--secondary: #2c2c2c;
+		--secondary-foreground: #ffffff;
+	}
 }
 
 a {
