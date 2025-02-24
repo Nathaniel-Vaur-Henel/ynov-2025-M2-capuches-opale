@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: Swagger Capuches d'Opale
+  description: |-
+    API de gestion des données pour Capuches d'Opale
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: Adventurer
+    description: Adventurer handling
+  - name: Quest
+    description: Quest handling
+paths:
+  /adventurer:
+    get:
+      tags:
+        - Adventurer
+      summary: Retrieve all adventurers of DB
+      operationId: getAdventurers
+      responses:
+        '200':
+          description: Adventurers successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Adventurer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Adventurer
+      summary: Create a new adventurer
+      operationId: createAdventurer
+      requestBody:
+        $ref: '#/components/requestBodies/AdventurerCreation'
+      responses:
+        '201':
+          description: Adventurer successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Adventurer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    BadRequest:
+      description: The request is malformed or missing required fields
+    InternalServerError:
+      description: An internal server error occurred
+  schemas:
+    Adventurer:
+      description: Representation of an adventurer
+      properties:
+        id:
+          type: number
+          format: int64
+        name:
+          description: Name of the adventurer
+          type: string
+        archetype:
+          description: Archetype(s) of the adventurer (pre-defined list)
+          type: array
+          items:
+            type: string
+            enum: [WARRIOR, PALADIN, HUNTER, ROGUE, PRIEST, DEATH KNIGHT, CHAMAN, MAGE, WARLOCK, MONK, DRUID, DEMON HUNTER, EVOKER]
+        experience:
+          description: Professional experience of the adventurer
+          type: number
+          format: int32
+        dailyRate:
+          type: number
+          format: float
+  requestBodies:
+    AdventurerCreation:
+      description: The new adventurer to create
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Adventurer'
