@@ -3,10 +3,10 @@ import Navbar from "../ui/Navbar";
 
 export function RootLayout() {
 	return (
-		<div className="min-h-screen bg-gray-50">
+		<div className="min-h-screen bg-gray-900 text-white">
 			<Navbar />
-			<main className="">
-					<Outlet />
+			<main className="pt-16 w-full h-full">
+				<Outlet />
 			</main>
 		</div>
 	);
