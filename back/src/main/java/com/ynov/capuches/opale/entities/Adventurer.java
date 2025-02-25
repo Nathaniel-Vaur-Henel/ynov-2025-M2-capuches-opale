@@ -1,21 +1,26 @@
 package com.ynov.capuches.opale.entities;
 
 import com.ynov.capuches.opale.enums.Archetype;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Adventurer {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
 
-    private Enum<Archetype> archetype;
+    @Enumerated(EnumType.STRING)
+    private Archetype archetype;
 
-    private Number experience = 0;
+    private Long experience = 0L;
 
-    private Double daily_rate = 0.0;
+    private Double dailyRate = 0.0;
 }
