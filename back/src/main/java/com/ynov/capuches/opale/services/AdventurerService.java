@@ -1,7 +1,7 @@
 package com.ynov.capuches.opale.services;
 
 import com.ynov.capuches.opale.entities.Adventurer;
-import com.ynov.capuches.opale.interfaces.AdventurerMapper;
+import com.ynov.capuches.opale.mappers.AdventurerMapper;
 import com.ynov.capuches.opale.model.AdventurerDTO;
 import com.ynov.capuches.opale.repositories.AdventurerRepository;
 import org.springframework.stereotype.Service;
@@ -17,9 +17,7 @@ public class AdventurerService {
     }
 
     public AdventurerDTO createAdventurer(AdventurerDTO adventurerDTO) {
-        System.out.println(adventurerDTO);
         Adventurer adventurerEntity = adventurerMapper.toEntity(adventurerDTO);
-        System.out.println(adventurerEntity);
         Adventurer savedAdventurer = this.adventurerRepository.save(adventurerEntity);
         return adventurerMapper.toDTO(savedAdventurer);
     }

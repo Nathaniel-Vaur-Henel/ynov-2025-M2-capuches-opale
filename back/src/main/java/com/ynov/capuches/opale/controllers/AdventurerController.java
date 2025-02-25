@@ -1,12 +1,9 @@
 package com.ynov.capuches.opale.controllers;
 
 
-import com.ynov.capuches.opale.entities.Adventurer;
-import com.ynov.capuches.opale.interfaces.AdventurerMapper;
 import com.ynov.capuches.opale.model.AdventurerDTO;
 import com.ynov.capuches.opale.openapi.api.AdventurerApiDelegate;
 import com.ynov.capuches.opale.services.AdventurerService;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

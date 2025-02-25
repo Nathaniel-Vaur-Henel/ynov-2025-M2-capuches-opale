@@ -1,4 +1,4 @@
-package com.ynov.capuches.opale.interfaces;
+package com.ynov.capuches.opale.mappers;
 import com.ynov.capuches.opale.entities.Adventurer;
 import com.ynov.capuches.opale.model.AdventurerDTO;
 import org.mapstruct.Mapper;
