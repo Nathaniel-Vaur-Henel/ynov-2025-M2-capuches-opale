@@ -1,14 +1,26 @@
+import { useEffect, useRef } from "react";
 import logo from "../../assets/logo-capuches-opale.png";
 import background from "../../assets/background-capuches-opale.webp";
+import themeMusic from "../../assets/theme-capuches-opale.mp3";
 
 export default function Home() {
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.play().catch(error => {
+                console.error("Lecture automatique bloquée :", error);
+            });
+        }
+    }, []);
+
     return (
         <div className="relative h-screen w-full flex flex-col items-center justify-center px-6 space-y-10 bg-cover bg-center"
              style={{ backgroundImage: `url(${background})` }}>
             {/* Effet de brume accentué */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute inset-0 bg-black opacity-70"
-                     style={{maskImage: "radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.9) 95%)"}}></div>
+                     style={{ maskImage: "radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.9) 95%)" }}></div>
             </div>
 
             {/* Contenu */}
@@ -37,6 +49,9 @@ export default function Home() {
                     <span className="relative">Rejoindre la Guilde</span>
                 </button>
             </div>
+
+            {/* Ajout de la musique */}
+            <audio ref={audioRef} src={themeMusic} autoPlay loop />
         </div>
     );
 }
