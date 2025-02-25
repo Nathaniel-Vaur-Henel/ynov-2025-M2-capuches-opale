@@ -9,7 +9,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.11
 servers:
-  - url: https://petstore3.swagger.io/api/v3
+  - url: https://capuches-opale
 tags:
   - name: Adventurer
     description: Adventurer handling
@@ -30,7 +30,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Adventurer'
+                  $ref: '#/components/schemas/AdventurerDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -48,7 +48,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Adventurer'
+                $ref: '#/components/schemas/AdventurerDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -60,7 +60,7 @@ components:
     InternalServerError:
       description: An internal server error occurred
   schemas:
-    Adventurer:
+    AdventurerDTO:
       description: Representation of an adventurer
       properties:
         id:
@@ -88,4 +88,4 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Adventurer'
+            $ref: '#/components/schemas/AdventurerDTO'
