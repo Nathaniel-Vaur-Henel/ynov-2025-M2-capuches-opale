@@ -1,12 +1,21 @@
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import * as z from "zod";
-import { Container, Box, TextField, Button } from "@mui/material";
+import {
+  Container,
+  Box,
+  TextField,
+  Button,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { AdventurerFormSchema } from "../../utils/validation";
 
 type FormData = z.infer<typeof AdventurerFormSchema>;
 
-export function AdventurerForm() {
+export default function AdventurerForm() {
   const {
     control,
     handleSubmit,
@@ -21,12 +30,53 @@ export function AdventurerForm() {
     },
   });
 
+  const [toast, setToast] = React.useState<{
+    open: boolean;
+    severity: "success" | "error";
+    message: string;
+  }>({ open: false, severity: "success", message: "" });
+
+  const mutation = useMutation({
+    mutationFn: async (data: FormData) => {
+      const response = await fetch("/api/adventurer", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error("Erreur lors de la création de l'aventurier");
+      }
+      return response.json();
+    },
+    onSuccess: (data) => {
+      console.log("Adventurier créé avec succès :", data);
+      setToast({
+        open: true,
+        severity: "success",
+        message: "Adventurier créé avec succès !",
+      });
+    },
+    onError: (error) => {
+      console.error("Erreur lors de la création de l'aventurier :", error);
+      setToast({
+        open: true,
+        severity: "error",
+        message: "Erreur lors de la création de l'aventurier",
+      });
+    },
+  });
+
   const onSubmit = (data: FormData) => {
-    console.log("Données du formulaire :", data);
+    mutation.mutate(data);
   };
 
   return (
-    <div>
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h1 className="text-xl text-gray-900 font-semibold mb-2">
+        Créer un aventurier
+      </h1>
       <Container maxWidth="sm">
         <Box
           component="form"
@@ -102,6 +152,19 @@ export function AdventurerForm() {
             Envoyer
           </Button>
         </Box>
+        <Snackbar
+          open={toast.open}
+          autoHideDuration={6000}
+          onClose={() => setToast({ ...toast, open: false })}
+        >
+          <Alert
+            severity={toast.severity}
+            onClose={() => setToast({ ...toast, open: false })}
+            sx={{ width: "100%" }}
+          >
+            {toast.message}
+          </Alert>
+        </Snackbar>
       </Container>
     </div>
   );
