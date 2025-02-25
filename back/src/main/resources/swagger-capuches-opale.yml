@@ -109,14 +109,14 @@ components:
         archetype:
           description: Archetype of the adventurer (pre-defined list)
           type: string
-          enum: [WARRIOR, PALADIN, HUNTER, ROGUE, PRIEST, DEATH KNIGHT, CHAMAN, MAGE, WARLOCK, MONK, DRUID, DEMON HUNTER, EVOKER]
+          enum: [WARRIOR, PALADIN, HUNTER, ROGUE, PRIEST, DEATH_KNIGHT, SHAMAN, MAGE, WARLOCK, MONK, DRUID, DEMON_HUNTER, EVOKER]
         experience:
           description: Professional experience of the adventurer
           type: integer
           format: int32
         dailyRate:
           type: number
-          format: float
+          format: double
     RequestDTO:
       description: Representation of a request
       properties:
