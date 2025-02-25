@@ -43,12 +43,13 @@ a:hover {
 	color: #535bf2;
 }
 
-body {
+body,
+html {
+	background-color: #111827; /* bg-gray-900 */
+	color: white;
 	margin: 0;
-	display: block;
-	min-width: 320px;
+	padding: 0;
 	min-height: 100vh;
-	padding-top: 5rem;
 }
 
 h1 {
@@ -85,5 +86,17 @@ button:focus-visible {
 	}
 	button {
 		background-color: #f9f9f9;
+	}
+}
+
+@keyframes float {
+	0%,
+	100% {
+		transform: translate(0, 0) scale(1);
+		opacity: 0.3;
+	}
+	50% {
+		transform: translate(30px, -30px) scale(1.5);
+		opacity: 0.7;
 	}
 }
