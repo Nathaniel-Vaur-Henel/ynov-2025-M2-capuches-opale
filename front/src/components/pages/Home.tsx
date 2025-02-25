@@ -7,11 +7,13 @@ export default function Home() {
              style={{ backgroundImage: `url(${background})` }}>
             {/* Effet de brume accentué */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute inset-0 bg-black opacity-70" style={{ maskImage: "radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.9) 95%)" }}></div>
+                <div className="absolute inset-0 bg-black opacity-70"
+                     style={{maskImage: "radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.9) 95%)"}}></div>
             </div>
 
             {/* Contenu */}
-            <div className="relative w-full max-w-4xl bg-gray-800 bg-opacity-90 p-8 rounded-xl shadow-lg border border-gray-700 transform hover:scale-105 transition duration-500">
+            <div
+                className="relative w-full max-w-3xl bg-gray-800 bg-opacity-90 p-6 rounded-xl shadow-lg border border-gray-700 transform hover:scale-105 transition duration-500">
                 <h1 className="text-6xl font-extrabold mb-6 text-indigo-400 drop-shadow-lg text-center">
                     Bienvenue chez <span className="text-indigo-500">Les Capuches d'Opale</span>
                 </h1>
@@ -24,7 +26,8 @@ export default function Home() {
 
             {/* Logo avec animation */}
             <div className="relative flex justify-center">
-                <img src={logo} alt="Les Capuches d'Opale" className="h-40 drop-shadow-lg transition-transform duration-500 hover:rotate-6" />
+                <img src={logo} alt="Les Capuches d'Opale"
+                     className="h-40 drop-shadow-lg transition-transform duration-500 hover:rotate-6"/>
             </div>
 
             {/* Bouton pour rejoindre la guilde avec effet lumineux */}

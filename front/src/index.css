@@ -45,10 +45,10 @@ a:hover {
 
 body {
 	margin: 0;
-	display: flex;
-	place-items: center;
+	display: block;
 	min-width: 320px;
 	min-height: 100vh;
+	padding-top: 5rem;
 }
 
 h1 {
