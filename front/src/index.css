@@ -48,6 +48,7 @@ body {
 	display: block;
 	min-width: 320px;
 	min-height: 100vh;
+	padding-top: 5rem;
 }
 
 h1 {
