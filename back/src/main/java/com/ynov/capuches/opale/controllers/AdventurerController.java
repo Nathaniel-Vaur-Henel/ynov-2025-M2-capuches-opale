@@ -1,29 +1,31 @@
 package com.ynov.capuches.opale.controllers;
 
-import com.ynov.capuches.opale.entities.Adventurer;
+
+import com.ynov.capuches.opale.model.AdventurerDTO;
+import com.ynov.capuches.opale.openapi.api.AdventurerApiDelegate;
 import com.ynov.capuches.opale.services.AdventurerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/adventurers")
-public class AdventurerController {
+@Controller
+public class AdventurerController implements AdventurerApiDelegate {
+    private final AdventurerService adventurerService;
 
-    @Autowired
-    private AdventurerService adventurerService;
-
-    @GetMapping
-    public ResponseEntity<List<Adventurer>> getAllAdventurers() {
-        try {   
-            List<Adventurer> adventurers = adventurerService.getAllAdventurers();
-            return ResponseEntity.ok(adventurers);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
+    public AdventurerController(AdventurerService adventurerService) {
+        this.adventurerService = adventurerService;
     }
+
+    @Override
+    public ResponseEntity<AdventurerDTO> createAdventurer(AdventurerDTO adventurerDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(adventurerService.createAdventurer(adventurerDTO));
+    }
+
+    @Override
+    public ResponseEntity<List<AdventurerDTO>> getAdventurers() {
+        return AdventurerApiDelegate.super.getAdventurers();
+    }
+
 }
