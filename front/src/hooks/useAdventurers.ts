@@ -9,7 +9,6 @@ interface Adventurer {
 	image?: string;
 }
 
-// Fonction qui récupère les données
 async function fetchAdventurers(): Promise<Adventurer[]> {
 	// Simuler une requête API - à remplacer par un vrai appel fetch plus tard
 	return new Promise((resolve) => {
@@ -76,7 +75,6 @@ async function fetchAdventurers(): Promise<Adventurer[]> {
 	});
 }
 
-// Hook personnalisé qui utilise useQuery
 export function useAdventurers() {
 	return useQuery({
 		queryKey: ["adventurers"],
@@ -84,5 +82,4 @@ export function useAdventurers() {
 	});
 }
 
-// Exporter l'interface pour réutilisation
 export type { Adventurer };

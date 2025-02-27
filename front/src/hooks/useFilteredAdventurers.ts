@@ -10,7 +10,6 @@ interface Adventurer {
 	image?: string;
 }
 
-// Fonction qui récupère les données
 async function fetchAdventurers(): Promise<Adventurer[]> {
 	// Simuler une requête API - à remplacer par un vrai appel fetch plus tard
 	return new Promise((resolve) => {
@@ -79,8 +78,6 @@ async function fetchAdventurers(): Promise<Adventurer[]> {
 
 export function useFilteredAdventurers() {
 	const [searchParams] = useSearchParams();
-
-	// Récupérer tous les paramètres d'URL
 	const searchTerm = searchParams.get("search") || "";
 	const selectedArchetype = searchParams.get("archetype") || "";
 	const sortField = searchParams.get("sort") as
@@ -90,30 +87,25 @@ export function useFilteredAdventurers() {
 	const sortDirection =
 		(searchParams.get("direction") as "asc" | "desc") || "desc";
 
-	// Requête pour obtenir tous les aventuriers
 	const query = useQuery({
 		queryKey: ["adventurers"],
 		queryFn: fetchAdventurers,
 	});
 
-	// Filtrer et trier les résultats selon les paramètres d'URL
 	const filteredAdventurers = query.data
 		? query.data
 				.filter((adv) => {
-					// Filtre par nom ou archétype
 					const matchesSearch = searchTerm
 						? adv.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 						  adv.archetype.toLowerCase().includes(searchTerm.toLowerCase())
 						: true;
 
-					// Filtre par archétype
 					const matchesArchetype = selectedArchetype
 						? adv.archetype === selectedArchetype
 						: true;
 
 					return matchesSearch && matchesArchetype;
 				})
-				// Tri par champ choisi
 				.sort((a, b) => {
 					if (!sortField) return 0;
 
@@ -128,7 +120,6 @@ export function useFilteredAdventurers() {
 				})
 		: [];
 
-	// Obtenir tous les archétypes uniques
 	const uniqueArchetypes = query.data
 		? Array.from(new Set(query.data.map((adv) => adv.archetype)))
 		: [];
