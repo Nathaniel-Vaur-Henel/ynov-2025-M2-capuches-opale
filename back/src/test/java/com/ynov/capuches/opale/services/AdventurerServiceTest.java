@@ -79,16 +79,16 @@ public class AdventurerServiceTest {
 
         given(adventurerRepository.findById(1L)).willReturn(adventurer);
         given(adventurerMapper.toDTO(adventurer.get())).willReturn(adventurerDTO);
-        AdventurerDTO adventurerSaved = this.adventurerService.getOneAdventurer(1L);
+        AdventurerDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
 
-        assertNotNull(adventurerSaved);
-        assertNotNull(adventurerSaved.getId());
+        assertNotNull(adventurerGet);
+        assertNotNull(adventurerGet.getId());
     }
 
     @Test
     public void canTGetAdventurer() {
         given(adventurerRepository.findById(1L)).willReturn(Optional.empty());
-        AdventurerDTO adventurerSaved = this.adventurerService.getOneAdventurer(1L);
-        assertNull(adventurerSaved);
+        AdventurerDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
+        assertNull(adventurerGet);
     }
 }
