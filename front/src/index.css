@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-	--background: #ffffff;
+	/* --background: #ffffff; */
 	--foreground: #000000;
 	--primary: #1976d2;
 	--primary-foreground: #ffffff;
@@ -55,6 +55,7 @@ html {
 h1 {
 	font-size: 3.2em;
 	line-height: 1.1;
+	color: white;
 }
 
 button {
