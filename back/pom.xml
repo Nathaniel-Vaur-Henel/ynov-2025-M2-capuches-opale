@@ -185,7 +185,7 @@
                         </goals>
                         <configuration>
                             <inputSpec>
-                                ${project.basedir}/src/main/resources/swagger-capuches-opale.yml
+                                ${project.basedir}/../swagger-capuches-opale.yml
                             </inputSpec>
                             <generatorName>spring</generatorName>
                             <apiPackage>com.ynov.capuches.opale.openapi.api</apiPackage>
