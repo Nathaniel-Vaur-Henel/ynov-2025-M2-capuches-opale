@@ -2,12 +2,11 @@ package com.ynov.capuches.opale.entities;
 
 import com.ynov.capuches.opale.enums.Archetype;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Adventurer {
