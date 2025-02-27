@@ -7,6 +7,7 @@ import com.ynov.capuches.opale.repositories.AdventurerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdventurerService {
@@ -29,5 +30,10 @@ public class AdventurerService {
                 .stream()
                 .map(adventurerMapper::toDTO)
                 .toList();
+    }
+
+    public AdventurerDTO getOneAdventurer(Long adventurerId) {
+        Optional<AdventurerDTO> optionnalAdventurerDto = this.adventurerRepository.findById(adventurerId).map(adventurerMapper::toDTO);
+        return optionnalAdventurerDto.orElse(null);
     }
 }
