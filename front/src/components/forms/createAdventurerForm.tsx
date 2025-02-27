@@ -1,17 +1,29 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import {  useMutation } from "@tanstack/react-query";
 import * as z from "zod";
+import { Archetype } from "../../utils/enum";
 import {
   Container,
   Box,
   TextField,
   Button,
+  FormControl,
   Snackbar,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
   Alert,
 } from "@mui/material";
 import { AdventurerFormSchema } from "../../utils/validation";
+
+// Create an array of key/value pairs from the Archetype enum
+const archetypes = Object.entries(Archetype).map(([key, value]) => ({
+  key,
+  value
+}));
 
 type FormData = z.infer<typeof AdventurerFormSchema>;
 
@@ -97,20 +109,31 @@ export default function AdventurerForm() {
               />
             )}
           />
-          <Controller
-            name="archetype"
-            control={control}
-            render={({ field }) => (
-              <TextField
+
+         {/* Composant Select pour le champ "archetype" */}
+        <Controller
+          name="archetype"
+          control={control}
+          render={({ field }) => (
+            <FormControl fullWidth variant="outlined" error={Boolean(errors.archetype)}>
+              <InputLabel id="archetype-label">Spécialité</InputLabel>
+              <Select
+                labelId="archetype-label"
                 label="Spécialité"
-                variant="outlined"
-                fullWidth
-                error={Boolean(errors.archetype)}
-                helperText={errors.archetype?.message}
                 {...field}
-              />
-            )}
-          />
+              >
+                {archetypes.map((item) => (
+                  <MenuItem key={item.key} value={item.key}>
+                  {item.value}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>
+                {errors.archetype ? errors.archetype.message : ""}
+              </FormHelperText>
+            </FormControl>
+          )}
+        />
           <Controller
             name="experience"
             control={control}
