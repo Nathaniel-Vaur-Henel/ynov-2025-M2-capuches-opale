@@ -133,6 +133,8 @@ paths:
                 $ref: '#/components/schemas/RequestDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
@@ -141,6 +143,8 @@ components:
       description: The request is malformed or missing required fields
     InternalServerError:
       description: An internal server error occurred
+    NotFound:
+      description: The requested resource was not found
   schemas:
     AdventurerDTO:
       description: Representation of an adventurer
