@@ -1,0 +1,38 @@
+package com.ynov.capuches.opale.controllers;
+
+import com.ynov.capuches.opale.model.RequestDTO;
+import com.ynov.capuches.opale.openapi.api.RequestApiDelegate;
+import com.ynov.capuches.opale.services.RequestService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@Slf4j
+@RestController
+@RequestMapping("/request")
+public class RequestController implements RequestApiDelegate {
+
+    private final RequestService requestService;
+
+    public RequestController(RequestService requestService) {
+        this.requestService = requestService;
+    }
+
+    @Override
+    public ResponseEntity<RequestDTO> createRequest(RequestDTO requestDTO) {
+        if (requestDTO == null || requestDTO.getDueDate() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        if (requestDTO.getStatus() == null) {
+            requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
+        }
+        if (requestDTO.getBounty() == null) {
+            requestDTO.setBounty(0.0f);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
+    }
+}

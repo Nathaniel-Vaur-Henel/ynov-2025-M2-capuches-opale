@@ -138,6 +138,8 @@ components:
           format: date
         backer:
           type: string
+      required:
+        - dueDate
   requestBodies:
     AdventurerCreation:
       description: The new adventurer to create
