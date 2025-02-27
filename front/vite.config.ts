@@ -1,8 +1,8 @@
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
+import { configDefaults } from "vitest/config";
 
-// https://vite.dev/config/
 export default defineConfig({
 	plugins: [react()],
 	resolve: {
@@ -22,4 +22,10 @@ export default defineConfig({
 			},
 		},
 	},
+	test: {
+		environment: "jsdom",
+		setupFiles: "./src/setupTests.js",
+		globals: true,
+	},
+
 });
