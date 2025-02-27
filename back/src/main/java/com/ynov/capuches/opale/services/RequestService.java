@@ -30,7 +30,7 @@ public class RequestService {
 
     public RequestDTO updateRequest(RequestDTO requestDTO) {
         Request existingRequest = requestRepository.findByIdAndStatus(requestDTO.getId(), Status.PENDING)
-                .orElseThrow(() -> new NotFoundException("You can't update a request that is not pending"));
+                .orElseThrow(() -> new NotFoundException("Id and request with status PENDING not found"));
 
 
         requestDTO.setTitle(requestDTO.getTitle() != null ? requestDTO.getTitle() : existingRequest.getTitle());

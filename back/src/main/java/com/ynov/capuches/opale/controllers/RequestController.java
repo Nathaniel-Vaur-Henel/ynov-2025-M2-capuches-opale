@@ -48,6 +48,7 @@ public class RequestController implements RequestApiDelegate {
             return ResponseEntity.status(HttpStatus.OK).body(requestService.updateRequest(requestDTO));
         }
         catch (NotFoundException e) {
+            log.error(e.getMessage(),e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
