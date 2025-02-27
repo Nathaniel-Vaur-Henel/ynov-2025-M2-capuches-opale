@@ -100,6 +100,18 @@ const StyledProgress = styled(LinearProgress)(({ theme }) => ({
 	},
 }));
 
+const mapArchetype = (archetype: string): string => {
+	const archetypeMap: Record<string, string> = {
+		HUNTER: "Archer",
+		WARRIOR: "Guerrier",
+		PALADIN: "Paladin",
+		MAGE: "Mage",
+		ROGUE: "Assassin",
+	};
+
+	return archetypeMap[archetype] || archetype; // Retourne la traduction ou l'original si non trouvé
+};
+
 const AdventurerCard = ({
 	name,
 	experience,
@@ -131,8 +143,10 @@ const AdventurerCard = ({
 	const experienceProgress = (experience / maxExperience) * 100;
 
 	// Icône en fonction de l'archetype
-	const getArchetypeIcon = () => {
-		switch (archetype) {
+	const getArchetypeIcon = (archetype: string) => {
+		const archetypeFr = mapArchetype(archetype);
+		
+		switch (archetypeFr) {
 			case "Guerrier":
 				return <ShieldIcon />;
 			case "Mage":
@@ -146,13 +160,13 @@ const AdventurerCard = ({
 			default:
 				return <StarIcon />;
 		}
-	};
-
-	const archetypeIcon = getArchetypeIcon();
+	};	
 
 	// Couleur en fonction de l'archetype
-	const getArchetypeColor = () => {
-		switch (archetype) {
+	const getArchetypeColor = (archetype: string) => {
+		const archetypeFr = mapArchetype(archetype); // Traduire en français
+		
+		switch (archetypeFr) {
 			case "Guerrier":
 				return "#f97316"; // Orange
 			case "Mage":
@@ -167,8 +181,10 @@ const AdventurerCard = ({
 				return "#6366f1"; // Indigo
 		}
 	};
-
-	const archetypeColor = getArchetypeColor();
+	
+	const archetypeFr = mapArchetype(archetype); 
+	const archetypeIcon = getArchetypeIcon(archetype); 
+	const archetypeColor = getArchetypeColor(archetype);
 
 	return (
 		<StyledCard
@@ -226,18 +242,6 @@ const AdventurerCard = ({
 
 			<CardContent sx={{ pt: 1, flexGrow: 1 }}>
 				<Stack spacing={2}>
-					<Box sx={{ height: 48 }}>
-						<Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-							Qui suis-je
-						</Typography>
-						<Typography variant="body2">
-							{`Un${
-								archetype === "Assassin" ? "" : "e"
-							} ${archetype.toLowerCase()} expérimenté${
-								archetype === "Assassin" ? "" : "e"
-							} à votre service pour toutes vos quêtes.`}
-						</Typography>
-					</Box>
 
 					<Divider sx={{ borderColor: "rgba(255, 255, 255, 0.08)" }} />
 
@@ -251,7 +255,7 @@ const AdventurerCard = ({
 						</Typography>
 						<Chip
 							icon={archetypeIcon}
-							label={archetype}
+							label={archetypeFr}
 							size="small"
 							sx={{
 								backgroundColor: alpha(archetypeColor, 0.2),

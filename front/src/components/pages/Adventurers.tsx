@@ -9,14 +9,14 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useFilteredAdventurers } from "../../hooks/useFilteredAdventurers";
+import { useAdventurers } from "../../hooks/useAdventurers";
 import AdventurersFilters from "../ui/AdventurersFilters";
 import AdventurersList from "../ui/AdventurersList";
 
 export default function Adventurers() {
 	const theme = useTheme();
-	// Utiliser notre hook personnalisé qui gère les données et les filtres via URL
-	const { adventurers, archetypes, isLoading, isError, error, refetch } =
-		useFilteredAdventurers();
+	const { adventurers, archetypes, isLoading, isError, error, refetch } = useFilteredAdventurers();
+	const { data: adventurersData, refetch: refetchAdventurers } = useAdventurers();
 
 	// Variants pour les animations
 	const pageVariants = {
@@ -140,15 +140,16 @@ export default function Adventurers() {
 							<AdventurersFilters
 								archetypes={archetypes}
 								count={adventurers.length}
+								refetch={refetch}
 							/>
 
 							{/* Composant de liste qui affiche les aventuriers filtrés */}
 							<AdventurersList
-								adventurers={adventurers}
+								adventurers={adventurersData || []}
 								isLoading={isLoading}
 								isError={isError}
 								error={error}
-								refetch={refetch}
+								refetch={refetchAdventurers}
 							/>
 						</Paper>
 					</motion.div>
