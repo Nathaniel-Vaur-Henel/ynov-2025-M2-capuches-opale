@@ -31,6 +31,7 @@ type SortDirection = "asc" | "desc";
 interface AdventurersFiltersProps {
 	archetypes: string[];
 	count: number;
+	refetch: () => void;
 }
 
 export default function AdventurersFilters({
