@@ -1,5 +1,6 @@
 package com.ynov.capuches.opale.controllers;
 
+import com.ynov.capuches.opale.model.AdventurerDTO;
 import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.openapi.api.RequestApiDelegate;
 import com.ynov.capuches.opale.services.RequestService;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -35,4 +38,10 @@ public class RequestController implements RequestApiDelegate {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
     }
+
+    @Override
+    public ResponseEntity<List<RequestDTO>> getRequests() {
+        return new ResponseEntity<>(requestService.getAllRequests(), HttpStatus.OK);
+    }
+
 }
