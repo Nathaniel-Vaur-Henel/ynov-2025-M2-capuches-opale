@@ -19,7 +19,6 @@ import {
 } from "@mui/material";
 import { AdventurerFormSchema } from "../../utils/validation";
 
-// Create an array of key/value pairs from the Archetype enum
 const archetypes = Object.entries(Archetype).map(([key, value]) => ({
   key,
   value
