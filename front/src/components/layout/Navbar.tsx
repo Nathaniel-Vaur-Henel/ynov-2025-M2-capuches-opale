@@ -8,6 +8,7 @@ import {
 	AppBar,
 	Box,
 	Button,
+	Container,
 	Divider,
 	Drawer,
 	IconButton,
@@ -25,6 +26,7 @@ import {
 import { alpha, useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
+import Logo from "../ui/Logo";
 
 // Helper pour masquer la navbar lors du défilement vers le bas
 function HideOnScroll({ children }: { children: React.ReactElement }) {
@@ -118,7 +120,7 @@ export default function Navbar() {
 		<>
 			<HideOnScroll>
 				<AppBar
-					position="fixed"
+					position="sticky"
 					sx={{
 						background: "transparent",
 						backdropFilter: "blur(10px)",
@@ -127,86 +129,65 @@ export default function Navbar() {
 						transition: "all 0.3s ease",
 					}}
 				>
-					<Toolbar sx={{ justifyContent: "space-between" }}>
-						{/* Logo */}
-						<Button
-							component={RouterLink}
-							to="/"
-							color="inherit"
-							sx={{
-								textTransform: "none",
-								borderRadius: 2,
-								"&:hover": {
-									backgroundColor: "rgba(255, 255, 255, 0.05)",
-								},
-							}}
-							startIcon={
-								<Box
-									sx={{
-										bgcolor: "rgba(99, 102, 241, 0.2)",
-										borderRadius: "50%",
-										p: 0.75,
-										display: "flex",
-										alignItems: "center",
-										justifyContent: "center",
-									}}
-								>
-									<HomeIcon
-										fontSize="small"
-										sx={{ color: theme.palette.primary.light }}
-									/>
-								</Box>
-							}
-						>
-							<Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
-								Capuche Opale
-							</Typography>
-						</Button>
-
-						{/* Navigation desktop */}
-						{!isMobile && (
-							<Box sx={{ display: "flex", gap: 1 }}>
-								{navItems
-									.filter((item) => item.path !== "/")
-									.map((item) => (
-										<Button
-											key={item.path}
-											component={RouterLink}
-											to={item.path}
-											startIcon={item.icon}
-											color={isActivePath(item.path) ? "primary" : "inherit"}
-											variant={isActivePath(item.path) ? "contained" : "text"}
-											sx={{
-												px: 2,
-												py: 1,
-												...(isActivePath(item.path)
-													? {}
-													: {
-															"&:hover": {
-																backgroundColor: "rgba(255, 255, 255, 0.05)",
-															},
-													  }),
-											}}
-										>
-											{item.label}
-										</Button>
-									))}
-							</Box>
-						)}
-
-						{/* Menu mobile */}
-						{isMobile && (
-							<IconButton
-								color="inherit"
-								aria-label="open drawer"
-								edge="start"
-								onClick={toggleDrawer}
-								sx={{ ml: 0.5 }}
+					<Container maxWidth="xl">
+						<Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+							<Box
+								component={RouterLink}
+								to="/"
+								sx={{ textDecoration: "none" }}
 							>
-								<MenuIcon />
-							</IconButton>
-						)}
-					</Toolbar>
+								<Logo height={40} />
+							</Box>
+
+							{isMobile ? (
+								<>
+									<IconButton
+										color="inherit"
+										aria-label="open drawer"
+										edge="end"
+										onClick={toggleDrawer}
+									>
+										<MenuIcon />
+									</IconButton>
+									<Drawer
+										anchor="right"
+										open={drawerOpen}
+										onClose={toggleDrawer}
+									>
+										{drawerContent}
+									</Drawer>
+								</>
+							) : (
+								<Box sx={{ display: "flex", gap: 2 }}>
+									{navItems
+										.filter((item) => item.path !== "/")
+										.map((item) => (
+											<Button
+												key={item.path}
+												color="inherit"
+												component={RouterLink}
+												to={item.path}
+												startIcon={item.icon}
+												variant={isActivePath(item.path) ? "contained" : "text"}
+												sx={{
+													px: 2,
+													py: 1,
+													...(isActivePath(item.path)
+														? {}
+														: {
+																"&:hover": {
+																	backgroundColor: "rgba(255, 255, 255, 0.05)",
+																},
+														  }),
+												}}
+											>
+												{item.label}
+											</Button>
+										))}
+								</Box>
+							)}
+						</Toolbar>
+					</Container>
 
 					{/* Accent gradient bar */}
 					<Box
@@ -219,11 +200,6 @@ export default function Navbar() {
 					/>
 				</AppBar>
 			</HideOnScroll>
-
-			{/* Drawer mobile */}
-			<Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
-				{drawerContent}
-			</Drawer>
 		</>
 	);
 }

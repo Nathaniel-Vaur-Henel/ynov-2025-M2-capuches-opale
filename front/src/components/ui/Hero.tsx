@@ -1,21 +1,67 @@
 import {
 	PeopleAlt as AdventurersIcon,
+	ArrowForward,
+	Pause,
+	PlayArrow,
 	Assignment as QuestsIcon,
+	VolumeOff,
+	VolumeUp,
 } from "@mui/icons-material";
 import {
 	alpha,
 	Box,
 	Button,
+	Chip,
 	Container,
+	Fade,
+	IconButton,
+	Paper,
+	Slider,
 	Stack,
 	Typography,
 	useTheme,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function Hero() {
 	const theme = useTheme();
+	const [isPlaying, setIsPlaying] = useState(false);
+	const [volume, setVolume] = useState(70);
+	const [isMuted, setIsMuted] = useState(false);
+	const audioRef = useRef<HTMLAudioElement | null>(null);
+
+	useEffect(() => {
+		if (audioRef.current) {
+			audioRef.current.volume = volume / 100;
+		}
+	}, [volume]);
+
+	useEffect(() => {
+		if (audioRef.current) {
+			audioRef.current.muted = isMuted;
+		}
+	}, [isMuted]);
+
+	const togglePlay = () => {
+		if (audioRef.current) {
+			if (isPlaying) {
+				audioRef.current.pause();
+			} else {
+				audioRef.current.play();
+			}
+			setIsPlaying(!isPlaying);
+		}
+	};
+
+	const handleVolumeChange = (_event: Event, newValue: number | number[]) => {
+		setVolume(newValue as number);
+	};
+
+	const toggleMute = () => {
+		setIsMuted(!isMuted);
+	};
 
 	return (
 		<Box
@@ -23,14 +69,24 @@ export default function Hero() {
 			sx={{
 				position: "relative",
 				overflow: "hidden",
-				minHeight: "calc(100vh - 64px)",
+				minHeight: "100vh",
 				display: "flex",
 				alignItems: "center",
 				py: { xs: 8, md: 12 },
-				backgroundImage: `linear-gradient(to bottom, ${alpha(
-					theme.palette.background.default,
-					0.9
-				)}, ${alpha(theme.palette.background.default, 0.95)})`,
+				backgroundImage: "url('/background-capuches-opale.webp')",
+				backgroundSize: "cover",
+				backgroundPosition: "center",
+				backgroundAttachment: "fixed",
+				"&::before": {
+					content: '""',
+					position: "absolute",
+					top: 0,
+					left: 0,
+					right: 0,
+					bottom: 0,
+					backgroundColor: "rgba(3, 7, 18, 0.85)",
+					zIndex: 1,
+				},
 			}}
 		>
 			{/* Animated background particles */}
@@ -42,10 +98,10 @@ export default function Hero() {
 					right: 0,
 					bottom: 0,
 					zIndex: 0,
-					opacity: 0.6,
+					opacity: 0.4,
 				}}
 			>
-				{[...Array(15)].map((_, i) => (
+				{[...Array(10)].map((_, i) => (
 					<motion.div
 						key={i}
 						initial={{
@@ -77,7 +133,7 @@ export default function Hero() {
 							borderRadius: "50%",
 							background: `radial-gradient(circle, ${alpha(
 								theme.palette.primary.main,
-								0.8
+								0.6
 							)}, ${alpha(theme.palette.primary.main, 0)})`,
 							filter: "blur(8px)",
 						}}
@@ -86,7 +142,7 @@ export default function Hero() {
 			</Box>
 
 			{/* Main content */}
-			<Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+			<Container maxWidth="lg" sx={{ position: "relative", zIndex: 2 }}>
 				<Stack
 					direction={{ xs: "column", md: "row" }}
 					spacing={{ xs: 6, md: 10 }}
@@ -94,130 +150,144 @@ export default function Hero() {
 					justifyContent="space-between"
 				>
 					<Box sx={{ maxWidth: { xs: "100%", md: "50%" } }}>
-						<motion.div
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.8, ease: "easeOut" }}
-						>
-							<Typography
-								variant="h1"
-								component="h1"
-								sx={{
-									fontSize: { xs: "2.5rem", md: "3.5rem", lg: "4rem" },
-									fontWeight: 800,
-									mb: 2,
-									background: `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 50%, ${theme.palette.secondary.main} 100%)`,
-									backgroundClip: "text",
-									textFillColor: "transparent",
-									WebkitBackgroundClip: "text",
-									WebkitTextFillColor: "transparent",
-									textShadow: `0 10px 20px ${alpha(
-										theme.palette.primary.main,
-										0.3
-									)}`,
-								}}
-							>
-								Capuche Opale
-							</Typography>
-
-							<Typography
-								variant="h2"
-								sx={{
-									fontSize: { xs: "1.5rem", md: "1.75rem", lg: "2rem" },
-									fontWeight: 600,
-									mb: 3,
-									color: alpha(theme.palette.text.primary, 0.9),
-								}}
-							>
-								La Guilde des Aventuriers d'Élite
-							</Typography>
-
-							<Typography
-								variant="body1"
-								sx={{
-									fontSize: { xs: "1rem", md: "1.1rem" },
-									color: theme.palette.text.secondary,
-									mb: 4,
-									maxWidth: "90%",
-								}}
-							>
-								Découvrez les meilleurs aventuriers et relevez des quêtes
-								palpitantes dans un monde où chaque mission peut changer votre
-								destinée. Êtes-vous prêt à façonner votre légende?
-							</Typography>
-
-							<Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-								<Button
-									component={RouterLink}
-									to="/aventuriers"
-									variant="contained"
-									size="large"
-									startIcon={<AdventurersIcon />}
+						<Fade in={true} timeout={1000}>
+							<Box>
+								<Chip
+									label="Guilde d'aventuriers"
+									color="primary"
+									size="small"
 									sx={{
-										py: 1.5,
-										px: 3,
-										fontSize: "1rem",
-										borderRadius: "10px",
-										background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-										boxShadow: `0 10px 20px ${alpha(
+										mb: 2,
+										fontWeight: 600,
+										backdropFilter: "blur(4px)",
+										backgroundColor: alpha(theme.palette.primary.main, 0.2),
+									}}
+								/>
+
+								<Typography
+									variant="h1"
+									component="h1"
+									sx={{
+										fontSize: { xs: "2.5rem", md: "3.5rem", lg: "4rem" },
+										fontWeight: 800,
+										mb: 2,
+										background: `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 50%, ${theme.palette.secondary.main} 100%)`,
+										backgroundClip: "text",
+										textFillColor: "transparent",
+										WebkitBackgroundClip: "text",
+										WebkitTextFillColor: "transparent",
+										textShadow: `0 10px 20px ${alpha(
 											theme.palette.primary.main,
-											0.4
+											0.3
 										)}`,
-										position: "relative",
-										overflow: "hidden",
-										"&::before": {
-											content: '""',
-											position: "absolute",
-											top: 0,
-											left: "-100%",
-											width: "100%",
-											height: "100%",
-											background: `linear-gradient(90deg, transparent, ${alpha(
-												"#ffffff",
-												0.2
-											)}, transparent)`,
-											transition: "left 0.7s ease",
-										},
-										"&:hover": {
-											transform: "translateY(-3px)",
-											boxShadow: `0 15px 25px ${alpha(
-												theme.palette.primary.main,
-												0.5
-											)}`,
-											"&::before": {
-												left: "100%",
-											},
-										},
 									}}
 								>
-									Découvrir les Aventuriers
-								</Button>
+									Les Capuches d'Opale
+								</Typography>
 
-								<Button
-									component={RouterLink}
-									to="/requetes"
-									variant="outlined"
-									size="large"
-									startIcon={<QuestsIcon />}
+								<Typography
+									variant="h2"
 									sx={{
-										py: 1.5,
-										px: 3,
-										fontSize: "1rem",
-										borderRadius: "10px",
-										borderWidth: "2px",
-										borderColor: alpha(theme.palette.primary.main, 0.5),
-										color: theme.palette.primary.light,
-										"&:hover": {
-											borderColor: theme.palette.primary.main,
-											backgroundColor: alpha(theme.palette.primary.main, 0.08),
-											transform: "translateY(-3px)",
-										},
+										fontSize: { xs: "1.5rem", md: "1.75rem", lg: "2rem" },
+										fontWeight: 600,
+										mb: 3,
+										color: alpha(theme.palette.text.primary, 0.9),
 									}}
 								>
-									Voir les Requêtes
-								</Button>
-							</Stack>
-						</motion.div>
+									La Guilde des Aventuriers d'Élite
+								</Typography>
+
+								<Typography
+									variant="body1"
+									sx={{
+										fontSize: { xs: "1rem", md: "1.1rem" },
+										color: theme.palette.text.secondary,
+										mb: 4,
+										maxWidth: "90%",
+										lineHeight: 1.8,
+									}}
+								>
+									Découvrez les meilleurs aventuriers et relevez des quêtes
+									palpitantes dans un monde où chaque mission peut changer votre
+									destinée. Êtes-vous prêt à façonner votre légende?
+								</Typography>
+
+								<Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+									<Button
+										component={RouterLink}
+										to="/aventuriers"
+										variant="contained"
+										size="large"
+										startIcon={<AdventurersIcon />}
+										sx={{
+											py: 1.5,
+											px: 3,
+											fontSize: "1rem",
+											borderRadius: "10px",
+											background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+											boxShadow: `0 10px 20px ${alpha(
+												theme.palette.primary.main,
+												0.4
+											)}`,
+											position: "relative",
+											overflow: "hidden",
+											"&::before": {
+												content: '""',
+												position: "absolute",
+												top: 0,
+												left: "-100%",
+												width: "100%",
+												height: "100%",
+												background: `linear-gradient(90deg, transparent, ${alpha(
+													"#ffffff",
+													0.2
+												)}, transparent)`,
+												transition: "left 0.7s ease",
+											},
+											"&:hover": {
+												transform: "translateY(-3px)",
+												boxShadow: `0 15px 25px ${alpha(
+													theme.palette.primary.main,
+													0.5
+												)}`,
+												"&::before": {
+													left: "100%",
+												},
+											},
+										}}
+									>
+										Découvrir les Aventuriers
+									</Button>
+
+									<Button
+										component={RouterLink}
+										to="/requetes"
+										variant="outlined"
+										size="large"
+										startIcon={<QuestsIcon />}
+										sx={{
+											py: 1.5,
+											px: 3,
+											fontSize: "1rem",
+											borderRadius: "10px",
+											borderWidth: "2px",
+											borderColor: alpha(theme.palette.primary.main, 0.5),
+											color: theme.palette.primary.light,
+											"&:hover": {
+												borderColor: theme.palette.primary.main,
+												backgroundColor: alpha(
+													theme.palette.primary.main,
+													0.08
+												),
+												transform: "translateY(-3px)",
+											},
+										}}
+									>
+										Voir les Requêtes
+									</Button>
+								</Stack>
+							</Box>
+						</Fade>
 					</Box>
 
 					{/* Hero image/illustration */}
@@ -236,8 +306,8 @@ export default function Hero() {
 						>
 							<Box
 								component="img"
-								src="/hero-image.png" // Remplacez par votre image d'aventuriers
-								alt="Aventuriers en quête"
+								src="/logo-capuches-opale.png"
+								alt="Les Capuches d'Opale"
 								sx={{
 									width: "100%",
 									height: "100%",
@@ -246,9 +316,8 @@ export default function Hero() {
 									zIndex: 1,
 								}}
 								onError={(e) => {
-									// Fallback si l'image n'existe pas
 									e.currentTarget.src =
-										"https://placehold.co/600x400/1e293b/cbd5e1?text=Aventuriers+en+action";
+										"https://placehold.co/600x400/1e293b/cbd5e1?text=Capuches+d'Opale";
 								}}
 							/>
 
@@ -271,41 +340,86 @@ export default function Hero() {
 								}}
 							/>
 						</motion.div>
-
-						{/* Décorations flottantes */}
-						{[...Array(4)].map((_, i) => (
-							<motion.div
-								key={i}
-								initial={{ x: 0, y: 0 }}
-								animate={{
-									x: [0, Math.random() * 20 - 10, 0],
-									y: [0, Math.random() * 20 - 10, 0],
-								}}
-								transition={{
-									duration: 4 + i,
-									repeat: Infinity,
-									ease: "easeInOut",
-								}}
-								style={{
-									position: "absolute",
-									width: 60 - i * 10,
-									height: 60 - i * 10,
-									borderRadius: "50%",
-									background: `radial-gradient(circle, ${alpha(
-										i % 2 === 0
-											? theme.palette.primary.main
-											: theme.palette.secondary.main,
-										0.15
-									)} 0%, transparent 70%)`,
-									top: `${20 + i * 20}%`,
-									left: `${i * 25}%`,
-									filter: "blur(8px)",
-									zIndex: 2,
-								}}
-							/>
-						))}
 					</Box>
 				</Stack>
+
+				{/* Audio player */}
+				<Box sx={{ mt: 6, display: "flex", justifyContent: "center" }}>
+					<audio ref={audioRef} src="/theme-capuches-opale.mp3" loop />
+
+					<Paper
+						elevation={0}
+						sx={{
+							p: 2,
+							borderRadius: 3,
+							backgroundColor: alpha(theme.palette.background.paper, 0.6),
+							backdropFilter: "blur(10px)",
+							border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+							maxWidth: "400px",
+							width: "100%",
+						}}
+					>
+						<Stack direction="row" spacing={2} alignItems="center">
+							<IconButton
+								onClick={togglePlay}
+								color="primary"
+								sx={{
+									backgroundColor: alpha(theme.palette.primary.main, 0.2),
+									"&:hover": {
+										backgroundColor: alpha(theme.palette.primary.main, 0.3),
+									},
+								}}
+							>
+								{isPlaying ? <Pause /> : <PlayArrow />}
+							</IconButton>
+
+							<IconButton onClick={toggleMute} color="primary">
+								{isMuted ? <VolumeOff /> : <VolumeUp />}
+							</IconButton>
+
+							<Slider
+								value={volume}
+								onChange={handleVolumeChange}
+								aria-labelledby="volume-slider"
+								sx={{ width: "150px" }}
+							/>
+
+							<Typography variant="body2" color="text.secondary">
+								Thème musical
+							</Typography>
+						</Stack>
+					</Paper>
+				</Box>
+
+				{/* Call to action */}
+				<Box sx={{ mt: 8, textAlign: "center" }}>
+					<Button
+						component={RouterLink}
+						to="/aventuriers"
+						variant="contained"
+						endIcon={<ArrowForward />}
+						size="large"
+						sx={{
+							py: 1.5,
+							px: 4,
+							borderRadius: "12px",
+							background: `linear-gradient(135deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
+							boxShadow: `0 10px 20px ${alpha(
+								theme.palette.primary.main,
+								0.3
+							)}`,
+							"&:hover": {
+								boxShadow: `0 15px 30px ${alpha(
+									theme.palette.primary.main,
+									0.4
+								)}`,
+								transform: "translateY(-2px)",
+							},
+						}}
+					>
+						Commencer l'aventure
+					</Button>
+				</Box>
 			</Container>
 		</Box>
 	);
