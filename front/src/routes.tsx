@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import LazyWrapper from "./components/ui/LazyWrapper";
+import ApiDocs from "./ApiDocs.tsx";
 
 // Chargement paresseux des pages
 const Home = lazy(() => import("./components/pages/Home"));
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
 						<div>Page des requêtes</div>
 					</LazyWrapper>
 				),
+			},
+			{
+				path: "api-docs",
+				element: <ApiDocs />,
 			},
 		],
 	},
