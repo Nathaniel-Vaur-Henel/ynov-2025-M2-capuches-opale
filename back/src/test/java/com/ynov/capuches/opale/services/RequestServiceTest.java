@@ -1,6 +1,7 @@
 package com.ynov.capuches.opale.services;
 
 import com.ynov.capuches.opale.entities.Request;
+import com.ynov.capuches.opale.enums.Status;
 import com.ynov.capuches.opale.mappers.RequestMapper;
 import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.repositories.RequestRepository;
@@ -38,7 +39,7 @@ public class RequestServiceTest {
         requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
         requestDTO.setBounty(0.0f);
 
-        Request request = new Request(1L, "string", "string", 0.0, Request.Status.PENDING, LocalDate.parse("2025-05-05") ,"string");
+        Request request = new Request(1L, "string", "string", 0.0, Status.PENDING, LocalDate.parse("2025-05-05") ,"string");
         given(requestMapper.toEntity(requestDTO)).willReturn(request);
         given(requestRepository.save(request)).willReturn(request);
         given(requestMapper.toDTO(request)).willReturn(requestDTO);

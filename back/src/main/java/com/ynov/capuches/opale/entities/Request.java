@@ -1,5 +1,6 @@
 package com.ynov.capuches.opale.entities;
 
+import com.ynov.capuches.opale.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +27,5 @@ public class Request {
     private LocalDate dueDate;
     private String backer;
 
-    public enum Status {
-        PENDING, REFUSED, ABANDONED, VALIDATED, FAILURE, SUCCESS
-    }
+
 }
