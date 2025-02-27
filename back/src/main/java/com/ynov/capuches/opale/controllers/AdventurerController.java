@@ -25,7 +25,7 @@ public class AdventurerController implements AdventurerApiDelegate {
 
     @Override
     public ResponseEntity<List<AdventurerDTO>> getAdventurers() {
-        return AdventurerApiDelegate.super.getAdventurers();
+        return new ResponseEntity<>(adventurerService.getAllAdventurers(), HttpStatus.OK);
     }
 
 }

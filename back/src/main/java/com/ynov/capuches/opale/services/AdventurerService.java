@@ -6,6 +6,8 @@ import com.ynov.capuches.opale.model.AdventurerDTO;
 import com.ynov.capuches.opale.repositories.AdventurerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdventurerService {
     private final AdventurerRepository adventurerRepository;
@@ -20,5 +22,12 @@ public class AdventurerService {
         Adventurer adventurerEntity = adventurerMapper.toEntity(adventurerDTO);
         Adventurer savedAdventurer = this.adventurerRepository.save(adventurerEntity);
         return adventurerMapper.toDTO(savedAdventurer);
+    }
+
+    public List<AdventurerDTO> getAllAdventurers() {
+        return adventurerRepository.findAll()
+                .stream()
+                .map(adventurerMapper::toDTO)
+                .toList();
     }
 }
