@@ -6,10 +6,10 @@ import com.ynov.capuches.opale.exceptions.NotFoundException;
 import com.ynov.capuches.opale.mappers.RequestMapper;
 import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.repositories.RequestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import static com.ynov.capuches.opale.mappers.RequestMapper.*;
+import java.util.List;
+
 
 @Service
 public class RequestService {
@@ -48,5 +48,12 @@ public class RequestService {
 
         return requestMapper.toDTO(updatedRequest);
 
+    }
+    
+    public List<RequestDTO> getAllRequests() {
+        return requestRepository.findAll()
+                .stream()
+                .map(requestMapper::toDTO)
+                .toList();
     }
 }

@@ -12,8 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,6 +50,24 @@ public class RequestServiceTest {
         assertNotNull(requestSaved.getId());
     }
 
+    @Test
+    public void canGetAllRequests() {
+        RequestDTO requestDTO = new RequestDTO();
+        requestDTO.setBacker("string");
+        requestDTO.setDescription("string");
+        requestDTO.setId(1L);
+        requestDTO.setDueDate(LocalDate.parse("2025-05-05"));
+        requestDTO.setTitle("string");
+        requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
+        requestDTO.setBounty(0.0f);
+
+        Request request = new Request(1L, "string", "string", 0.0, Status.PENDING, LocalDate.parse("2025-05-05") ,"string");
+        given(requestRepository.findAll()).willReturn(List.of(request));
+        given(requestMapper.toDTO(request)).willReturn(requestDTO);
+
+        assertEquals(1, this.requestService.getAllRequests().size());
+    }
+    
     @Test
     public void canUpdateRequest() {
         RequestDTO requestDTO = new RequestDTO();

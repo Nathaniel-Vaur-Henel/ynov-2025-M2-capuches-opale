@@ -53,6 +53,33 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /adventurer/{id}:
+    get:
+      tags:
+        - Adventurer
+      summary: Retrieve a specific adventurer by ID
+      operationId: getAdventurerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the adventurer to retrieve
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Adventurer successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdventurerDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Adventurer not found
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /request:
     get:
       tags:

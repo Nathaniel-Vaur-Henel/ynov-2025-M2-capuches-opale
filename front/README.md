@@ -1,50 +1,132 @@
-# React + TypeScript + Vite
+# Configuration du Projet Front-end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ce document fournit les instructions pour configurer et exécuter le projet front-end basé sur React, Vite et TypeScript.
 
-Currently, two official plugins are available:
+## Prérequis
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Avant de commencer, assurez-vous d'avoir installé :
 
-## Expanding the ESLint configuration
+- [Node.js](https://nodejs.org/) (v20 ou ultérieur recommandé)
+- [npm](https://www.npmjs.com/) (v10 ou ultérieur recommandé)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Mise en Route
 
-- Configure the top-level `parserOptions` property like this:
+### 1. Cloner le Dépôt
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+git clone https://github.com/Nathaniel-Vaur-Henel/ynov-2025-M2-capuches-opale.git
+cd ynov-2025-M2-capuches-opale/front
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2. Installer les Dépendances
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm install
 ```
+
+### 3. Serveur de Développement
+
+Démarrer le serveur de développement avec remplacement de modules à chaud :
+
+```bash
+npm run dev
+```
+
+L'application sera disponible à l'adresse `http://localhost:5173` par défaut.
+
+### 4. Construction pour la Production
+
+```bash
+npm run build
+```
+
+Cela générera des fichiers optimisés pour la production dans le répertoire `dist`.
+
+## Structure du Projet
+
+```
+📦 capuche-opale-frontend
+├── 📂 public
+│   ├── 📄 index.html
+│   ├── 📄 manifest.json
+│   ├── 📄 favicon.ico
+│   └── 📄 robots.txt
+│
+├── 📂 src
+│   ├── 📂 components
+│   │   ├── 📂 forms
+│   │   │   ├── 📄 CreateAdventurerForm.tsx
+│   │   │   └── 📄 AddRequestForm.tsx
+│   │   ├── 📂 ui
+│   │   │   ├── 📄 AdventurerCard.tsx
+│   │   │   ├── 📄 Button.tsx
+│   │   │   └── 📄 Input.tsx
+│   │   ├── 📂 layout
+│   │   │   ├── 📄 Navbar.tsx
+│   │   │   ├── 📄 Footer.tsx
+│   │   │   └── 📄 Sidebar.tsx
+│   │   └── 📂 pages
+│   │       ├── 📄 Home.tsx
+│   │       ├── 📄 Dashboard.tsx
+│   │       ├── 📄 Profile.tsx
+│   │       └── 📄 NotFound.tsx
+│   │
+│   ├── 📂 hooks
+│   │   ├── 📄 useAuth.ts
+│   │   ├── 📄 useFetch.ts
+│   │   └── 📄 useTheme.ts
+│   │
+│   ├── 📂 context
+│   │   ├── 📄 AuthContext.tsx
+│   │   ├── 📄 ThemeContext.tsx
+│   │   └── 📄 GuildContext.tsx
+│   │
+│   ├── 📂 services
+│   │   ├── 📄 api.ts
+│   │   ├── 📄 authService.ts
+│   │   ├── 📄 guildService.ts
+│   │   └── 📄 questService.ts
+│   │
+│   ├── 📂 utils
+│   │   ├── 📄 helpers.ts
+│   │   ├── 📄 constants.ts
+│   │   ├── 📄 validation.ts
+│   │   └── 📄 format.ts
+│   │
+│   ├── 📂 assets
+│   │   ├── 📂 images
+│   │   ├── 📂 icons
+│   │   └── 📂 styles
+│   │       ├── 📄 tailwind.css
+│   │       ├── 📄 globals.css
+│   │       └── 📄 typography.css
+│   │
+│   ├── 📄 App.tsx
+│   ├── 📄 index.tsx
+│   ├── 📄 main.tsx
+│   ├── 📄 routes.tsx
+│   ├── 📄 vite-env.d.ts
+│   ├── 📄 tailwind.config.js
+│   └── 📄 postcss.config.js
+│
+├── 📄 .gitignore
+├── 📄 package.json
+├── 📄 tsconfig.json
+├── 📄 vite.config.ts
+├── 📄 README.md
+└── 📄 package-lock.json
+```
+
+## Scripts Disponibles
+
+- `npm run dev` : Démarrer le serveur de développement
+- `npm run build` : Construire pour la production
+- `npm run preview` : Prévisualiser la version de production
+- `npm run lint` : Exécuter ESLint
+- `npm run test` : Exécuter les tests (si configurés)
+
+## En Savoir Plus
+
+- [Documentation React](https://react.dev/)
+- [Documentation Vite](https://vitejs.dev/guide/)
+- [Documentation TypeScript](https://www.typescriptlang.org/docs/)

@@ -1,7 +1,7 @@
 export default function Requests() {
 	return (
 		<div className="space-y-6">
-			<h1 className="text-3xl font-bold text-gray-900">Requêtes</h1>
+			<h1 className="text-3xl font-bold">Requêtes</h1>
 			<div className="bg-white rounded-lg shadow overflow-hidden">
 				<div className="p-6 space-y-4">
 					{/* Placeholder pour la liste des requêtes */}

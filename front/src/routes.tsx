@@ -1,27 +1,45 @@
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { RootLayout } from "./components/layout/RootLayout";
-import Adventurers from "./components/pages/Adventurers";
-import Home from "./components/pages/Home";
-import NotFound from "./components/pages/NotFound";
-import Requests from "./components/pages/Requests";
+import Layout from "./components/layout/Layout";
+import LazyWrapper from "./components/ui/LazyWrapper";
+import ApiDocs from "./ApiDocs.tsx";
+
+// Chargement paresseux des pages
+const Home = lazy(() => import("./components/pages/Home"));
+const Adventurers = lazy(() => import("./components/pages/Adventurers"));
 
 export const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <RootLayout />,
-		errorElement: <NotFound />,
+		element: <Layout />,
 		children: [
 			{
 				index: true,
-				element: <Home />,
+				element: (
+					<LazyWrapper>
+						<Home />
+					</LazyWrapper>
+				),
 			},
 			{
 				path: "aventuriers",
-				element: <Adventurers />,
+				element: (
+					<LazyWrapper>
+						<Adventurers />
+					</LazyWrapper>
+				),
 			},
 			{
 				path: "requetes",
-				element: <Requests />,
+				element: (
+					<LazyWrapper>
+						<div>Page des requêtes</div>
+					</LazyWrapper>
+				),
+			},
+			{
+				path: "api-docs",
+				element: <ApiDocs />,
 			},
 		],
 	},

@@ -24,6 +24,15 @@ public class AdventurerController implements AdventurerApiDelegate {
     }
 
     @Override
+    public ResponseEntity<AdventurerDTO> getAdventurerById(Long id) {
+        AdventurerDTO adventurerDTO = adventurerService.getOneAdventurer(id);
+        if (adventurerDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(adventurerDTO);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    @Override
     public ResponseEntity<List<AdventurerDTO>> getAdventurers() {
         return new ResponseEntity<>(adventurerService.getAllAdventurers(), HttpStatus.OK);
     }
