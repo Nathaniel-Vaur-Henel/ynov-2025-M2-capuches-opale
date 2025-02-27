@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class Test {
-    public Test() {
-      log.info("Ceci est un test 🐉");
+public class LogAtRun {
+    public LogAtRun() {
       log.info("Maintenant, teste ta BDD http://localhost:8080/h2-console");
+      log.info("Maintenant, teste ton contrat http://localhost:8080/swagger-ui/index.html");
     }
 }
