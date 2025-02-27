@@ -148,17 +148,17 @@ const AdventurerCard = ({
 		
 		switch (archetypeFr) {
 			case "Guerrier":
-				return <ShieldIcon />;
+				return <ShieldIcon data-testid="GuerrierIcon" />;
 			case "Mage":
-				return <MageIcon />;
+				return <MageIcon data-testid="MageIcon" />;
 			case "Assassin":
-				return <AssassinIcon />;
+				return <AssassinIcon data-testid="AssassinIcon" />;
 			case "Paladin":
-				return <PaladinIcon />;
+				return <PaladinIcon data-testid="PaladinIcon" />;
 			case "Archer":
-				return <ArcherIcon />;
+				return <ArcherIcon data-testid="ArcherIcon" />;
 			default:
-				return <StarIcon />;
+				return <StarIcon data-testid="DefaultIcon" />;
 		}
 	};	
 
