@@ -4,7 +4,6 @@ import com.ynov.capuches.opale.entities.Request;
 import com.ynov.capuches.opale.enums.Status;
 import com.ynov.capuches.opale.model.RequestDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface RequestMapper {
