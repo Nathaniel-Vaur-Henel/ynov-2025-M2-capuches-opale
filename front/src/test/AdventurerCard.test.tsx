@@ -6,8 +6,17 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 // Création du thème pour le test
 const theme = createTheme();
 
+// Définition du type des props attendues par AdventurerCard
+type AdventurerCardProps = {
+    name: string;
+    experience: number;
+    archetype: string;
+    dailyRate: number;
+    image: string;
+};
+
 // Fonction pour rendre le composant avec le ThemeProvider
-const renderAdventurerCard = (props) =>
+const renderAdventurerCard = (props: AdventurerCardProps) =>
     render(
         <ThemeProvider theme={theme}>
             <AdventurerCard {...props} />
@@ -15,7 +24,7 @@ const renderAdventurerCard = (props) =>
     );
 
 describe("AdventurerCard Component", () => {
-    const defaultProps = {
+    const defaultProps: AdventurerCardProps = {
         name: "Test Aventurier",
         experience: 500,
         archetype: "Guerrier",
