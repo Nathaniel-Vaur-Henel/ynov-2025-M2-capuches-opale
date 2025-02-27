@@ -2,10 +2,8 @@ package com.ynov.capuches.opale.services;
 
 import com.ynov.capuches.opale.entities.Request;
 import com.ynov.capuches.opale.mappers.RequestMapper;
-import com.ynov.capuches.opale.model.AdventurerDTO;
 import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.repositories.RequestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

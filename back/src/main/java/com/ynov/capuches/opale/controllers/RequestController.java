@@ -1,6 +1,5 @@
 package com.ynov.capuches.opale.controllers;
 
-import com.ynov.capuches.opale.model.AdventurerDTO;
 import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.openapi.api.RequestApiDelegate;
 import com.ynov.capuches.opale.services.RequestService;

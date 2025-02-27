@@ -68,4 +68,5 @@ public class RequestServiceTest {
 
         assertEquals(1, this.requestService.getAllRequests().size());
     }
+
 }
