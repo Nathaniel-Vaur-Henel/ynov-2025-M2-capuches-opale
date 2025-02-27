@@ -105,7 +105,7 @@ paths:
       summary: Create a new request
       operationId: createRequest
       requestBody:
-        $ref: '#/components/requestBodies/RequestCreation'
+        $ref: '#/components/requestBodies/RequestUpsert'
       responses:
         '201':
           description: Request successfully created
@@ -117,12 +117,34 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Request
+      summary: Update a request
+      operationId: updateRequest
+      requestBody:
+        $ref: '#/components/requestBodies/RequestUpsert'
+      responses:
+        '200':
+          description: Request successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   responses:
     BadRequest:
       description: The request is malformed or missing required fields
     InternalServerError:
       description: An internal server error occurred
+    NotFound:
+      description: The requested resource was not found
   schemas:
     AdventurerDTO:
       description: Representation of an adventurer
@@ -176,7 +198,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AdventurerDTO'
-    RequestCreation:
+    RequestUpsert:
       description: The new request to create
       content:
         application/json:
