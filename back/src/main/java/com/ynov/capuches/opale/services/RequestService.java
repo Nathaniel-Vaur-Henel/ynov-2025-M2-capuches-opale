@@ -1,6 +1,8 @@
 package com.ynov.capuches.opale.services;
 
 import com.ynov.capuches.opale.entities.Request;
+import com.ynov.capuches.opale.enums.Status;
+import com.ynov.capuches.opale.exceptions.NotFoundException;
 import com.ynov.capuches.opale.mappers.RequestMapper;
 import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.repositories.RequestRepository;
@@ -29,6 +31,10 @@ public class RequestService {
     public RequestDTO updateRequest(RequestDTO requestDTO) {
         Request existingRequest = requestRepository.findById(requestDTO.getId())
                 .orElseThrow(() -> new RuntimeException("Request not found"));
+
+        if (!existingRequest.getStatus().equals(Status.PENDING)) {
+            throw new NotFoundException("You can't update a request that is not pending");
+        }
 
         requestDTO.setTitle(requestDTO.getTitle() != null ? requestDTO.getTitle() : existingRequest.getTitle());
         requestDTO.setBacker(requestDTO.getBacker() != null ? requestDTO.getBacker() : existingRequest.getBacker());
