@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 public class RequestController implements RequestApiDelegate {
@@ -35,4 +37,10 @@ public class RequestController implements RequestApiDelegate {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
     }
+
+    @Override
+    public ResponseEntity<List<RequestDTO>> getRequests() {
+        return new ResponseEntity<>(requestService.getAllRequests(), HttpStatus.OK);
+    }
+
 }
