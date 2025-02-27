@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.BDDMockito.given;
 
-import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,7 +59,7 @@ public class AdventurerServiceTest {
 
         Adventurer adventurer = new Adventurer(1L,"string", Archetype.WARRIOR, 0L, 0.0);
 
-        given(adventurerRepository.findAll()).willReturn(java.util.List.of(adventurer));
+        given(adventurerRepository.findAll()).willReturn(List.of(adventurer));
         given(adventurerMapper.toDTO(adventurer)).willReturn(adventurerDTO);
 
         assertEquals(1, this.adventurerService.getAllAdventurers().size());
