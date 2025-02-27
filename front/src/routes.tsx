@@ -7,6 +7,8 @@ import ApiDocs from "./ApiDocs.tsx";
 // Chargement paresseux des pages
 const Home = lazy(() => import("./components/pages/Home"));
 const Adventurers = lazy(() => import("./components/pages/Adventurers"));
+const Requests = lazy(() => import("./components/pages/Requests"));
+const CreateRequestPage = lazy(() => import("./components/pages/CreateRequestPage"));
 
 export const router = createBrowserRouter([
 	{
@@ -33,7 +35,15 @@ export const router = createBrowserRouter([
 				path: "requetes",
 				element: (
 					<LazyWrapper>
-						<div>Page des requêtes</div>
+						<Requests />
+					</LazyWrapper>
+				),
+			},
+			{
+				path: "requetes/creer",
+				element: (
+					<LazyWrapper>
+						<CreateRequestPage />
 					</LazyWrapper>
 				),
 			},
