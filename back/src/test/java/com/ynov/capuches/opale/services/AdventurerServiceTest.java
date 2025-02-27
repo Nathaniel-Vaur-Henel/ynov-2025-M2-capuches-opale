@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.BDDMockito.given;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,5 +64,31 @@ public class AdventurerServiceTest {
         given(adventurerMapper.toDTO(adventurer)).willReturn(adventurerDTO);
 
         assertEquals(1, this.adventurerService.getAllAdventurers().size());
+    }
+
+    @Test
+    public void canGetAdventurer() {
+        AdventurerDTO adventurerDTO = new AdventurerDTO();
+        adventurerDTO.setId(1L);
+        adventurerDTO.setName("string");
+        adventurerDTO.setArchetype(AdventurerDTO.ArchetypeEnum.WARRIOR);
+        adventurerDTO.setExperience(0);
+        adventurerDTO.setDailyRate(0.0);
+
+        Optional<Adventurer> adventurer = Optional.of(new Adventurer(1L, "string", Archetype.WARRIOR, 0L, 0.0));
+
+        given(adventurerRepository.findById(1L)).willReturn(adventurer);
+        given(adventurerMapper.toDTO(adventurer.get())).willReturn(adventurerDTO);
+        AdventurerDTO adventurerSaved = this.adventurerService.getOneAdventurer(1L);
+
+        assertNotNull(adventurerSaved);
+        assertNotNull(adventurerSaved.getId());
+    }
+
+    @Test
+    public void canTGetAdventurer() {
+        given(adventurerRepository.findById(1L)).willReturn(Optional.empty());
+        AdventurerDTO adventurerSaved = this.adventurerService.getOneAdventurer(1L);
+        assertNull(adventurerSaved);
     }
 }
