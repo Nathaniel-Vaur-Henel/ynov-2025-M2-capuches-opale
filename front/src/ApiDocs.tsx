@@ -37,7 +37,7 @@ const ApiDocs: React.FC = () => {
                             delete: "#F93E3E",
                         },
                     },
-                    menu: {
+                    sidebar: {
                         backgroundColor: "#1e1e2f",
                         textColor: "#ffffff",
                         activeTextColor: "#4A90E2",
