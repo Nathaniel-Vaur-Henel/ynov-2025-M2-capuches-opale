@@ -1,8 +1,12 @@
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { MotionConfig } from "framer-motion";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./routes";
+import { Route, Routes } from "react-router-dom";
+import ApiDocs from "./ApiDocs";
+import Layout from "./components/layout/Layout";
+import Adventurers from "./components/pages/Adventurers";
+import Home from "./components/pages/Home";
+import Requests from "./components/pages/Requests";
 import darkTheme from "./theme"; // Assurez-vous que cela pointe vers theme.ts
 
 function App() {
@@ -20,7 +24,14 @@ function App() {
 								"radial-gradient(circle at center, transparent 0%, rgba(3, 7, 18, 0.4) 100%)",
 						}}
 					/>
-					<RouterProvider router={router} />
+					<Routes>
+						<Route path="/" element={<Layout />}>
+							<Route index element={<Home />} />
+							<Route path="aventuriers" element={<Adventurers />} />
+							<Route path="requetes" element={<Requests />} />
+							<Route path="api-docs" element={<ApiDocs />} />
+						</Route>
+					</Routes>
 				</div>
 			</MotionConfig>
 		</ThemeProvider>

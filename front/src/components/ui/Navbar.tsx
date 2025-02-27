@@ -1,6 +1,7 @@
+import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FaClipboardList, FaHome, FaUsers } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Link as RouterLink, useLocation } from "react-router-dom";
 
 export default function Navbar() {
 	const location = useLocation();
@@ -69,6 +70,14 @@ export default function Navbar() {
 								{label}
 							</Link>
 						))}
+						<Button
+							component={RouterLink}
+							to="/requetes"
+							color="inherit"
+							sx={{ mx: 1 }}
+						>
+							Requêtes
+						</Button>
 					</div>
 				</div>
 			</div>
