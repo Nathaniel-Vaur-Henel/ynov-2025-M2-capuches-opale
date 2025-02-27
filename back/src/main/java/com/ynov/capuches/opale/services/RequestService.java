@@ -29,12 +29,9 @@ public class RequestService {
     }
 
     public RequestDTO updateRequest(RequestDTO requestDTO) {
-        Request existingRequest = requestRepository.findById(requestDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+        Request existingRequest = requestRepository.findByIdAndStatus(requestDTO.getId(), Status.PENDING)
+                .orElseThrow(() -> new NotFoundException("You can't update a request that is not pending"));
 
-        if (!existingRequest.getStatus().equals(Status.PENDING)) {
-            throw new NotFoundException("You can't update a request that is not pending");
-        }
 
         requestDTO.setTitle(requestDTO.getTitle() != null ? requestDTO.getTitle() : existingRequest.getTitle());
         requestDTO.setBacker(requestDTO.getBacker() != null ? requestDTO.getBacker() : existingRequest.getBacker());

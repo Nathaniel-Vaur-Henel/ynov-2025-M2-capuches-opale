@@ -81,15 +81,15 @@ public class RequestServiceTest {
 
         Request request = new Request(1L, "string", "string", 0.0, Status.PENDING, LocalDate.parse("2025-05-05") ,"string");
 
-        given(requestRepository.findById(1L)).willReturn(java.util.Optional.of(request));
+        given(requestRepository.findByIdAndStatus(1L, Status.PENDING)).willReturn(java.util.Optional.of(request));;
         requestDTO.setTitle("title");
         requestDTO.setBacker("backer");
         requestDTO.setDueDate(LocalDate.parse("2025-08-05"));
         requestDTO.setBounty(10.0f);
-        requestDTO.setStatus(RequestDTO.StatusEnum.SUCCESS);
+        requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
         requestDTO.setDescription("description");
 
-        Request requestToUpdate = new Request(1L, "title", "backer", 10.0, Status.SUCCESS, LocalDate.parse("2025-08-05") ,"description");
+        Request requestToUpdate = new Request(1L, "title", "backer", 10.0, Status.PENDING, LocalDate.parse("2025-08-05") ,"description");
         given(requestMapper.toEntity(requestDTO)).willReturn(requestToUpdate);
         given(requestRepository.save(requestToUpdate)).willReturn(requestToUpdate);
         given(requestMapper.toDTO(requestToUpdate)).willReturn(requestDTO);
