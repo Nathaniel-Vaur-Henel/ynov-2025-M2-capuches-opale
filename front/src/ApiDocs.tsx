@@ -11,7 +11,6 @@ const ApiDocs: React.FC = () => {
                         fontSize: "16px",
                         headings: {
                             fontWeight: "bold",
-                            color: "#ffffff",
                         },
                         links: {
                             color: "#4A90E2",
@@ -28,8 +27,8 @@ const ApiDocs: React.FC = () => {
                         responses: {
                             success: { color: "#28a745" },
                             error: { color: "#dc3545" },
-                            warning: { color: "#ffc107" },
                             info: { color: "#17a2b8" },
+                            redirect: { color: "#f39c12" },
                         },
                         http: {
                             get: "#61AFFE",
