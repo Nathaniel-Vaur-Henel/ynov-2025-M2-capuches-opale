@@ -14,6 +14,7 @@ import {
 import { motion } from "framer-motion";
 import { Adventurer } from "../../hooks/useFilteredAdventurers";
 import AdventurerCard from "./AdventurerCard";
+import { useEffect } from "react";
 
 interface AdventurersListProps {
 	adventurers: Adventurer[];
@@ -32,6 +33,11 @@ export default function AdventurersList({
 }: AdventurersListProps) {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+	useEffect(() => {
+		console.log("AdventurersList rendered");
+		console.log("adventurers", adventurers);
+	}, [adventurers]);
 
 	// Animation variants
 	const containerVariants = {
