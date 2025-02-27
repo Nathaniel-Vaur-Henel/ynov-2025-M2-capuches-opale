@@ -47,4 +47,21 @@ public class AdventurerServiceTest {
         assertNotNull(adventurerSaved);
         assertNotNull(adventurerSaved.getId());
     }
+
+    @Test
+    public void testGetAllAdventurers() {
+        AdventurerDTO adventurerDTO = new AdventurerDTO();
+        adventurerDTO.setId(1L);
+        adventurerDTO.setName("string");
+        adventurerDTO.setArchetype(AdventurerDTO.ArchetypeEnum.WARRIOR);
+        adventurerDTO.setExperience(0);
+        adventurerDTO.setDailyRate(0.0);
+
+        Adventurer adventurer = new Adventurer(1L,"string", Archetype.WARRIOR, 0L, 0.0);
+
+        given(adventurerRepository.findAll()).willReturn(java.util.List.of(adventurer));
+        given(adventurerMapper.toDTO(adventurer)).willReturn(adventurerDTO);
+
+        assertEquals(1, this.adventurerService.getAllAdventurers().size());
+    }
 }
