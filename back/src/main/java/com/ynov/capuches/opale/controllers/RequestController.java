@@ -35,4 +35,12 @@ public class RequestController implements RequestApiDelegate {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
     }
+
+    @Override
+    public ResponseEntity<RequestDTO> updateRequest(RequestDTO requestDTO) {
+        if (requestDTO == null || requestDTO.getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(requestService.updateRequest(requestDTO));
+    }
 }

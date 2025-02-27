@@ -78,10 +78,28 @@ paths:
       summary: Create a new request
       operationId: createRequest
       requestBody:
-        $ref: '#/components/requestBodies/RequestCreation'
+        $ref: '#/components/requestBodies/RequestUpsert'
       responses:
         '201':
           description: Request successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Request
+      summary: Update a request
+      operationId: updateRequest
+      requestBody:
+        $ref: '#/components/requestBodies/RequestUpsert'
+      responses:
+        '200':
+          description: Request successfully updated
           content:
             application/json:
               schema:
@@ -149,7 +167,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AdventurerDTO'
-    RequestCreation:
+    RequestUpsert:
       description: The new request to create
       content:
         application/json:

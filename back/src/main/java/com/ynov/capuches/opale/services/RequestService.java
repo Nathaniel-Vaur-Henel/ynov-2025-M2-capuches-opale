@@ -7,6 +7,8 @@ import com.ynov.capuches.opale.repositories.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.ynov.capuches.opale.mappers.RequestMapper.*;
+
 @Service
 public class RequestService {
 
@@ -22,5 +24,23 @@ public class RequestService {
         Request requestEntity = requestMapper.toEntity(requestDTO);
         Request savedRequest = this.requestRepository.save(requestEntity);
         return requestMapper.toDTO(savedRequest);
+    }
+
+    public RequestDTO updateRequest(RequestDTO requestDTO) {
+        Request existingRequest = requestRepository.findById(requestDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Request not found"));
+
+        requestDTO.setTitle(requestDTO.getTitle() != null ? requestDTO.getTitle() : existingRequest.getTitle());
+        requestDTO.setBacker(requestDTO.getBacker() != null ? requestDTO.getBacker() : existingRequest.getBacker());
+        requestDTO.setDueDate(requestDTO.getDueDate() != null ? requestDTO.getDueDate() : existingRequest.getDueDate());
+        requestDTO.setBounty(requestDTO.getBounty() != null ? requestDTO.getBounty() : existingRequest.getBounty().floatValue());
+        requestDTO.setStatus(requestDTO.getStatus() != null ? requestDTO.getStatus() : requestMapper.mapStatusEnum(existingRequest.getStatus()));
+        requestDTO.setDescription(requestDTO.getDescription() != null ? requestDTO.getDescription() : existingRequest.getDescription());
+
+        Request requestToUpdate = requestMapper.toEntity(requestDTO);
+        Request updatedRequest = requestRepository.save(requestToUpdate);
+
+        return requestMapper.toDTO(updatedRequest);
+
     }
 }
