@@ -8,21 +8,14 @@ import AdventurersFilters from "../components/ui/AdventurersFilters";
 const theme = createTheme();
 
 // Fonction pour rendre le composant avec le ThemeProvider et MemoryRouter
-const renderFilters = (
-	archetypes = ["Guerrier", "Mage", "Assassin"],
-	count = 10
-) =>
-	render(
-		<MemoryRouter>
-			<ThemeProvider theme={theme}>
-				<AdventurersFilters
-					archetypes={archetypes}
-					count={count}
-					refetch={() => {}}
-				/>
-			</ThemeProvider>
-		</MemoryRouter>
-	);
+const renderFilters = (archetypes = ["Guerrier", "Mage", "Assassin"], count = 10) =>
+    render(
+        <MemoryRouter>
+            <ThemeProvider theme={theme}>
+                <AdventurersFilters archetypes={archetypes} count={count} refetch={() => {}} />
+            </ThemeProvider>
+        </MemoryRouter>
+    );
 
 describe("AdventurersFilters Component", () => {
 	beforeEach(() => {
