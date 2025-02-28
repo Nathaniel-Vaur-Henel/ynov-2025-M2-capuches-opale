@@ -8,7 +8,11 @@ import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.repositories.RequestRepository;
 import org.springframework.stereotype.Service;
 import static com.ynov.capuches.opale.mappers.RequestMapper.*;
+
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -46,10 +50,37 @@ public class RequestService {
         return requestMapper.toDTO(updatedRequest);
 
     }
-    
-    public List<RequestDTO> getAllRequests() {
-        return requestRepository.findAll()
-                .stream()
+
+    public List<RequestDTO> getAllRequests(String statusFilter, String backerFilter, LocalDate dueDateFilter, Float bountyFilter) {
+        List<Request> requests = requestRepository.findAll();
+
+
+        if (statusFilter != null) {
+            Status statusEnum = Status.valueOf(statusFilter.toUpperCase());
+            requests = requests.stream()
+                    .filter(request -> request.getStatus() == statusEnum)
+                    .toList();
+        }
+
+        if (backerFilter != null) {
+            requests = requests.stream()
+                    .filter(request -> request.getBacker().equalsIgnoreCase(backerFilter))
+                    .toList();
+        }
+
+        if (dueDateFilter != null) {
+            requests = requests.stream()
+                    .filter(request -> request.getDueDate().equals(dueDateFilter))
+                    .toList();
+        }
+
+        if (bountyFilter != null) {
+            requests = requests.stream()
+                    .filter(request -> request.getBounty().floatValue() == bountyFilter)
+                    .toList();
+        }
+
+        return requests.stream()
                 .map(requestMapper::toDTO)
                 .toList();
     }
