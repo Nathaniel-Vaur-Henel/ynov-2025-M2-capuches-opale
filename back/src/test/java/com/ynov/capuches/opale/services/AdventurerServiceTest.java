@@ -2,6 +2,7 @@ package com.ynov.capuches.opale.services;
 
 import com.ynov.capuches.opale.entities.Adventurer;
 import com.ynov.capuches.opale.enums.Archetype;
+import com.ynov.capuches.opale.exceptions.NotFoundException;
 import com.ynov.capuches.opale.mappers.AdventurerMapper;
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerDTO;
@@ -149,7 +150,7 @@ public class AdventurerServiceTest {
 
         given(adventurerRepository.findById(id)).willReturn(Optional.empty());
 
-        Exception exception = assertThrows(RuntimeException.class, () -> adventurerService.updateAdventurer(id, updateDTO));
+        Exception exception = assertThrows(NotFoundException.class, () -> adventurerService.updateAdventurer(id, updateDTO));
         assertEquals("Adventurer not found", exception.getMessage());
 
         verify(adventurerRepository, never()).save(any());

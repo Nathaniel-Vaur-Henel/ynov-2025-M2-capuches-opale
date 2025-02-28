@@ -1,6 +1,7 @@
 package com.ynov.capuches.opale.controllers;
 
 
+import com.ynov.capuches.opale.exceptions.NotFoundException;
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerDTO;
 import com.ynov.capuches.opale.model.AdventurerUpdateDTO;
@@ -46,8 +47,10 @@ public class AdventurerController implements AdventurerApiDelegate {
         try {
             return new ResponseEntity<>(adventurerService.updateAdventurer(id, adventurerUpdateDTO), HttpStatus.OK);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            if (e instanceof NotFoundException) {
+                log.error(e.getMessage(), e);
+            }
+            return null;
         }
-        return null;
     }
 }
