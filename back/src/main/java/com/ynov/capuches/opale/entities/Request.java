@@ -4,6 +4,7 @@ import com.ynov.capuches.opale.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -19,7 +20,7 @@ public class Request {
 
     private String title;
     private String description;
-    private Double bounty = 0.0;
+    private BigDecimal bounty = new BigDecimal(0);
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDING;
