@@ -1,9 +1,11 @@
 package com.ynov.capuches.opale.services;
 
 import com.ynov.capuches.opale.entities.Adventurer;
+import com.ynov.capuches.opale.exceptions.NotFoundException;
 import com.ynov.capuches.opale.mappers.AdventurerMapper;
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerDTO;
+import com.ynov.capuches.opale.model.AdventurerUpdateDTO;
 import com.ynov.capuches.opale.repositories.AdventurerRepository;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +38,28 @@ public class AdventurerService {
     public AdventurerDTO getOneAdventurer(Long adventurerId) {
         Optional<AdventurerDTO> optionnalAdventurerDto = this.adventurerRepository.findById(adventurerId).map(adventurerMapper::entityToAdventurerDTO);
         return optionnalAdventurerDto.orElse(null);
+    }
+
+    public AdventurerDTO updateAdventurer(Long id, AdventurerUpdateDTO adventurerUpdateDTO) {
+        Adventurer adventurer = adventurerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Adventurer not found"));
+
+        Adventurer adventurerUpdate = adventurerMapper.adventurerUpdateDTOToEntity(adventurerUpdateDTO);
+
+        if (adventurerUpdate.getName() != null) {
+            adventurer.setName(adventurerUpdate.getName());
+        }
+
+        if (adventurerUpdate.getExperience() != null) {
+            adventurer.setExperience(adventurerUpdate.getExperience());
+        }
+
+        if (adventurerUpdate.getArchetype() != null) {
+            adventurer.setArchetype(adventurerUpdate.getArchetype());
+        }
+
+        adventurerRepository.save(adventurer);
+
+        return adventurerMapper.entityToAdventurerDTO(adventurer);
     }
 }
