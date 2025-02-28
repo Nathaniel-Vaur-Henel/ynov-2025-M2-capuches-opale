@@ -30,3 +30,4 @@ dist
 dist-ssr
 *.local
 /front/test-results.json
+.DS_Store

@@ -9,6 +9,7 @@ import LazyWrapper from "./components/ui/LazyWrapper";
 const Home = lazy(() => import("./components/pages/Home"));
 const Adventurers = lazy(() => import("./components/pages/Adventurers"));
 const CreateAdventurerPage = lazy(() => import("./components/pages/createAdventurerPage"));
+const CreateRequestPage = lazy(() => import("./components/pages/CreateRequestPage.tsx"));
 
 export const router = createBrowserRouter([
 	{
@@ -44,6 +45,14 @@ export const router = createBrowserRouter([
 				element: (
 					<LazyWrapper>
 						<Requests />
+					</LazyWrapper>
+				),
+			},
+			{
+				path: "requetes/creer",
+				element: (
+					<LazyWrapper>
+						<CreateRequestPage />
 					</LazyWrapper>
 				),
 			},
