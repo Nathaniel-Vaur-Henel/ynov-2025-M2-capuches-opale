@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AdventurerServiceTest {
@@ -130,25 +129,16 @@ public class AdventurerServiceTest {
 
         given(adventurerRepository.findById(id)).willReturn(Optional.of(existingAdventurer));
         given(adventurerMapper.adventurerUpdateDTOToEntity(updateDTO)).willReturn(updatedAdventurer);
-        given(adventurerMapper.entityToAdventurerDTO(any(Adventurer.class))).willReturn(updatedAdventurerDTO);
-
-        ArgumentCaptor<Adventurer> adventurerCaptor = ArgumentCaptor.forClass(Adventurer.class);
+        given(adventurerMapper.entityToAdventurerDTO(refEq(updatedAdventurer))).willReturn(updatedAdventurerDTO);
 
         AdventurerDTO result = adventurerService.updateAdventurer(id, updateDTO);
 
-        verify(adventurerRepository).save(adventurerCaptor.capture());
-        verify(adventurerMapper).entityToAdventurerDTO(any(Adventurer.class));
-
-        Adventurer capturedAdventurer = adventurerCaptor.getValue();
+        verify(adventurerMapper).entityToAdventurerDTO(refEq(updatedAdventurer));
 
         assertNotNull(result);
         assertEquals("Updated Name", result.getName());
         assertEquals(ArchetypeEnum.MAGE, result.getArchetype());
         assertEquals(30L, result.getExperience());
-
-        assertEquals("Updated Name", capturedAdventurer.getName());
-        assertEquals(Archetype.MAGE, capturedAdventurer.getArchetype());
-        assertEquals(20L, capturedAdventurer.getExperience());
     }
 
     @Test

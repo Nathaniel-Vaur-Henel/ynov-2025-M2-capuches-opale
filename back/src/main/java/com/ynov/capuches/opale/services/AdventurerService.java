@@ -1,6 +1,7 @@
 package com.ynov.capuches.opale.services;
 
 import com.ynov.capuches.opale.entities.Adventurer;
+import com.ynov.capuches.opale.exceptions.NotFoundException;
 import com.ynov.capuches.opale.mappers.AdventurerMapper;
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerDTO;
@@ -41,7 +42,7 @@ public class AdventurerService {
 
     public AdventurerDTO updateAdventurer(Long id, AdventurerUpdateDTO adventurerUpdateDTO) {
         Adventurer adventurer = adventurerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Adventurer not found"));
+                .orElseThrow(() -> new NotFoundException("Adventurer not found"));
 
         Adventurer adventurerUpdate = adventurerMapper.adventurerUpdateDTOToEntity(adventurerUpdateDTO);
 
