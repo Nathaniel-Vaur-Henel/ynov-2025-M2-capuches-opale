@@ -69,7 +69,30 @@ public class RequestServiceTest {
         given(requestRepository.findAll()).willReturn(List.of(request));
         given(requestMapper.toDTO(request)).willReturn(requestDTO);
 
-        assertEquals(1, this.requestService.getAllRequests().size());
+        assertEquals(1, this.requestService.getAllRequests(null, null, null,null).size());
+    }
+
+    @Test
+    public void getRequestsFiltered() {
+        RequestDTO requestDTO = new RequestDTO();
+        requestDTO.setBacker("string");
+        requestDTO.setDescription("string");
+        requestDTO.setId(1L);
+        requestDTO.setDueDate(LocalDate.parse("2025-05-05"));
+        requestDTO.setTitle("string");
+        requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
+        requestDTO.setBounty(BigDecimal.ZERO);
+
+        Request request = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING, LocalDate.parse("2025-05-05") ,"string");
+        given(requestRepository.findAll()).willReturn(List.of(request));
+        given(requestMapper.toDTO(request)).willReturn(requestDTO);
+
+        assertEquals(1, this.requestService.getAllRequests("PENDING", null, null,null).size());
+        assertEquals(1, this.requestService.getAllRequests(null, "string", null,null).size());
+        assertEquals(1, this.requestService.getAllRequests(null, null, LocalDate.parse("2025-05-05"),null).size());
+        assertEquals(1, this.requestService.getAllRequests(null, null, null,BigDecimal.ZERO).size());
+        assertEquals(1, this.requestService.getAllRequests("PENDING", "string", LocalDate.parse("2025-05-05"),BigDecimal.ZERO).size());
+        assertEquals(0, this.requestService.getAllRequests("VALIDATED", null, null, null).size());
     }
     
     @Test
