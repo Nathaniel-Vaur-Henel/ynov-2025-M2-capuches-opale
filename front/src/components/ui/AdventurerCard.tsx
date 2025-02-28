@@ -1,12 +1,12 @@
 import {
 	SportsMartialArts as ArcherIcon,
 	Bolt as AssassinIcon,
-	EuroSymbol as EuroIcon,
 	AutoFixHigh as MageIcon,
 	Diversity3 as PaladinIcon,
 	Shield as ShieldIcon,
 	Star as StarIcon,
-	AccessTime as TimeIcon,
+	Edit as EditIcon,
+	Visibility as ViewIcon,
 } from "@mui/icons-material";
 import {
 	alpha,
@@ -19,15 +19,17 @@ import {
 	CardHeader,
 	Chip,
 	Divider,
-	LinearProgress,
-	linearProgressClasses,
 	Stack,
 	styled,
 	Typography,
+	IconButton,
+	Tooltip,
 } from "@mui/material";
 import { Archetype } from "../../utils/enum"; 
+import { Link } from "react-router-dom";
 
 interface AdventurerCardProps {
+	id: number;
 	name: string;
 	experience: number;
 	archetype: Archetype | string;
@@ -112,18 +114,6 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
 	marginRight: theme.spacing(2),
 }));
 
-const StyledProgress = styled(LinearProgress)(({ theme }) => ({
-	height: 6,
-	borderRadius: 3,
-	[`&.${linearProgressClasses.colorPrimary}`]: {
-		backgroundColor: alpha(theme.palette.primary.main, 0.15),
-	},
-	[`& .${linearProgressClasses.bar}`]: {
-		borderRadius: 3,
-		background: "linear-gradient(90deg, #818cf8 0%, #6366f1 100%)",
-	},
-}));
-
 const archetypeDisplayNames: Record<Archetype, string> = {
 	[Archetype.WARRIOR]: "Guerrier",
 	[Archetype.PALADIN]: "Paladin",
@@ -141,6 +131,7 @@ const archetypeDisplayNames: Record<Archetype, string> = {
 };
 
 const AdventurerCard = ({
+	id,
 	name,
 	experience,
 	archetype: archetypeInput,
@@ -148,6 +139,8 @@ const AdventurerCard = ({
 	image,
 }: AdventurerCardProps) => {
 	const archetype = normalizeArchetype(archetypeInput);
+
+	console.log("Id de l'aventurier:", id);
 
 	const getRank = () => {
 		if (experience < 200) return { name: "Novice", color: "#64748b" };
@@ -158,17 +151,6 @@ const AdventurerCard = ({
 	};
 
 	const rank = getRank();
-
-	const getMaxExperience = () => {
-		if (experience < 200) return 200;
-		if (experience < 500) return 500;
-		if (experience < 1000) return 1000;
-		if (experience < 2000) return 2000;
-		return 3000;
-	};
-
-	const maxExperience = getMaxExperience();
-	const experienceProgress = (experience / maxExperience) * 100;
 
 	// Icône en fonction de l'archetype
 	const getArchetypeIcon = (archetype: Archetype) => {
@@ -186,7 +168,6 @@ const AdventurerCard = ({
 			case "Archer":
 				return <ArcherIcon data-testid="ArcherIcon" />;
 			default:
-				// Pour le débogage, tu peux afficher la valeur brute de l'archetype
 				console.log("Archétype non reconnu:", archetype);
 				return <StarIcon data-testid="DefaultIcon" />;
 		}
@@ -249,25 +230,31 @@ const AdventurerCard = ({
 							color="text.secondary"
 							sx={{ fontWeight: 500, display: "block", mb: 0.5 }}
 						>
-							Expérience
+							Expérience <span style={{color: rank.color}}>{experience}</span> pts
 						</Typography>
-						<Stack direction="row" spacing={1} alignItems="center">
-							<StyledProgress
-								variant="determinate"
-								value={experienceProgress}
-								sx={{ flexGrow: 1 }}
-							/>
-							<Typography
-								variant="caption"
-								fontWeight="medium"
-								color={rank.color}
-							>
-								{experience}
-							</Typography>
-						</Stack>
 					</Box>
 				}
 				sx={{ pb: 0 }}
+				action={
+					<Tooltip title="Modifier l'aventurier">
+						<IconButton 
+							component={Link} 
+							to={`/aventuriers/${id}/modifier`}
+							size="small" 
+							sx={{ 
+								backgroundColor: alpha("#4F46E5", 0.1),
+								color: "#4F46E5",
+								"&:hover": {
+									backgroundColor: alpha("#4F46E5", 0.2),
+								},
+								mt: 1,
+								mr: 1
+							}}
+						>
+							<EditIcon fontSize="small" />
+						</IconButton>
+					</Tooltip>
+				}
 			/>
 
 			<CardContent sx={{ pt: 1, flexGrow: 1 }}>
@@ -309,7 +296,6 @@ const AdventurerCard = ({
 							Taux journalier
 						</Typography>
 						<Chip
-							icon={<EuroIcon />}
 							label={`${dailyRate} PO`}
 							size="small"
 							sx={{
@@ -330,7 +316,9 @@ const AdventurerCard = ({
 					fullWidth
 					variant="contained"
 					color="primary"
-					startIcon={<TimeIcon />}
+					startIcon={<ViewIcon />}
+					component={Link}
+					to={`/aventuriers/${id}`}
 					sx={{
 						borderRadius: "10px",
 						padding: "10px",
@@ -360,7 +348,7 @@ const AdventurerCard = ({
 						},
 					}}
 				>
-					Engager
+					Consulter
 				</Button>
 			</CardActions>
 		</StyledCard>
