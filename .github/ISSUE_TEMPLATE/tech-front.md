@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-# Création du composant d’affichage et modification
+# Création du composant d’affichage et/ou modification
 - [ ]  <!-- Décrire les composants graphiques -->  
 
 # Intégration avec l’API Back-end
