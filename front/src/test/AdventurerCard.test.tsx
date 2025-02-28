@@ -8,6 +8,7 @@ const theme = createTheme();
 
 // Définition du type des props attendues par AdventurerCard
 type AdventurerCardProps = {
+    id: number;
     name: string;
     experience: number;
     archetype: string;
@@ -25,6 +26,7 @@ const renderAdventurerCard = (props: AdventurerCardProps) =>
 
 describe("AdventurerCard Component", () => {
     const defaultProps: AdventurerCardProps = {
+        id: 1,
         name: "Test Aventurier",
         experience: 500,
         archetype: "Guerrier",
