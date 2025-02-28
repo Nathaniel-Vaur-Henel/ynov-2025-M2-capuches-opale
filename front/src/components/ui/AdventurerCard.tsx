@@ -25,14 +25,38 @@ import {
 	styled,
 	Typography,
 } from "@mui/material";
+import { Archetype } from "../../utils/enum"; 
 
 interface AdventurerCardProps {
 	name: string;
 	experience: number;
-	archetype: string;
+	archetype: Archetype | string;
 	dailyRate: number;
 	image?: string;
 }
+
+const normalizeArchetype = (archetypeInput: Archetype | string): Archetype => {
+	if (typeof archetypeInput === 'string') {
+	  // Mapping des strings vers les enums
+	  const stringToEnum: Record<string, Archetype> = {
+		"WARRIOR": Archetype.WARRIOR,
+		"HUNTER": Archetype.HUNTER,
+		"ROGUE": Archetype.ROGUE,
+		"PALADIN": Archetype.PALADIN,
+		"MAGE": Archetype.MAGE,
+		"PRIEST": Archetype.PRIEST,
+		"DEATH_KNIGHT": Archetype.DEATH_KNIGHT,
+		"SHAMAN": Archetype.SHAMAN,
+		"WARLOCK": Archetype.WARLOCK,
+		"MONK": Archetype.MONK,
+		"DRUID": Archetype.DRUID,
+		"DEMON_HUNTER": Archetype.DEMON_HUNTER,
+		"EVOKER": Archetype.EVOKER,
+	  };
+	  return stringToEnum[archetypeInput] || Archetype.WARRIOR;
+	}
+	return archetypeInput;
+};
 
 // Styled components
 const StyledCard = styled(Card)(() => ({
@@ -100,26 +124,31 @@ const StyledProgress = styled(LinearProgress)(({ theme }) => ({
 	},
 }));
 
-const mapArchetype = (archetype: string): string => {
-	const archetypeMap: Record<string, string> = {
-		HUNTER: "Archer",
-		WARRIOR: "Guerrier",
-		PALADIN: "Paladin",
-		MAGE: "Mage",
-		ROGUE: "Assassin",
-	};
-
-	return archetypeMap[archetype] || archetype; // Retourne la traduction ou l'original si non trouvé
+const archetypeDisplayNames: Record<Archetype, string> = {
+	[Archetype.WARRIOR]: "Guerrier",
+	[Archetype.PALADIN]: "Paladin",
+	[Archetype.HUNTER]: "Archer",
+	[Archetype.ROGUE]: "Assassin",
+	[Archetype.PRIEST]: "Prêtre",
+	[Archetype.DEATH_KNIGHT]: "Chevalier de la Mort",
+	[Archetype.SHAMAN]: "Chaman",
+	[Archetype.MAGE]: "Mage",
+	[Archetype.WARLOCK]: "Démoniste",
+	[Archetype.MONK]: "Moine",
+	[Archetype.DRUID]: "Druide",
+	[Archetype.DEMON_HUNTER]: "Chasseur de Démons",
+	[Archetype.EVOKER]: "Évocateur",
 };
 
 const AdventurerCard = ({
 	name,
 	experience,
-	archetype,
+	archetype: archetypeInput,
 	dailyRate,
 	image,
 }: AdventurerCardProps) => {
-	// Définir le rang en fonction de l'expérience
+	const archetype = normalizeArchetype(archetypeInput);
+
 	const getRank = () => {
 		if (experience < 200) return { name: "Novice", color: "#64748b" };
 		if (experience < 500) return { name: "Apprenti", color: "#38bdf8" };
@@ -130,7 +159,6 @@ const AdventurerCard = ({
 
 	const rank = getRank();
 
-	// Expérience maximum pour la barre de progression
 	const getMaxExperience = () => {
 		if (experience < 200) return 200;
 		if (experience < 500) return 500;
@@ -143,10 +171,10 @@ const AdventurerCard = ({
 	const experienceProgress = (experience / maxExperience) * 100;
 
 	// Icône en fonction de l'archetype
-	const getArchetypeIcon = (archetype: string) => {
-		const archetypeFr = mapArchetype(archetype);
+	const getArchetypeIcon = (archetype: Archetype) => {
+		const archetypeName = archetypeDisplayNames[archetype];
 		
-		switch (archetypeFr) {
+		switch (archetypeName) {
 			case "Guerrier":
 				return <ShieldIcon data-testid="GuerrierIcon" />;
 			case "Mage":
@@ -158,15 +186,17 @@ const AdventurerCard = ({
 			case "Archer":
 				return <ArcherIcon data-testid="ArcherIcon" />;
 			default:
+				// Pour le débogage, tu peux afficher la valeur brute de l'archetype
+				console.log("Archétype non reconnu:", archetype);
 				return <StarIcon data-testid="DefaultIcon" />;
 		}
-	};	
+	};
 
 	// Couleur en fonction de l'archetype
-	const getArchetypeColor = (archetype: string) => {
-		const archetypeFr = mapArchetype(archetype); // Traduire en français
+	const getArchetypeColor = (archetype: Archetype) => {
+		const archetypeName = archetypeDisplayNames[archetype];
 		
-		switch (archetypeFr) {
+		switch (archetypeName) {
 			case "Guerrier":
 				return "#f97316"; // Orange
 			case "Mage":
@@ -182,8 +212,8 @@ const AdventurerCard = ({
 		}
 	};
 	
-	const archetypeFr = mapArchetype(archetype); 
-	const archetypeIcon = getArchetypeIcon(archetype); 
+	const archetypeName = archetypeDisplayNames[archetype] || "Inconnu";
+	const archetypeIcon = getArchetypeIcon(archetype);
 	const archetypeColor = getArchetypeColor(archetype);
 
 	return (
@@ -255,7 +285,7 @@ const AdventurerCard = ({
 						</Typography>
 						<Chip
 							icon={archetypeIcon}
-							label={archetypeFr}
+							label={archetypeName}
 							size="small"
 							sx={{
 								backgroundColor: alpha(archetypeColor, 0.2),

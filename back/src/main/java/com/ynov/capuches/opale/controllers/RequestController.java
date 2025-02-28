@@ -8,9 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -32,7 +31,7 @@ public class RequestController implements RequestApiDelegate {
             requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
         }
         if (requestDTO.getBounty() == null) {
-            requestDTO.setBounty(0.0f);
+            requestDTO.setBounty(new BigDecimal(0));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
     }
@@ -50,7 +49,7 @@ public class RequestController implements RequestApiDelegate {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
+    
     @Override
     public ResponseEntity<List<RequestDTO>> getRequests(
             String status,

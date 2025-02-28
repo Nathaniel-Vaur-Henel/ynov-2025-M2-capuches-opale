@@ -4,6 +4,8 @@ import com.ynov.capuches.opale.enums.Archetype;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -21,5 +23,5 @@ public class Adventurer {
 
     private Long experience = 0L;
 
-    private Double dailyRate = 0.0;
+    private BigDecimal initialDailyRate = BigDecimal.ZERO;
 }

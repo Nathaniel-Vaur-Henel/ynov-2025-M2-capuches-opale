@@ -1,6 +1,7 @@
 package com.ynov.capuches.opale.controllers;
 
 
+import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerDTO;
 import com.ynov.capuches.opale.openapi.api.AdventurerApiDelegate;
 import com.ynov.capuches.opale.services.AdventurerService;
@@ -19,8 +20,8 @@ public class AdventurerController implements AdventurerApiDelegate {
     }
 
     @Override
-    public ResponseEntity<AdventurerDTO> createAdventurer(AdventurerDTO adventurerDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(adventurerService.createAdventurer(adventurerDTO));
+    public ResponseEntity<AdventurerDTO> createAdventurer(AdventurerCreationDTO adventurerCreationDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(adventurerService.createAdventurer(adventurerCreationDTO));
     }
 
     @Override

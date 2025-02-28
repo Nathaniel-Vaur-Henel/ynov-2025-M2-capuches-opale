@@ -40,7 +40,7 @@ public class RequestService {
         requestDTO.setTitle(requestDTO.getTitle() != null ? requestDTO.getTitle() : existingRequest.getTitle());
         requestDTO.setBacker(requestDTO.getBacker() != null ? requestDTO.getBacker() : existingRequest.getBacker());
         requestDTO.setDueDate(requestDTO.getDueDate() != null ? requestDTO.getDueDate() : existingRequest.getDueDate());
-        requestDTO.setBounty(requestDTO.getBounty() != null ? requestDTO.getBounty() : existingRequest.getBounty().floatValue());
+        requestDTO.setBounty(requestDTO.getBounty() != null ? requestDTO.getBounty() : existingRequest.getBounty());
         requestDTO.setStatus(requestDTO.getStatus() != null ? requestDTO.getStatus() : requestMapper.mapStatusEnum(existingRequest.getStatus()));
         requestDTO.setDescription(requestDTO.getDescription() != null ? requestDTO.getDescription() : existingRequest.getDescription());
 

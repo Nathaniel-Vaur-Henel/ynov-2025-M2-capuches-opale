@@ -1,17 +1,17 @@
 package com.ynov.capuches.opale.enums;
 
 public enum Archetype {
-    WARRIOR,
-    PALADIN,
-    HUNTER,
-    ROGUE,
-    PRIEST,
     DEATH_KNIGHT,
-    SHAMAN,
-    MAGE,
-    WARLOCK,
-    MONK,
-    DRUID,
     DEMON_HUNTER,
-    EVOKER;
+    DRUID,
+    EVOKER,
+    HUNTER,
+    MAGE,
+    MONK,
+    PALADIN,
+    PRIEST,
+    ROGUE,
+    SHAMAN,
+    WARLOCK,
+    WARRIOR
 }
