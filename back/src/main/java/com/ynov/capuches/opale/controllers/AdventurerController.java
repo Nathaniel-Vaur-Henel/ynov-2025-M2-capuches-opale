@@ -3,6 +3,7 @@ package com.ynov.capuches.opale.controllers;
 
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerDTO;
+import com.ynov.capuches.opale.model.AdventurerUpdateDTO;
 import com.ynov.capuches.opale.openapi.api.AdventurerApiDelegate;
 import com.ynov.capuches.opale.services.AdventurerService;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,11 @@ public class AdventurerController implements AdventurerApiDelegate {
     @Override
     public ResponseEntity<List<AdventurerDTO>> getAdventurers() {
         return new ResponseEntity<>(adventurerService.getAllAdventurers(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<AdventurerDTO> updateAdventurer(Long id, AdventurerUpdateDTO adventurerUpdateDTO) {
+        return new ResponseEntity<>(adventurerService.updateAdventurer(id, adventurerUpdateDTO), HttpStatus.OK);
     }
 
 }

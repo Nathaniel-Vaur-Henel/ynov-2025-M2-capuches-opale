@@ -5,13 +5,17 @@ import com.ynov.capuches.opale.enums.Archetype;
 import com.ynov.capuches.opale.mappers.AdventurerMapper;
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerDTO;
+import com.ynov.capuches.opale.model.AdventurerUpdateDTO;
 import com.ynov.capuches.opale.model.ArchetypeEnum;
 import com.ynov.capuches.opale.repositories.AdventurerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import java.math.BigDecimal;
@@ -19,6 +23,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class AdventurerServiceTest {
@@ -102,5 +108,61 @@ public class AdventurerServiceTest {
         given(adventurerRepository.findById(1L)).willReturn(Optional.empty());
         AdventurerDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
         assertNull(adventurerGet);
+    }
+
+    @Test
+    public void canUpdateAdventurer() {
+        Long id = 1L;
+        Adventurer existingAdventurer = new Adventurer(id, "Old Name", Archetype.WARRIOR, 10L, BigDecimal.TEN);
+
+        AdventurerUpdateDTO updateDTO = new AdventurerUpdateDTO();
+        updateDTO.setName("Updated Name");
+        updateDTO.setExperience(20L);
+        updateDTO.setArchetype(ArchetypeEnum.MAGE);
+
+        Adventurer updatedAdventurer = new Adventurer(id, "Updated Name", Archetype.MAGE, 20L, BigDecimal.TEN);
+        AdventurerDTO updatedAdventurerDTO = new AdventurerDTO();
+        updatedAdventurerDTO.setId(id);
+        updatedAdventurerDTO.setName("Updated Name");
+        updatedAdventurerDTO.setArchetype(ArchetypeEnum.MAGE);
+        updatedAdventurerDTO.setExperience(30L);
+        updatedAdventurerDTO.setDailyRate(BigDecimal.TEN);
+
+        given(adventurerRepository.findById(id)).willReturn(Optional.of(existingAdventurer));
+        given(adventurerMapper.adventurerUpdateDTOToEntity(updateDTO)).willReturn(updatedAdventurer);
+        given(adventurerMapper.entityToAdventurerDTO(any(Adventurer.class))).willReturn(updatedAdventurerDTO);
+
+        ArgumentCaptor<Adventurer> adventurerCaptor = ArgumentCaptor.forClass(Adventurer.class);
+
+        AdventurerDTO result = adventurerService.updateAdventurer(id, updateDTO);
+
+        verify(adventurerRepository).save(adventurerCaptor.capture());
+        verify(adventurerMapper).entityToAdventurerDTO(any(Adventurer.class));
+
+        Adventurer capturedAdventurer = adventurerCaptor.getValue();
+
+        assertNotNull(result);
+        assertEquals("Updated Name", result.getName());
+        assertEquals(ArchetypeEnum.MAGE, result.getArchetype());
+        assertEquals(30L, result.getExperience());
+
+        assertEquals("Updated Name", capturedAdventurer.getName());
+        assertEquals(Archetype.MAGE, capturedAdventurer.getArchetype());
+        assertEquals(20L, capturedAdventurer.getExperience());
+    }
+
+    @Test
+    public void updateAdventurer_ShouldThrowException_WhenNotFound() {
+        Long id = 99L;
+        AdventurerUpdateDTO updateDTO = new AdventurerUpdateDTO();
+        updateDTO.setName("New Name");
+
+        given(adventurerRepository.findById(id)).willReturn(Optional.empty());
+
+        Exception exception = assertThrows(RuntimeException.class, () -> adventurerService.updateAdventurer(id, updateDTO));
+        assertEquals("Adventurer not found", exception.getMessage());
+
+        verify(adventurerRepository, never()).save(any());
+        verify(adventurerMapper, never()).entityToAdventurerDTO(any());
     }
 }

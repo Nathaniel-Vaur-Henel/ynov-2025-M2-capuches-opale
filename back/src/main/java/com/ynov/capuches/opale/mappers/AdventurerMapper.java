@@ -2,6 +2,7 @@ package com.ynov.capuches.opale.mappers;
 import com.ynov.capuches.opale.entities.Adventurer;
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerDTO;
+import com.ynov.capuches.opale.model.AdventurerUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,4 +14,6 @@ public interface AdventurerMapper {
 
     @Mapping(target = "experience", constant = "0L")
     Adventurer adventurerCreationDTOToEntity(AdventurerCreationDTO dto);
+
+    Adventurer adventurerUpdateDTOToEntity(AdventurerUpdateDTO dto);
 }
