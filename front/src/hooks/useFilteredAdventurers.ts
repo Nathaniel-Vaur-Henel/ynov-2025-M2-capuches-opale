@@ -1,15 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { fetchData } from "../api/api.ts";
-
-interface Adventurer {
-	id: number;
-	name: string;
-	experience: number;
-	archetype: string;
-	dailyRate: number;
-	image?: string;
-}
+import Adventurer from "../types/Adventurer.ts";
 
 async function fetchAdventurers(): Promise<Adventurer[]> {
 	return fetchData<Adventurer[]>("/adventurer");

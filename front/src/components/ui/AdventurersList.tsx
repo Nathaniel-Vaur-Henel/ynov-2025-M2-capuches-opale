@@ -11,33 +11,43 @@ import {
 	useMediaQuery,
 	useTheme,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Adventurer } from "../../hooks/useFilteredAdventurers";
+import Adventurer from "../../types/Adventurer";
 import AdventurerCard from "./AdventurerCard";
-import { useEffect } from "react";
 
-interface AdventurersListProps {
-	adventurers: Adventurer[];
-	isLoading: boolean;
-	isError: boolean;
-	error: Error | null;
-	refetch: () => void;
-}
-
-export default function AdventurersList({
-	adventurers,
-	isLoading,
-	isError,
-	error,
-	refetch,
-}: AdventurersListProps) {
+export default function AdventurersList() {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-	useEffect(() => {
-		console.log("AdventurersList rendered");
-		console.log("adventurers", adventurers);
-	}, [adventurers]);
+	const {
+		data: adventurers,
+		refetch: refetch,
+		isLoading,
+		isError,
+		error,
+	} = useQuery({
+		queryKey: ["adventurers"],
+		queryFn: async () => {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_URL}/adventurer`,
+				{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+			}
+
+			return response.json();
+		},
+		staleTime: 1000 * 60 * 5,
+		retry: 2,
+	});
 
 	// Animation variants
 	const containerVariants = {
@@ -90,7 +100,7 @@ export default function AdventurersList({
 					<Button
 						color="inherit"
 						size="small"
-						onClick={refetch}
+						onClick={() => refetch()}
 						startIcon={<RefreshIcon />}
 					>
 						Réessayer
@@ -135,15 +145,14 @@ export default function AdventurersList({
 				animate="visible"
 			>
 				<Grid container spacing={isMobile ? 2 : 3} sx={{ mt: 1 }}>
-					{adventurers.map((adventurer) => (
+					{adventurers.map((adventurer: Adventurer) => (
 						<Grid item xs={12} sm={6} md={4} lg={3} key={adventurer.id}>
 							<motion.div variants={itemVariants}>
 								<AdventurerCard
 									name={adventurer.name}
-									archetype={adventurer.archetype}
 									experience={adventurer.experience}
+									archetype={adventurer.archetype}
 									dailyRate={adventurer.dailyRate}
-									image={adventurer.image}
 								/>
 							</motion.div>
 						</Grid>

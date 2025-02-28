@@ -1,41 +1,20 @@
 import {
+	alpha,
 	Box,
+	Button,
 	Container,
-  Button,
 	Paper,
 	Typography,
 	useTheme,
-	alpha,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useFilteredAdventurers } from "../../hooks/useFilteredAdventurers";
-import { useAdventurers } from "../../hooks/useAdventurers";
 import AdventurersFilters from "../ui/AdventurersFilters";
 import AdventurersList from "../ui/AdventurersList";
 
 export default function Adventurers() {
 	const theme = useTheme();
-	const { adventurers, archetypes, isLoading, isError, error, refetch } = useFilteredAdventurers();
-	const { data: adventurersData, refetch: refetchAdventurers } = useAdventurers();
-
-	// Variants pour les animations
-	const pageVariants = {
-		initial: { opacity: 0, y: 20 },
-		animate: {
-			opacity: 1,
-			y: 0,
-			transition: {
-				duration: 0.5,
-				ease: "easeOut",
-				staggerChildren: 0.1,
-			},
-		},
-	};
-
-	const itemVariants = {
-		initial: { opacity: 0, y: 10 },
-		animate: { opacity: 1, y: 0 },
-	};
+	const { adventurers, archetypes, refetch } = useFilteredAdventurers();
 
 	return (
 		<Box
@@ -46,7 +25,6 @@ export default function Adventurers() {
 				overflow: "hidden",
 			}}
 		>
-			{/* Fond d'ambiance subtil */}
 			<Box
 				sx={{
 					position: "absolute",
@@ -65,60 +43,55 @@ export default function Adventurers() {
 					zIndex: -1,
 				}}
 			/>
-  
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          m: 2,
-          zIndex: 10,
-        }}
-        href="aventuriers/creer"
-      >
-        Créer un aventurier
-      </Button>
-
-
 
 			<Container maxWidth="xl" sx={{ px: { xs: 2, md: 3, lg: 4 } }}>
-				<motion.div initial="initial" animate="animate" variants={pageVariants}>
-					<motion.div variants={itemVariants}>
-						<Box className="mb-6">
-							<Typography
-								variant="h3"
-								component="h1"
-								align="left"
-								gutterBottom
-								sx={{
-									background: `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
-									WebkitBackgroundClip: "text",
-									WebkitTextFillColor: "transparent",
-									fontWeight: 800,
-									marginBottom: 1,
-									textShadow: `0 4px 12px ${alpha(
-										theme.palette.common.black,
-										0.2
-									)}`,
-								}}
-							>
-								Les Aventuriers de la Guilde
-							</Typography>
-							<Typography
-								variant="subtitle1"
-								align="left"
-								className="text-slate-300 max-w-3xl leading-relaxed mb-4"
-							>
-								Découvrez notre sélection d'aventuriers d'élite, prêts à relever
-								tous les défis. Des novices pleins de potentiel aux légendes
-								vivantes, trouvez le compagnon idéal pour votre quête !
-							</Typography>
+				<motion.div>
+					<motion.div>
+						<Box className="mb-6 flex justify-between items-center">
+							<div className="flex flex-col gap-4">
+								<Typography
+									variant="h3"
+									component="h1"
+									align="left"
+									gutterBottom
+									sx={{
+										background: `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+										WebkitBackgroundClip: "text",
+										WebkitTextFillColor: "transparent",
+										fontWeight: 800,
+										marginBottom: 1,
+										textShadow: `0 4px 12px ${alpha(
+											theme.palette.common.black,
+											0.2
+										)}`,
+									}}
+								>
+									Les Aventuriers de la Guilde
+								</Typography>
+								<Typography
+									variant="subtitle1"
+									align="left"
+									className="text-slate-300 max-w-3xl leading-relaxed mb-4"
+								>
+									Découvrez notre sélection d'aventuriers d'élite, prêts à
+									relever tous les défis. Des novices pleins de potentiel aux
+									légendes vivantes, trouvez le compagnon idéal pour votre quête
+									!
+								</Typography>
+							</div>
+							<div className="flex justify-end items-end">
+								<Button
+									variant="contained"
+									color="primary"
+									href="aventuriers/creer"
+								>
+									Créer un aventurier
+								</Button>
+							</div>
 						</Box>
 					</motion.div>
 
-					<motion.div variants={itemVariants}>
+					<motion.div>
 						<Paper
 							elevation={0}
 							sx={{
@@ -144,13 +117,7 @@ export default function Adventurers() {
 							/>
 
 							{/* Composant de liste qui affiche les aventuriers filtrés */}
-							<AdventurersList
-								adventurers={adventurersData || []}
-								isLoading={isLoading}
-								isError={isError}
-								error={error}
-								refetch={refetchAdventurers}
-							/>
+							<AdventurersList />
 						</Paper>
 					</motion.div>
 				</motion.div>
