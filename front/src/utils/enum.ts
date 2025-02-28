@@ -1,0 +1,15 @@
+export enum Archetype {
+    WARRIOR = "GUERRIER",
+    PALADIN = "PALADIN",
+    HUNTER = "CHASSEUR",
+    ROGUE = "VOLEUR",
+    PRIEST = "PRÊTRE",
+    DEATH_KNIGHT = "CHEVALIER DE LA MORT",
+    SHAMAN = "CHAMAN",
+    MAGE = "MAGE",
+    WARLOCK = "DÉMONISTE",
+    MONK = "MOINE",
+    DRUID = "DRUIDE",
+    DEMON_HUNTER = "CHASSEUR DE DÉMONS",
+    EVOKER = "ÉVOCATEUR",
+  }

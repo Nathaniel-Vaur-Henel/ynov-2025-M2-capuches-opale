@@ -1,85 +1,79 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, UseMutationResult } from "@tanstack/react-query";
+import { fetchData, postData, putData, deleteData } from "../api/api.ts";
 
-interface Adventurer {
-	id: number;
-	name: string;
-	experience: number;
-	archetype: string;
-	dailyRate: number;
-	image?: string;
+// 🔹 Définition du type des aventuriers
+export interface Adventurer {
+    id: number;
+    name: string;
+    experience: number;
+    archetype: string;
+    dailyRate: number;
+    image?: string;
 }
 
+// 🔹 Fonctions d'appel API
 async function fetchAdventurers(): Promise<Adventurer[]> {
-	// Simuler une requête API - à remplacer par un vrai appel fetch plus tard
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			resolve([
-				{
-					id: 1,
-					name: "Eldon le Brave",
-					experience: 120,
-					archetype: "Guerrier",
-					dailyRate: 50,
-				},
-				{
-					id: 2,
-					name: "Lysara l'Érudite",
-					experience: 450,
-					archetype: "Mage",
-					dailyRate: 75,
-				},
-				{
-					id: 3,
-					name: "Dorian l'Ombre",
-					experience: 900,
-					archetype: "Assassin",
-					dailyRate: 100,
-				},
-				{
-					id: 4,
-					name: "Seraphine la Juste",
-					experience: 1800,
-					archetype: "Paladin",
-					dailyRate: 125,
-				},
-				{
-					id: 5,
-					name: "Kael l'Œil Vif",
-					experience: 2500,
-					archetype: "Archer",
-					dailyRate: 150,
-				},
-				{
-					id: 6,
-					name: "Thorian Marteau-Ardent",
-					experience: 350,
-					archetype: "Guerrier",
-					dailyRate: 60,
-				},
-				{
-					id: 7,
-					name: "Elysia Voile-Céleste",
-					experience: 1200,
-					archetype: "Mage",
-					dailyRate: 110,
-				},
-				{
-					id: 8,
-					name: "Vex Ombre-Lame",
-					experience: 800,
-					archetype: "Assassin",
-					dailyRate: 90,
-				},
-			]);
-		}, 1000);
-	});
+    return fetchData<Adventurer[]>("/adventurer");
 }
 
+async function fetchAdventurer(id: number): Promise<Adventurer> {
+    return fetchData<Adventurer>(`/adventurer/${id}`);
+}
+
+async function createAdventurer(adventurer: Omit<Adventurer, "id">): Promise<Adventurer> {
+    return postData<Omit<Adventurer, "id">, Adventurer>("/adventurer", adventurer);
+}
+
+async function updateAdventurer(adventurer: Adventurer): Promise<Adventurer> {
+    return putData<Adventurer>(`/adventurer/${adventurer.id}`, adventurer);
+}
+
+async function deleteAdventurer(id: number): Promise<void> {
+    return deleteData(`/adventurer/${id}`); // ✅ Suppression du <void>
+}
+
+// 🔹 Hooks pour interagir avec l'API
+
+/** 🔍 Récupère la liste de tous les aventuriers */
 export function useAdventurers() {
-	return useQuery({
-		queryKey: ["adventurers"],
-		queryFn: fetchAdventurers,
-	});
+    return useQuery<Adventurer[]>({
+        queryKey: ["adventurers"],
+        queryFn: fetchAdventurers,
+        staleTime: 1000 * 60 * 5, 
+        retry: 2, 
+    });
 }
 
-export type { Adventurer };
+/** 🔍 Récupère un aventurier spécifique par ID */
+export function useAdventurer(id?: number) {
+    return useQuery<Adventurer>({
+        queryKey: ["adventurer", id],
+        queryFn: () => {
+            if (id === undefined) throw new Error("L'ID de l'aventurier est requis");
+            return fetchAdventurer(id);
+        },
+        enabled: id !== undefined, 
+        retry: 1, 
+    });
+}
+
+/** ➕ Crée un nouvel aventurier */
+export function useCreateAdventurer(): UseMutationResult<Adventurer, Error, Omit<Adventurer, "id">> {
+    return useMutation({
+        mutationFn: createAdventurer,
+    });
+}
+
+/** ✏️ Met à jour un aventurier */
+export function useUpdateAdventurer(): UseMutationResult<Adventurer, Error, Adventurer> {
+    return useMutation({
+        mutationFn: updateAdventurer,
+    });
+}
+
+/** ❌ Supprime un aventurier */
+export function useDeleteAdventurer(): UseMutationResult<void, Error, number> {
+    return useMutation({
+        mutationFn: deleteAdventurer,
+    });
+}

@@ -1,11 +1,11 @@
 import {
 	ArrowDownward as ArrowDownIcon,
 	ArrowUpward as ArrowUpIcon,
+	CalendarToday as CalendarIcon,
 	ClearAll as ClearAllIcon,
-	EuroSymbol as EuroIcon,
 	FilterList as FilterIcon,
+	AttachMoney as MoneyIcon,
 	Search as SearchIcon,
-	Star as StarIcon,
 } from "@mui/icons-material";
 import {
 	Box,
@@ -18,26 +18,44 @@ import {
 	Select,
 	Stack,
 	TextField,
-	Typography,
 	alpha,
 	useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-type SortField = "experience" | "dailyRate" | "";
+type SortField = "bounty" | "dueDate" | "";
 type SortDirection = "asc" | "desc";
 
-interface AdventurersFiltersProps {
-	archetypes: string[];
+interface RequestsFiltersProps {
+	statuses: string[];
 	count: number;
-	refetch: () => void;
 }
 
-export default function AdventurersFilters({
-	archetypes,
+// Fonction pour traduire les statuts en français
+const translateStatus = (status: string): string => {
+	switch (status) {
+		case "PENDING":
+			return "En attente";
+		case "VALIDATED":
+			return "Validée";
+		case "SUCCESS":
+			return "Réussie";
+		case "FAILURE":
+			return "Échouée";
+		case "REFUSED":
+			return "Refusée";
+		case "ABANDONED":
+			return "Abandonnée";
+		default:
+			return status;
+	}
+};
+
+export default function RequestsFilters({
+	statuses,
 	count,
-}: AdventurersFiltersProps) {
+}: RequestsFiltersProps) {
 	const theme = useTheme();
 	const [searchParams, setSearchParams] = useSearchParams();
 
@@ -48,7 +66,7 @@ export default function AdventurersFilters({
 
 	// Récupération des paramètres d'URL
 	const searchTerm = searchParams.get("search") || "";
-	const selectedArchetype = searchParams.get("archetype") || "";
+	const selectedStatus = searchParams.get("status") || "";
 	const sortField = (searchParams.get("sort") as SortField) || "";
 	const sortDirection =
 		(searchParams.get("direction") as SortDirection) || "desc";
@@ -69,16 +87,16 @@ export default function AdventurersFilters({
 		return () => clearTimeout(timer);
 	}, [searchInputValue, searchParams, searchTerm, setSearchParams]);
 
-	// Fonctions pour mettre à jour les paramètres d'URL (modifiées pour le debounce)
+	// Fonctions pour mettre à jour les paramètres d'URL
 	const updateSearch = (value: string) => {
 		setSearchInputValue(value);
 	};
 
-	const updateArchetype = (value: string) => {
+	const updateStatus = (value: string) => {
 		if (value) {
-			searchParams.set("archetype", value);
+			searchParams.set("status", value);
 		} else {
-			searchParams.delete("archetype");
+			searchParams.delete("status");
 		}
 		setSearchParams(searchParams);
 	};
@@ -101,39 +119,14 @@ export default function AdventurersFilters({
 	};
 
 	return (
-		<Box
-			sx={{
-				p: { xs: 2, sm: 3 },
-				borderRadius: 3,
-				backgroundColor: alpha(theme.palette.background.paper, 0.7),
-				backdropFilter: "blur(10px)",
-				border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-				transition: "all 0.3s ease",
-				mb: 4,
-				"&:hover": {
-					boxShadow: `0 8px 16px ${alpha(theme.palette.common.black, 0.1)}`,
-					transform: "translateY(-2px)",
-				},
-			}}
-		>
+		<Box>
 			<Stack spacing={3}>
-				<Typography
-					variant="h6"
-					sx={{
-						fontWeight: 600,
-						color: theme.palette.primary.light,
-						mb: 1,
-					}}
-				>
-					Filtrer les aventuriers
-				</Typography>
-
-				<Grid container spacing={3}>
-					{/* Barre de recherche avec debounce */}
+				<Grid container spacing={2}>
+					{/* Champ de recherche */}
 					<Grid item xs={12} md={6}>
 						<TextField
 							fullWidth
-							placeholder="Rechercher un aventurier..."
+							placeholder="Rechercher une requête..."
 							value={searchInputValue}
 							onChange={(e) => updateSearch(e.target.value)}
 							InputProps={{
@@ -144,39 +137,31 @@ export default function AdventurersFilters({
 								),
 							}}
 							sx={{
-								"& .MuiOutlinedInput-root": {
-									borderRadius: 2,
-									backgroundColor: alpha(theme.palette.background.default, 0.4),
-									transition: "all 0.2s",
-									"&:hover": {
-										backgroundColor: alpha(
-											theme.palette.background.default,
-											0.6
-										),
-									},
-									"&.Mui-focused": {
-										backgroundColor: alpha(
-											theme.palette.background.default,
-											0.7
-										),
-										borderColor: theme.palette.primary.main,
-										boxShadow: `0 0 0 2px ${alpha(
-											theme.palette.primary.main,
-											0.25
-										)}`,
-									},
+								borderRadius: 2,
+								backgroundColor: alpha(theme.palette.background.default, 0.4),
+								transition: "all 0.2s",
+								"&:hover": {
+									backgroundColor: alpha(theme.palette.background.default, 0.6),
+								},
+								"&.Mui-focused": {
+									backgroundColor: alpha(theme.palette.background.default, 0.7),
+									borderColor: theme.palette.primary.main,
+									boxShadow: `0 0 0 2px ${alpha(
+										theme.palette.primary.main,
+										0.25
+									)}`,
 								},
 							}}
 						/>
 					</Grid>
 
-					{/* Sélecteur d'archétype */}
+					{/* Sélecteur de statut */}
 					<Grid item xs={12} md={6}>
 						<FormControl fullWidth>
 							<Select
 								displayEmpty
-								value={selectedArchetype}
-								onChange={(e) => updateArchetype(e.target.value)}
+								value={selectedStatus}
+								onChange={(e) => updateStatus(e.target.value)}
 								startAdornment={
 									<InputAdornment position="start">
 										<FilterIcon color="primary" />
@@ -205,10 +190,10 @@ export default function AdventurersFilters({
 									},
 								}}
 							>
-								<MenuItem value="">Tous les archétypes</MenuItem>
-								{archetypes.map((archetype) => (
-									<MenuItem key={archetype} value={archetype}>
-										{archetype}
+								<MenuItem value="">Tous les statuts</MenuItem>
+								{statuses.map((status) => (
+									<MenuItem key={status} value={status}>
+										{translateStatus(status)}
 									</MenuItem>
 								))}
 							</Select>
@@ -229,12 +214,12 @@ export default function AdventurersFilters({
 						sx={{ flexGrow: 1, maxWidth: { sm: "60%" } }}
 					>
 						<Button
-							variant={sortField === "experience" ? "contained" : "outlined"}
+							variant={sortField === "bounty" ? "contained" : "outlined"}
 							color="primary"
-							onClick={() => toggleSort("experience")}
-							startIcon={<StarIcon />}
+							onClick={() => toggleSort("bounty")}
+							startIcon={<MoneyIcon />}
 							endIcon={
-								sortField === "experience" &&
+								sortField === "bounty" &&
 								(sortDirection === "asc" ? <ArrowUpIcon /> : <ArrowDownIcon />)
 							}
 							sx={{
@@ -242,7 +227,7 @@ export default function AdventurersFilters({
 								borderRadius: 2,
 								transition: "all 0.2s ease",
 								py: 1,
-								...(sortField !== "experience" && {
+								...(sortField !== "bounty" && {
 									borderColor: alpha(theme.palette.primary.main, 0.3),
 									color: theme.palette.primary.light,
 									"&:hover": {
@@ -252,15 +237,15 @@ export default function AdventurersFilters({
 								}),
 							}}
 						>
-							Expérience
+							Récompense
 						</Button>
 						<Button
-							variant={sortField === "dailyRate" ? "contained" : "outlined"}
+							variant={sortField === "dueDate" ? "contained" : "outlined"}
 							color="primary"
-							onClick={() => toggleSort("dailyRate")}
-							startIcon={<EuroIcon />}
+							onClick={() => toggleSort("dueDate")}
+							startIcon={<CalendarIcon />}
 							endIcon={
-								sortField === "dailyRate" &&
+								sortField === "dueDate" &&
 								(sortDirection === "asc" ? <ArrowUpIcon /> : <ArrowDownIcon />)
 							}
 							sx={{
@@ -268,7 +253,7 @@ export default function AdventurersFilters({
 								borderRadius: 2,
 								transition: "all 0.2s ease",
 								py: 1,
-								...(sortField !== "dailyRate" && {
+								...(sortField !== "dueDate" && {
 									borderColor: alpha(theme.palette.primary.main, 0.3),
 									color: theme.palette.primary.light,
 									"&:hover": {
@@ -278,7 +263,7 @@ export default function AdventurersFilters({
 								}),
 							}}
 						>
-							Tarif
+							Échéance
 						</Button>
 					</Stack>
 
@@ -290,7 +275,7 @@ export default function AdventurersFilters({
 						justifyContent="flex-end"
 						sx={{ flexGrow: 1 }}
 					>
-						{(searchTerm || selectedArchetype || sortField) && (
+						{(searchTerm || selectedStatus || sortField) && (
 							<Button
 								variant="text"
 								startIcon={<ClearAllIcon />}
@@ -308,7 +293,7 @@ export default function AdventurersFilters({
 						)}
 
 						<Chip
-							label={`${count} aventurier${count > 1 ? "s" : ""}`}
+							label={`${count} requête${count > 1 ? "s" : ""}`}
 							variant="filled"
 							sx={{
 								backgroundColor: alpha(theme.palette.primary.main, 0.15),

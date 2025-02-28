@@ -25,14 +25,38 @@ import {
 	styled,
 	Typography,
 } from "@mui/material";
+import { Archetype } from "../../utils/enum"; 
 
 interface AdventurerCardProps {
 	name: string;
 	experience: number;
-	archetype: string;
+	archetype: Archetype | string;
 	dailyRate: number;
 	image?: string;
 }
+
+const normalizeArchetype = (archetypeInput: Archetype | string): Archetype => {
+	if (typeof archetypeInput === 'string') {
+	  // Mapping des strings vers les enums
+	  const stringToEnum: Record<string, Archetype> = {
+		"WARRIOR": Archetype.WARRIOR,
+		"HUNTER": Archetype.HUNTER,
+		"ROGUE": Archetype.ROGUE,
+		"PALADIN": Archetype.PALADIN,
+		"MAGE": Archetype.MAGE,
+		"PRIEST": Archetype.PRIEST,
+		"DEATH_KNIGHT": Archetype.DEATH_KNIGHT,
+		"SHAMAN": Archetype.SHAMAN,
+		"WARLOCK": Archetype.WARLOCK,
+		"MONK": Archetype.MONK,
+		"DRUID": Archetype.DRUID,
+		"DEMON_HUNTER": Archetype.DEMON_HUNTER,
+		"EVOKER": Archetype.EVOKER,
+	  };
+	  return stringToEnum[archetypeInput] || Archetype.WARRIOR;
+	}
+	return archetypeInput;
+};
 
 // Styled components
 const StyledCard = styled(Card)(() => ({
@@ -100,14 +124,31 @@ const StyledProgress = styled(LinearProgress)(({ theme }) => ({
 	},
 }));
 
+const archetypeDisplayNames: Record<Archetype, string> = {
+	[Archetype.WARRIOR]: "Guerrier",
+	[Archetype.PALADIN]: "Paladin",
+	[Archetype.HUNTER]: "Archer",
+	[Archetype.ROGUE]: "Assassin",
+	[Archetype.PRIEST]: "Prêtre",
+	[Archetype.DEATH_KNIGHT]: "Chevalier de la Mort",
+	[Archetype.SHAMAN]: "Chaman",
+	[Archetype.MAGE]: "Mage",
+	[Archetype.WARLOCK]: "Démoniste",
+	[Archetype.MONK]: "Moine",
+	[Archetype.DRUID]: "Druide",
+	[Archetype.DEMON_HUNTER]: "Chasseur de Démons",
+	[Archetype.EVOKER]: "Évocateur",
+};
+
 const AdventurerCard = ({
 	name,
 	experience,
-	archetype,
+	archetype: archetypeInput,
 	dailyRate,
 	image,
 }: AdventurerCardProps) => {
-	// Définir le rang en fonction de l'expérience
+	const archetype = normalizeArchetype(archetypeInput);
+
 	const getRank = () => {
 		if (experience < 200) return { name: "Novice", color: "#64748b" };
 		if (experience < 500) return { name: "Apprenti", color: "#38bdf8" };
@@ -118,7 +159,6 @@ const AdventurerCard = ({
 
 	const rank = getRank();
 
-	// Expérience maximum pour la barre de progression
 	const getMaxExperience = () => {
 		if (experience < 200) return 200;
 		if (experience < 500) return 500;
@@ -131,28 +171,32 @@ const AdventurerCard = ({
 	const experienceProgress = (experience / maxExperience) * 100;
 
 	// Icône en fonction de l'archetype
-	const getArchetypeIcon = () => {
-		switch (archetype) {
+	const getArchetypeIcon = (archetype: Archetype) => {
+		const archetypeName = archetypeDisplayNames[archetype];
+		
+		switch (archetypeName) {
 			case "Guerrier":
-				return <ShieldIcon />;
+				return <ShieldIcon data-testid="GuerrierIcon" />;
 			case "Mage":
-				return <MageIcon />;
+				return <MageIcon data-testid="MageIcon" />;
 			case "Assassin":
-				return <AssassinIcon />;
+				return <AssassinIcon data-testid="AssassinIcon" />;
 			case "Paladin":
-				return <PaladinIcon />;
+				return <PaladinIcon data-testid="PaladinIcon" />;
 			case "Archer":
-				return <ArcherIcon />;
+				return <ArcherIcon data-testid="ArcherIcon" />;
 			default:
-				return <StarIcon />;
+				// Pour le débogage, tu peux afficher la valeur brute de l'archetype
+				console.log("Archétype non reconnu:", archetype);
+				return <StarIcon data-testid="DefaultIcon" />;
 		}
 	};
 
-	const archetypeIcon = getArchetypeIcon();
-
 	// Couleur en fonction de l'archetype
-	const getArchetypeColor = () => {
-		switch (archetype) {
+	const getArchetypeColor = (archetype: Archetype) => {
+		const archetypeName = archetypeDisplayNames[archetype];
+		
+		switch (archetypeName) {
 			case "Guerrier":
 				return "#f97316"; // Orange
 			case "Mage":
@@ -167,8 +211,10 @@ const AdventurerCard = ({
 				return "#6366f1"; // Indigo
 		}
 	};
-
-	const archetypeColor = getArchetypeColor();
+	
+	const archetypeName = archetypeDisplayNames[archetype] || "Inconnu";
+	const archetypeIcon = getArchetypeIcon(archetype);
+	const archetypeColor = getArchetypeColor(archetype);
 
 	return (
 		<StyledCard
@@ -226,18 +272,6 @@ const AdventurerCard = ({
 
 			<CardContent sx={{ pt: 1, flexGrow: 1 }}>
 				<Stack spacing={2}>
-					<Box sx={{ height: 48 }}>
-						<Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-							Qui suis-je
-						</Typography>
-						<Typography variant="body2">
-							{`Un${
-								archetype === "Assassin" ? "" : "e"
-							} ${archetype.toLowerCase()} expérimenté${
-								archetype === "Assassin" ? "" : "e"
-							} à votre service pour toutes vos quêtes.`}
-						</Typography>
-					</Box>
 
 					<Divider sx={{ borderColor: "rgba(255, 255, 255, 0.08)" }} />
 
@@ -251,7 +285,7 @@ const AdventurerCard = ({
 						</Typography>
 						<Chip
 							icon={archetypeIcon}
-							label={archetype}
+							label={archetypeName}
 							size="small"
 							sx={{
 								backgroundColor: alpha(archetypeColor, 0.2),

@@ -1,5 +1,6 @@
 package com.ynov.capuches.opale.controllers;
 
+import com.ynov.capuches.opale.exceptions.NotFoundException;
 import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.openapi.api.RequestApiDelegate;
 import com.ynov.capuches.opale.services.RequestService;
@@ -39,6 +40,20 @@ public class RequestController implements RequestApiDelegate {
         return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
     }
 
+    @Override
+    public ResponseEntity<RequestDTO> updateRequest(RequestDTO requestDTO) {
+        try {
+            if (requestDTO == null || requestDTO.getId() == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(requestService.updateRequest(requestDTO));
+        }
+        catch (NotFoundException e) {
+            log.error(e.getMessage(),e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+    
     @Override
     public ResponseEntity<List<RequestDTO>> getRequests() {
         return new ResponseEntity<>(requestService.getAllRequests(), HttpStatus.OK);

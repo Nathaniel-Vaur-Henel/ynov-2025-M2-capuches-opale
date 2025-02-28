@@ -12,32 +12,26 @@ import {
 	useTheme,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { Adventurer } from "../../hooks/useFilteredAdventurers";
-import AdventurerCard from "./AdventurerCard";
-import { useEffect } from "react";
+import { Request } from "../../hooks/useFilteredRequests";
+import RequestCard from "./RequestCard";
 
-interface AdventurersListProps {
-	adventurers: Adventurer[];
+interface RequestsListProps {
+	requests: Request[];
 	isLoading: boolean;
 	isError: boolean;
 	error: Error | null;
 	refetch: () => void;
 }
 
-export default function AdventurersList({
-	adventurers,
+export default function RequestsList({
+	requests,
 	isLoading,
 	isError,
 	error,
 	refetch,
-}: AdventurersListProps) {
+}: RequestsListProps) {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-	useEffect(() => {
-		console.log("AdventurersList rendered");
-		console.log("adventurers", adventurers);
-	}, [adventurers]);
 
 	// Animation variants
 	const containerVariants = {
@@ -103,12 +97,12 @@ export default function AdventurersList({
 				}}
 			>
 				{error?.message ||
-					"Une erreur est survenue lors du chargement des aventuriers."}
+					"Une erreur est survenue lors du chargement des requêtes."}
 			</Alert>
 		);
 	}
 
-	if (adventurers.length === 0) {
+	if (requests.length === 0) {
 		return (
 			<Stack
 				spacing={2}
@@ -121,7 +115,7 @@ export default function AdventurersList({
 				}}
 			>
 				<Typography variant="h6" color="text.secondary" align="center">
-					Aucun aventurier ne correspond à votre recherche.
+					Aucune requête ne correspond à votre recherche.
 				</Typography>
 			</Stack>
 		);
@@ -135,15 +129,16 @@ export default function AdventurersList({
 				animate="visible"
 			>
 				<Grid container spacing={isMobile ? 2 : 3} sx={{ mt: 1 }}>
-					{adventurers.map((adventurer) => (
-						<Grid item xs={12} sm={6} md={4} lg={3} key={adventurer.id}>
+					{requests.map((request) => (
+						<Grid item xs={12} sm={6} md={4} lg={3} key={request.id}>
 							<motion.div variants={itemVariants}>
-								<AdventurerCard
-									name={adventurer.name}
-									archetype={adventurer.archetype}
-									experience={adventurer.experience}
-									dailyRate={adventurer.dailyRate}
-									image={adventurer.image}
+								<RequestCard
+									title={request.title}
+									description={request.description}
+									bounty={request.bounty}
+									status={request.status}
+									dueDate={request.dueDate}
+									backer={request.backer}
 								/>
 							</motion.div>
 						</Grid>
