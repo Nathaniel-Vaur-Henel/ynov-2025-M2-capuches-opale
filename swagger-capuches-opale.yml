@@ -154,7 +154,7 @@ paths:
           name: bountyFilter
           schema:
             type: number
-            format: float
+            format: double
     post:
       tags:
         - Request

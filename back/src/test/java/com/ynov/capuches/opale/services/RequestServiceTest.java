@@ -90,8 +90,9 @@ public class RequestServiceTest {
         assertEquals(1, this.requestService.getAllRequests("PENDING", null, null,null).size());
         assertEquals(1, this.requestService.getAllRequests(null, "string", null,null).size());
         assertEquals(1, this.requestService.getAllRequests(null, null, LocalDate.parse("2025-05-05"),null).size());
-        assertEquals(1, this.requestService.getAllRequests(null, null, null,0.0f).size());
-        assertEquals(1, this.requestService.getAllRequests("PENDING", "string", LocalDate.parse("2025-05-05"),0.0f).size());
+        assertEquals(1, this.requestService.getAllRequests(null, null, null,BigDecimal.ZERO).size());
+        assertEquals(1, this.requestService.getAllRequests("PENDING", "string", LocalDate.parse("2025-05-05"),BigDecimal.ZERO).size());
+        assertEquals(0, this.requestService.getAllRequests("VALIDATED", null, null, null).size());
     }
     
     @Test

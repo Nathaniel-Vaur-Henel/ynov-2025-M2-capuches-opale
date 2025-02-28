@@ -9,6 +9,7 @@ import com.ynov.capuches.opale.repositories.RequestRepository;
 import org.springframework.stereotype.Service;
 import static com.ynov.capuches.opale.mappers.RequestMapper.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -51,7 +52,7 @@ public class RequestService {
 
     }
 
-    public List<RequestDTO> getAllRequests(String statusFilter, String backerFilter, LocalDate dueDateFilter, Float bountyFilter) {
+    public List<RequestDTO> getAllRequests(String statusFilter, String backerFilter, LocalDate dueDateFilter, BigDecimal bountyFilter) {
         List<Request> requests = requestRepository.findAll();
 
 
@@ -76,7 +77,7 @@ public class RequestService {
 
         if (bountyFilter != null) {
             requests = requests.stream()
-                    .filter(request -> request.getBounty().floatValue() == bountyFilter)
+                    .filter(request -> request.getBounty().equals(bountyFilter))
                     .toList();
         }
 

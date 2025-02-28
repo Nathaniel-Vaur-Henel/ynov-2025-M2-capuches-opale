@@ -55,7 +55,7 @@ public class RequestController implements RequestApiDelegate {
             String status,
             String backer,
             LocalDate dueDate,
-            Float bounty
+            BigDecimal bounty
     ) {
         List<RequestDTO> requests = requestService.getAllRequests(status, backer, dueDate, bounty);
         return ResponseEntity.status(HttpStatus.OK).body(requests);
