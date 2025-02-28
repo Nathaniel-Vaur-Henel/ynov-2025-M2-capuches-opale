@@ -33,21 +33,21 @@ public class AdventurerServiceTest {
     private AdventurerMapper adventurerMapper;
 
     @Test
-    public void canGenerateAdventurer() {
+    public void canCreateAdventurer() {
         AdventurerCreationDTO adventurerCreationDTO = new AdventurerCreationDTO();
         adventurerCreationDTO.setName("string");
         adventurerCreationDTO.setArchetype(ArchetypeEnum.WARRIOR);
-        adventurerCreationDTO.setInitialDailyRate(new BigDecimal("0.0"));
+        adventurerCreationDTO.setInitialDailyRate(BigDecimal.TEN);
 
         Adventurer adventurer = new Adventurer(
-                1L,"string", Archetype.WARRIOR, 0L, BigDecimal.ZERO);
+                1L,"string", Archetype.WARRIOR, 1L, BigDecimal.TEN);
 
         AdventurerDTO adventurerDTO = new AdventurerDTO();
         adventurerDTO.setId(1L);
         adventurerDTO.setName("string");
         adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
-        adventurerDTO.setExperience(0L);
-        adventurerDTO.setDailyRate(BigDecimal.ZERO);
+        adventurerDTO.setExperience(1L);
+        adventurerDTO.setDailyRate(BigDecimal.TEN);
 
         given(adventurerMapper.adventurerCreationDTOToEntity(adventurerCreationDTO)).willReturn(adventurer);
         given(adventurerRepository.save(adventurer)).willReturn(adventurer);
@@ -56,7 +56,7 @@ public class AdventurerServiceTest {
 
         assertNotNull(adventurerSaved);
         assertNotNull(adventurerSaved.getId());
-        assertEquals(0, adventurerSaved.getExperience());
+        assertEquals(1L, adventurerSaved.getExperience());
     }
 
     @Test
@@ -65,16 +65,16 @@ public class AdventurerServiceTest {
         adventurerDTO.setId(1L);
         adventurerDTO.setName("string");
         adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
-        adventurerDTO.setExperience(0L);
-        adventurerDTO.setDailyRate(BigDecimal.ZERO);
+        adventurerDTO.setExperience(1L);
+        adventurerDTO.setDailyRate(BigDecimal.TEN);
 
         Adventurer adventurer = new Adventurer(
-                1L,"string", Archetype.WARRIOR, 0L, BigDecimal.ZERO);
+                1L,"string", Archetype.WARRIOR, 1L, BigDecimal.TEN);
 
         given(adventurerRepository.findAll()).willReturn(List.of(adventurer));
         given(adventurerMapper.entityToAdventurerDTO(adventurer)).willReturn(adventurerDTO);
 
-        assertEquals(1, this.adventurerService.getAllAdventurers().size());
+        assertEquals(1L, this.adventurerService.getAllAdventurers().size());
     }
 
     @Test
@@ -83,11 +83,11 @@ public class AdventurerServiceTest {
         adventurerDTO.setId(1L);
         adventurerDTO.setName("string");
         adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
-        adventurerDTO.setExperience(0L);
-        adventurerDTO.setDailyRate(new BigDecimal("0.0"));
+        adventurerDTO.setExperience(1L);
+        adventurerDTO.setDailyRate(BigDecimal.TEN);
 
         Optional<Adventurer> adventurer = Optional.of(
-                new Adventurer(1L, "string", Archetype.WARRIOR, 0L, BigDecimal.ZERO));
+                new Adventurer(1L, "string", Archetype.WARRIOR, 1L, BigDecimal.TEN));
 
         given(adventurerRepository.findById(1L)).willReturn(adventurer);
         given(adventurerMapper.entityToAdventurerDTO(adventurer.get())).willReturn(adventurerDTO);

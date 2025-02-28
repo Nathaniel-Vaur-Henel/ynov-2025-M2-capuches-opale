@@ -21,7 +21,7 @@ public class Adventurer {
     @Enumerated(EnumType.STRING)
     private Archetype archetype;
 
-    private Long experience = 0L;
+    private Long experience = 1L;
 
     private BigDecimal initialDailyRate = BigDecimal.ZERO;
 }
