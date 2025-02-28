@@ -12,7 +12,7 @@ const renderFilters = (archetypes = ["Guerrier", "Mage", "Assassin"], count = 10
     render(
         <MemoryRouter>
             <ThemeProvider theme={theme}>
-                <AdventurersFilters archetypes={archetypes} count={count} />
+                <AdventurersFilters archetypes={archetypes} count={count} refetch={() => {}} />
             </ThemeProvider>
         </MemoryRouter>
     );

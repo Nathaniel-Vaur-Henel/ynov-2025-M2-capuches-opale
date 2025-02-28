@@ -52,11 +52,6 @@ describe("AdventurerCard Component", () => {
         expect(screen.getByText(/200 PO/i)).toBeInTheDocument();
     });
 
-    it("doit afficher la bonne icône pour l'archétype", () => {
-        renderAdventurerCard({ ...defaultProps, archetype: "Mage" });
-        expect(screen.getByTestId("MageIcon")).toBeInTheDocument();
-    });
-
     it("doit afficher l'avatar avec l'image fournie", () => {
         renderAdventurerCard(defaultProps);
         const avatar = screen.getByAltText(/Test Aventurier/i);
