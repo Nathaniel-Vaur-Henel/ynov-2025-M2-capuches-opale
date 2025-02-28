@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -38,9 +39,10 @@ public class RequestServiceTest {
         requestDTO.setDueDate(LocalDate.parse("2025-05-05"));
         requestDTO.setTitle("string");
         requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
-        requestDTO.setBounty(0.0f);
+        requestDTO.setBounty(BigDecimal.ZERO);
 
-        Request request = new Request(1L, "string", "string", 0.0, Status.PENDING, LocalDate.parse("2025-05-05") ,"string");
+        Request request = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING,
+                LocalDate.parse("2025-05-05") ,"string");
         given(requestMapper.toEntity(requestDTO)).willReturn(request);
         given(requestRepository.save(request)).willReturn(request);
         given(requestMapper.toDTO(request)).willReturn(requestDTO);
@@ -59,9 +61,10 @@ public class RequestServiceTest {
         requestDTO.setDueDate(LocalDate.parse("2025-05-05"));
         requestDTO.setTitle("string");
         requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
-        requestDTO.setBounty(0.0f);
+        requestDTO.setBounty(BigDecimal.ZERO);
 
-        Request request = new Request(1L, "string", "string", 0.0, Status.PENDING, LocalDate.parse("2025-05-05") ,"string");
+        Request request = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING,
+                LocalDate.parse("2025-05-05") ,"string");
 
         given(requestRepository.findAll()).willReturn(List.of(request));
         given(requestMapper.toDTO(request)).willReturn(requestDTO);

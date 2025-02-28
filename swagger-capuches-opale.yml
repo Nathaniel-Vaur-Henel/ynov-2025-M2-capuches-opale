@@ -80,6 +80,36 @@ paths:
           description: Adventurer not found
         '500':
           $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Adventurer
+      summary: Update a specific adventurer
+      description: Update a specific adventurer from the provided id and data.
+        All fields are optional ; if a field isn't set, the corresponding column in DB is not updated.
+      operationId: updateAdventurer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the adventurer to update
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        $ref: '#/components/requestBodies/AdventurerUpdate'
+      responses:
+        '200':
+          description: Adventurer successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdventurerDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Adventurer not found
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /request:
     get:
       tags:
@@ -124,26 +154,57 @@ components:
     InternalServerError:
       description: An internal server error occurred
   schemas:
-    AdventurerDTO:
-      description: Representation of an adventurer
+    ArchetypeEnum:
+      description: Archetype of the adventurer (pre-defined list)
+      type: string
+      enum: [DEATH_KNIGHT, DEMON_HUNTER, DRUID, EVOKER, HUNTER, MAGE, MONK, PALADIN, PRIEST, ROGUE, SHAMAN, WARLOCK, WARRIOR]
+    AdventurerCommonProperties:
+      description: Common properties of adventurer related DTOs
       properties:
-        id:
-          type: integer
-          format: int64
         name:
           description: Name of the adventurer
           type: string
         archetype:
-          description: Archetype of the adventurer (pre-defined list)
-          type: string
-          enum: [WARRIOR, PALADIN, HUNTER, ROGUE, PRIEST, DEATH_KNIGHT, SHAMAN, MAGE, WARLOCK, MONK, DRUID, DEMON_HUNTER, EVOKER]
-        experience:
-          description: Professional experience of the adventurer
-          type: integer
-          format: int32
-        dailyRate:
-          type: number
-          format: double
+          $ref: '#/components/schemas/ArchetypeEnum'
+    AdventurerCreationDTO:
+      description: DTO used to create a new adventurer
+      required:
+        - name
+        - archetype
+        - initialDailyRate
+      allOf:
+        - $ref: '#/components/schemas/AdventurerCommonProperties'
+        - type: object
+          properties:
+            initialDailyRate:
+              type: number
+              format: double
+    AdventurerUpdateDTO:
+      description: DTO used to update an existing adventurer
+      allOf:
+        - $ref: '#/components/schemas/AdventurerCommonProperties'
+        - type: object
+          properties:
+            experience:
+              description: Professional experience of the adventurer
+              type: integer
+              format: int64
+    AdventurerDTO:
+      description: Representation of an adventurer
+      allOf:
+        - $ref: '#/components/schemas/AdventurerCommonProperties'
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            experience:
+              description: Professional experience of the adventurer
+              type: integer
+              format: int64
+            dailyRate:
+              type: number
+              format: double
     RequestDTO:
       description: Representation of a request
       properties:
@@ -156,7 +217,7 @@ components:
           type: string
         bounty:
           type: number
-          format: float
+          format: double
         status:
           type: string
           enum: [PENDING, REFUSED, ABANDONED, VALIDATED, FAILURE, SUCCESS]
@@ -175,7 +236,13 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AdventurerDTO'
+            $ref: '#/components/schemas/AdventurerCreationDTO'
+    AdventurerUpdate:
+      description: The adventurer with the new values
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdventurerUpdateDTO'
     RequestCreation:
       description: The new request to create
       content:

@@ -198,6 +198,9 @@
                             <supportingFilesToGenerate>
                                 ApiUtil.java
                             </supportingFilesToGenerate>
+                            <typeMappings>
+                                <typeMapping>Double=java.math.BigDecimal</typeMapping>
+                            </typeMappings>
                             <configOptions>
                                 <delegatePattern>true</delegatePattern>
                             </configOptions>

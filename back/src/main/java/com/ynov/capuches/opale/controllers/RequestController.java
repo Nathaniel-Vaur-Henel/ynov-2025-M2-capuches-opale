@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -33,7 +34,7 @@ public class RequestController implements RequestApiDelegate {
             requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
         }
         if (requestDTO.getBounty() == null) {
-            requestDTO.setBounty(0.0f);
+            requestDTO.setBounty(new BigDecimal(0));
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
     }

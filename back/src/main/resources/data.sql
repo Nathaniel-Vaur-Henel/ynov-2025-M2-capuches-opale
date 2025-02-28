@@ -1,5 +1,5 @@
 -- Insert random data into Adventurer table
-INSERT INTO Adventurer (name, archetype, experience, daily_rate) VALUES
+INSERT INTO Adventurer (name, archetype, experience, initial_daily_rate) VALUES
     ('Lara Croft', 'HUNTER', 1200, 300.0),
     ('Geralt of Rivia', 'WARRIOR', 2500, 500.0),
     ('Aragorn', 'PALADIN', 1800, 400.0),
