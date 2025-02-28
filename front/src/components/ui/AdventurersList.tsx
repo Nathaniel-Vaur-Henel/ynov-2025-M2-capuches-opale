@@ -139,6 +139,7 @@ export default function AdventurersList({
 						<Grid item xs={12} sm={6} md={4} lg={3} key={adventurer.id}>
 							<motion.div variants={itemVariants}>
 								<AdventurerCard
+									id={adventurer.id}
 									name={adventurer.name}
 									archetype={adventurer.archetype}
 									experience={adventurer.experience}

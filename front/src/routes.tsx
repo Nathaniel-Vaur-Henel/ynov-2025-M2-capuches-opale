@@ -8,6 +8,7 @@ import LazyWrapper from "./components/ui/LazyWrapper";
 // Chargement paresseux des pages
 const Home = lazy(() => import("./components/pages/Home"));
 const Adventurers = lazy(() => import("./components/pages/Adventurers"));
+const AdventurerProfil = lazy(() => import("./components/pages/AdventurerProfil"));
 const CreateAdventurerPage = lazy(() => import("./components/pages/createAdventurerPage"));
 const CreateRequestPage = lazy(() => import("./components/pages/CreateRequestPage.tsx"));
 
@@ -29,6 +30,14 @@ export const router = createBrowserRouter([
 				element: (
 					<LazyWrapper>
 						<Adventurers />
+					</LazyWrapper>
+				),
+			},
+			{
+				path: "aventuriers/:id",
+				element: (
+					<LazyWrapper>
+						<AdventurerProfil />
 					</LazyWrapper>
 				),
 			},
