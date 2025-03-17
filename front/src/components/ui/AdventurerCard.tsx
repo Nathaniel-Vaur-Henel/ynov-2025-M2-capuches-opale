@@ -38,24 +38,24 @@ interface AdventurerCardProps {
 }
 
 const normalizeArchetype = (archetypeInput: Archetype | string): Archetype => {
-	if (typeof archetypeInput === 'string') {
-	  // Mapping des strings vers les enums
-	  const stringToEnum: Record<string, Archetype> = {
-		"WARRIOR": Archetype.WARRIOR,
-		"HUNTER": Archetype.HUNTER,
-		"ROGUE": Archetype.ROGUE,
-		"PALADIN": Archetype.PALADIN,
-		"MAGE": Archetype.MAGE,
-		"PRIEST": Archetype.PRIEST,
-		"DEATH_KNIGHT": Archetype.DEATH_KNIGHT,
-		"SHAMAN": Archetype.SHAMAN,
-		"WARLOCK": Archetype.WARLOCK,
-		"MONK": Archetype.MONK,
-		"DRUID": Archetype.DRUID,
-		"DEMON_HUNTER": Archetype.DEMON_HUNTER,
-		"EVOKER": Archetype.EVOKER,
-	  };
-	  return stringToEnum[archetypeInput] || Archetype.WARRIOR;
+	if (typeof archetypeInput === "string") {
+		// Mapping des strings vers les enums
+		const stringToEnum: Record<string, Archetype> = {
+			WARRIOR: Archetype.WARRIOR,
+			HUNTER: Archetype.HUNTER,
+			ROGUE: Archetype.ROGUE,
+			PALADIN: Archetype.PALADIN,
+			MAGE: Archetype.MAGE,
+			PRIEST: Archetype.PRIEST,
+			DEATH_KNIGHT: Archetype.DEATH_KNIGHT,
+			SHAMAN: Archetype.SHAMAN,
+			WARLOCK: Archetype.WARLOCK,
+			MONK: Archetype.MONK,
+			DRUID: Archetype.DRUID,
+			DEMON_HUNTER: Archetype.DEMON_HUNTER,
+			EVOKER: Archetype.EVOKER,
+		};
+		return stringToEnum[archetypeInput] || Archetype.WARRIOR;
 	}
 	return archetypeInput;
 };
@@ -155,7 +155,7 @@ const AdventurerCard = ({
 	// Icône en fonction de l'archetype
 	const getArchetypeIcon = (archetype: Archetype) => {
 		const archetypeName = archetypeDisplayNames[archetype];
-		
+
 		switch (archetypeName) {
 			case "Guerrier":
 				return <ShieldIcon data-testid="GuerrierIcon" />;
@@ -176,7 +176,7 @@ const AdventurerCard = ({
 	// Couleur en fonction de l'archetype
 	const getArchetypeColor = (archetype: Archetype) => {
 		const archetypeName = archetypeDisplayNames[archetype];
-		
+
 		switch (archetypeName) {
 			case "Guerrier":
 				return "#f97316"; // Orange
@@ -192,7 +192,7 @@ const AdventurerCard = ({
 				return "#6366f1"; // Indigo
 		}
 	};
-	
+
 	const archetypeName = archetypeDisplayNames[archetype] || "Inconnu";
 	const archetypeIcon = getArchetypeIcon(archetype);
 	const archetypeColor = getArchetypeColor(archetype);
@@ -259,7 +259,6 @@ const AdventurerCard = ({
 
 			<CardContent sx={{ pt: 1, flexGrow: 1 }}>
 				<Stack spacing={2}>
-
 					<Divider sx={{ borderColor: "rgba(255, 255, 255, 0.08)" }} />
 
 					<Stack
@@ -302,9 +301,6 @@ const AdventurerCard = ({
 								backgroundColor: alpha("#4caf50", 0.2),
 								color: "#4caf50",
 								borderRadius: "6px",
-								"& .MuiChip-icon": {
-									color: "#4caf50",
-								},
 							}}
 						/>
 					</Stack>
