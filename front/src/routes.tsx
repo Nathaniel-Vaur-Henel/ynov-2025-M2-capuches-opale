@@ -39,7 +39,7 @@ export const router = createBrowserRouter([
 				),
 			},
 			{
-				path: "aventuriers/creer",
+				path: "aventuriers/:id/modifier",
 				element: (
 					<LazyWrapper>
 						<AdventurerFormPage />
@@ -47,7 +47,7 @@ export const router = createBrowserRouter([
 				),
 			},
 			{
-				path: "aventuriers/modifier/:id",
+				path: "aventuriers/creer",
 				element: (
 					<LazyWrapper>
 						<AdventurerFormPage />

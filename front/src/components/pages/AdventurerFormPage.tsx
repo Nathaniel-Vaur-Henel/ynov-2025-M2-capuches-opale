@@ -9,7 +9,7 @@ export default function AdventurerFormPage() {
 	const location = useLocation();
 
 	// Détermine si nous sommes en mode édition en vérifiant l'URL
-	const isEditMode = location.pathname.includes("/modifier/");
+	const isEditMode = location.pathname.includes("/modifier");
 
 	// N'exécute la requête que si nous sommes en mode édition et avons un ID
 	const { data: adventurer } = useQuery({
