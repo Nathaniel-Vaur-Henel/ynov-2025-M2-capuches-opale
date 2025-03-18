@@ -12,7 +12,9 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -44,8 +46,17 @@ public class AdventurerController implements AdventurerApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<AdventurerResponseDTO>> getAdventurers() {
-        return new ResponseEntity<>(adventurerService.getAllAdventurers(), HttpStatus.OK);
+    public ResponseEntity<List<AdventurerResponseDTO>> getAdventurers(
+            String nameFilter,
+            String archetypeFilter,
+            Integer experienceFilter,
+            BigDecimal dailyRateFilter
+    ) {
+        Long experienceAsLong = (experienceFilter != null) ? experienceFilter.longValue() : null;
+
+        List<AdventurerResponseDTO> adventurers = adventurerService.getFilteredAdventurers(
+                nameFilter, archetypeFilter, experienceAsLong, dailyRateFilter);
+        return ResponseEntity.status(HttpStatus.OK).body(adventurers);
     }
 
     @Override

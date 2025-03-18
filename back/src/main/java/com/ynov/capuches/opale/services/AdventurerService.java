@@ -75,4 +75,16 @@ public class AdventurerService {
 
         return adventurerMapper.entityToAdventurerResponseDTO(adventurer);
     }
+
+    public List<AdventurerResponseDTO> getFilteredAdventurers(
+            String nameFilter, String archetypeFilter, Long experienceFilter, BigDecimal dailyRateFilter) {
+        return getAllAdventurers()
+                .stream()
+                .filter(adventurer -> nameFilter == null || adventurer.getName().equalsIgnoreCase(nameFilter))
+                .filter(adventurer -> archetypeFilter == null || adventurer.getArchetype().name().equalsIgnoreCase(archetypeFilter))
+                .filter(adventurer -> experienceFilter == null || adventurer.getExperience().equals(experienceFilter))
+                .filter(adventurer -> dailyRateFilter == null || adventurer.getDailyRate().compareTo(dailyRateFilter) == 0)
+                .toList();
+    }
+
 }
