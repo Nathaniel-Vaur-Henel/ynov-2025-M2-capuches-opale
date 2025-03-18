@@ -26,6 +26,7 @@ public class RequestController implements RequestApiDelegate {
     @Override
     public ResponseEntity<RequestDTO> createRequest(RequestDTO requestDTO) {
         try {
+        LocalDate today = LocalDate.now();
             if (requestDTO == null || requestDTO.getDueDate() == null ||
                     requestDTO.getBacker() == null || requestDTO.getTitle() == null || requestDTO.getBounty() == null ) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -33,12 +34,17 @@ public class RequestController implements RequestApiDelegate {
             if (requestDTO.getStatus() == null) {
                 requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
             }
-            return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
         } catch (BadRequestException e) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
+        LocalDate minDueDate = today.plusDays(requestDTO.getEstimatedDuration());
+        if (requestDTO.getDueDate().isBefore(minDueDate)) {
+            log.error("Due date is before minimum due date");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
     }
 
     @Override

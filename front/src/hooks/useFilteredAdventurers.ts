@@ -1,15 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { fetchData } from "../api/api.ts";
-
-interface Adventurer {
-	id: number;
-	name: string;
-	experience: number;
-	archetype: string;
-	dailyRate: number;
-	image?: string;
-}
+import Adventurer from "../types/Adventurer.ts";
+import { Archetype } from "../utils/enum.ts";
 
 async function fetchAdventurers(): Promise<Adventurer[]> {
 	return fetchData<Adventurer[]>("/adventurer");
@@ -18,13 +11,9 @@ async function fetchAdventurers(): Promise<Adventurer[]> {
 export function useFilteredAdventurers() {
 	const [searchParams] = useSearchParams();
 	const searchTerm = searchParams.get("search") || "";
-	const selectedArchetype = searchParams.get("archetype") || "";
-	const sortField = searchParams.get("sort") as
-		| "experience"
-		| "dailyRate"
-		| undefined;
-	const sortDirection =
-		(searchParams.get("direction") as "asc" | "desc") || "desc";
+	const selectedArchetype = searchParams.get("archetype") as Archetype | "";
+	const sortField = searchParams.get("sort") as "experience" | "dailyRate" | undefined;
+	const sortDirection = (searchParams.get("direction") as "asc" | "desc") || "desc";
 
 	const query = useQuery({
 		queryKey: ["adventurers"],
@@ -39,6 +28,7 @@ export function useFilteredAdventurers() {
 						  adv.archetype.toLowerCase().includes(searchTerm.toLowerCase())
 						: true;
 
+					// Vérification avec l'Enum Archetype
 					const matchesArchetype = selectedArchetype
 						? adv.archetype === selectedArchetype
 						: true;
@@ -59,9 +49,8 @@ export function useFilteredAdventurers() {
 				})
 		: [];
 
-	const uniqueArchetypes = query.data
-		? Array.from(new Set(query.data.map((adv) => adv.archetype)))
-		: [];
+	// Générer la liste des archétypes en utilisant l'Enum Archetype
+	const uniqueArchetypes = Object.values(Archetype);
 
 	return {
 		adventurers: filteredAdventurers,
@@ -69,5 +58,3 @@ export function useFilteredAdventurers() {
 		...query,
 	};
 }
-
-export type { Adventurer };

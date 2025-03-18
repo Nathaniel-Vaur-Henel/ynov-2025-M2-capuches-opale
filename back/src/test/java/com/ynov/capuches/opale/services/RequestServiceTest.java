@@ -41,9 +41,10 @@ public class RequestServiceTest {
         requestDTO.setTitle("string");
         requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
         requestDTO.setBounty(BigDecimal.ZERO);
+        requestDTO.setEstimatedDuration(10);
 
         Request request = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING,
-                LocalDate.parse("2025-05-05") ,"string");
+                LocalDate.parse("2025-05-05") ,"string", 10);
         given(requestMapper.toEntity(requestDTO)).willReturn(request);
         given(requestRepository.save(request)).willReturn(request);
         given(requestMapper.toDTO(request)).willReturn(requestDTO);
@@ -63,9 +64,10 @@ public class RequestServiceTest {
         requestDTO.setTitle("string");
         requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
         requestDTO.setBounty(BigDecimal.ZERO);
+        requestDTO.setEstimatedDuration(10);
 
         Request request = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING,
-                LocalDate.parse("2025-05-05") ,"string");
+                LocalDate.parse("2025-05-05") ,"string", 10);
 
         given(requestRepository.findAll()).willReturn(List.of(request));
         given(requestMapper.toDTO(request)).willReturn(requestDTO);
@@ -83,8 +85,9 @@ public class RequestServiceTest {
         requestDTO.setTitle("string");
         requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
         requestDTO.setBounty(BigDecimal.ZERO);
+        requestDTO.setEstimatedDuration(10);
 
-        Request request = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING, LocalDate.parse("2025-05-05") ,"string");
+        Request request = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING, LocalDate.parse("2025-05-05") ,"string", 10);
         given(requestRepository.findAll()).willReturn(List.of(request));
         given(requestMapper.toDTO(request)).willReturn(requestDTO);
 
@@ -108,7 +111,7 @@ public class RequestServiceTest {
         requestDTO.setBounty(BigDecimal.ZERO);
 
         Request request = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING,
-                LocalDate.parse("2025-05-05") ,"string");
+                LocalDate.parse("2025-05-05") ,"string", 10);
 
         given(requestRepository.findByIdAndStatus(1L, Status.PENDING)).willReturn(java.util.Optional.of(request));;
         requestDTO.setTitle("title");
@@ -119,7 +122,7 @@ public class RequestServiceTest {
         requestDTO.setDescription("description");
 
         Request requestToUpdate = new Request(1L, "title", "backer", BigDecimal.TEN, Status.PENDING,
-                LocalDate.parse("2025-08-05") ,"description");
+                LocalDate.parse("2025-08-05") ,"description", 10);
         given(requestMapper.toEntity(requestDTO)).willReturn(requestToUpdate);
         given(requestRepository.save(requestToUpdate)).willReturn(requestToUpdate);
         given(requestMapper.toDTO(requestToUpdate)).willReturn(requestDTO);

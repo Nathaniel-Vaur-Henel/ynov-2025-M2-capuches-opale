@@ -285,6 +285,9 @@ components:
           type: string
           minLength: 5
           maxLength: 100
+        estimatedDuration:
+          type: integer
+          format: int32
       required:
         - dueDate
         - backer
