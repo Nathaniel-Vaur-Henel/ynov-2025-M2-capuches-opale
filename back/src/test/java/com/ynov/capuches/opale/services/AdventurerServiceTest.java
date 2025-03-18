@@ -4,7 +4,7 @@ import com.ynov.capuches.opale.entities.Adventurer;
 import com.ynov.capuches.opale.enums.Archetype;
 import com.ynov.capuches.opale.mappers.AdventurerMapper;
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
-import com.ynov.capuches.opale.model.AdventurerDTO;
+import com.ynov.capuches.opale.model.AdventurerResponseDTO;
 import com.ynov.capuches.opale.model.ArchetypeEnum;
 import com.ynov.capuches.opale.repositories.AdventurerRepository;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ public class AdventurerServiceTest {
         Adventurer adventurer = new Adventurer(
                 1L,"string", Archetype.WARRIOR, 1L, BigDecimal.TEN);
 
-        AdventurerDTO adventurerDTO = new AdventurerDTO();
+        AdventurerResponseDTO adventurerDTO = new AdventurerResponseDTO();
         adventurerDTO.setId(1L);
         adventurerDTO.setName("string");
         adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
@@ -51,8 +51,8 @@ public class AdventurerServiceTest {
 
         given(adventurerMapper.adventurerCreationDTOToEntity(adventurerCreationDTO)).willReturn(adventurer);
         given(adventurerRepository.save(adventurer)).willReturn(adventurer);
-        given(adventurerMapper.entityToAdventurerDTO(adventurer)).willReturn(adventurerDTO);
-        AdventurerDTO adventurerSaved = this.adventurerService.createAdventurer(adventurerCreationDTO);
+        given(adventurerMapper.entityToAdventurerResponseDTO(adventurer)).willReturn(adventurerDTO);
+        AdventurerResponseDTO adventurerSaved = this.adventurerService.createAdventurer(adventurerCreationDTO);
 
         assertNotNull(adventurerSaved);
         assertNotNull(adventurerSaved.getId());
@@ -61,7 +61,7 @@ public class AdventurerServiceTest {
 
     @Test
     public void testGetAllAdventurers() {
-        AdventurerDTO adventurerDTO = new AdventurerDTO();
+        AdventurerResponseDTO adventurerDTO = new AdventurerResponseDTO();
         adventurerDTO.setId(1L);
         adventurerDTO.setName("string");
         adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
@@ -72,14 +72,14 @@ public class AdventurerServiceTest {
                 1L,"string", Archetype.WARRIOR, 1L, BigDecimal.TEN);
 
         given(adventurerRepository.findAll()).willReturn(List.of(adventurer));
-        given(adventurerMapper.entityToAdventurerDTO(adventurer)).willReturn(adventurerDTO);
+        given(adventurerMapper.entityToAdventurerResponseDTO(adventurer)).willReturn(adventurerDTO);
 
         assertEquals(1L, this.adventurerService.getAllAdventurers().size());
     }
 
     @Test
     public void canGetAdventurer() {
-        AdventurerDTO adventurerDTO = new AdventurerDTO();
+        AdventurerResponseDTO adventurerDTO = new AdventurerResponseDTO();
         adventurerDTO.setId(1L);
         adventurerDTO.setName("string");
         adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
@@ -90,8 +90,8 @@ public class AdventurerServiceTest {
                 new Adventurer(1L, "string", Archetype.WARRIOR, 1L, BigDecimal.TEN));
 
         given(adventurerRepository.findById(1L)).willReturn(adventurer);
-        given(adventurerMapper.entityToAdventurerDTO(adventurer.get())).willReturn(adventurerDTO);
-        AdventurerDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
+        given(adventurerMapper.entityToAdventurerResponseDTO(adventurer.get())).willReturn(adventurerDTO);
+        AdventurerResponseDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
 
         assertNotNull(adventurerGet);
         assertNotNull(adventurerGet.getId());
@@ -100,7 +100,7 @@ public class AdventurerServiceTest {
     @Test
     public void canTGetAdventurer() {
         given(adventurerRepository.findById(1L)).willReturn(Optional.empty());
-        AdventurerDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
+        AdventurerResponseDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
         assertNull(adventurerGet);
     }
 }

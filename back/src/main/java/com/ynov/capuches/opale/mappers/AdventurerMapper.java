@@ -1,7 +1,7 @@
 package com.ynov.capuches.opale.mappers;
 import com.ynov.capuches.opale.entities.Adventurer;
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
-import com.ynov.capuches.opale.model.AdventurerDTO;
+import com.ynov.capuches.opale.model.AdventurerResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -22,7 +22,7 @@ public interface AdventurerMapper {
 
     @Mapping(target = "dailyRate", expression =
             "java(AdventurerMapper.calculateDailyRate(entity.getInitialDailyRate(), entity.getExperience()))")
-    AdventurerDTO entityToAdventurerDTO(Adventurer entity);
+    AdventurerResponseDTO entityToAdventurerResponseDTO(Adventurer entity);
 
     @Mapping(target = "experience", constant = "1L")
     Adventurer adventurerCreationDTOToEntity(AdventurerCreationDTO dto);
