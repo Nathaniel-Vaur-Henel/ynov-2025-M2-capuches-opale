@@ -53,7 +53,7 @@ public class AdventurerService {
         return optionalAdventurerDto.orElse(null);
     }
 
-    public AdventurerDTO updateAdventurer(Long id, AdventurerUpdateDTO adventurerUpdateDTO) {
+    public AdventurerResponseDTO updateAdventurer(Long id, AdventurerUpdateDTO adventurerUpdateDTO) {
         Adventurer adventurer = adventurerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Adventurer not found"));
 
@@ -73,6 +73,6 @@ public class AdventurerService {
 
         adventurerRepository.save(adventurer);
 
-        return adventurerMapper.entityToAdventurerDTO(adventurer);
+        return adventurerMapper.entityToAdventurerResponseDTO(adventurer);
     }
 }

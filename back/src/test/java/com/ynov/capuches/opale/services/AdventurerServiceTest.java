@@ -122,7 +122,7 @@ public class AdventurerServiceTest {
         updateDTO.setArchetype(ArchetypeEnum.MAGE);
 
         Adventurer updatedAdventurer = new Adventurer(id, "Updated Name", Archetype.MAGE, 20L, BigDecimal.TEN);
-        AdventurerDTO updatedAdventurerDTO = new AdventurerDTO();
+        AdventurerResponseDTO updatedAdventurerDTO = new AdventurerResponseDTO();
         updatedAdventurerDTO.setId(id);
         updatedAdventurerDTO.setName("Updated Name");
         updatedAdventurerDTO.setArchetype(ArchetypeEnum.MAGE);
@@ -131,11 +131,11 @@ public class AdventurerServiceTest {
 
         given(adventurerRepository.findById(id)).willReturn(Optional.of(existingAdventurer));
         given(adventurerMapper.adventurerUpdateDTOToEntity(updateDTO)).willReturn(updatedAdventurer);
-        given(adventurerMapper.entityToAdventurerDTO(refEq(updatedAdventurer))).willReturn(updatedAdventurerDTO);
+        given(adventurerMapper.entityToAdventurerResponseDTO(refEq(updatedAdventurer))).willReturn(updatedAdventurerDTO);
 
-        AdventurerDTO result = adventurerService.updateAdventurer(id, updateDTO);
+        AdventurerResponseDTO result = adventurerService.updateAdventurer(id, updateDTO);
 
-        verify(adventurerMapper).entityToAdventurerDTO(refEq(updatedAdventurer));
+        verify(adventurerMapper).entityToAdventurerResponseDTO(refEq(updatedAdventurer));
 
         assertNotNull(result);
         assertEquals("Updated Name", result.getName());
@@ -155,6 +155,6 @@ public class AdventurerServiceTest {
         assertEquals("Adventurer not found", exception.getMessage());
 
         verify(adventurerRepository, never()).save(any());
-        verify(adventurerMapper, never()).entityToAdventurerDTO(any());
+        verify(adventurerMapper, never()).entityToAdventurerResponseDTO(any());
     }
 }

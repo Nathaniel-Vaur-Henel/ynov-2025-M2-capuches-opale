@@ -17,7 +17,6 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@Slf4j
 public class AdventurerController implements AdventurerApiDelegate {
     private final AdventurerService adventurerService;
 
@@ -50,7 +49,7 @@ public class AdventurerController implements AdventurerApiDelegate {
     }
 
     @Override
-    public ResponseEntity<AdventurerDTO> updateAdventurer(Long id, AdventurerUpdateDTO adventurerUpdateDTO) {
+    public ResponseEntity<AdventurerResponseDTO> updateAdventurer(Long id, AdventurerUpdateDTO adventurerUpdateDTO) {
         try {
             return new ResponseEntity<>(adventurerService.updateAdventurer(id, adventurerUpdateDTO), HttpStatus.OK);
         } catch (Exception e) {
