@@ -5,6 +5,7 @@ import com.ynov.capuches.opale.enums.Status;
 import com.ynov.capuches.opale.mappers.RequestMapper;
 import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.repositories.RequestRepository;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,15 +32,16 @@ public class RequestServiceTest {
     private RequestMapper requestMapper;
 
     @Test
-    public void canGenerateRequest() {
+    public void canGenerateRequest() throws BadRequestException {
         RequestDTO requestDTO = new RequestDTO();
         requestDTO.setBacker("string");
-        requestDTO.setDescription("string");
+        requestDTO.setDescription("This is the full description of the request which should be greater " +
+                "than 100 characters (which is maybe a bit too long).");
         requestDTO.setId(1L);
         requestDTO.setDueDate(LocalDate.parse("2025-05-05"));
-        requestDTO.setTitle("string");
+        requestDTO.setTitle("Title of request");
         requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
-        requestDTO.setBounty(BigDecimal.ZERO);
+        requestDTO.setBounty(BigDecimal.ONE);
         requestDTO.setEstimatedDuration(10);
 
         Request request = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING,

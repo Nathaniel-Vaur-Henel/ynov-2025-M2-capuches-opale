@@ -6,6 +6,9 @@ import com.ynov.capuches.opale.exceptions.NotFoundException;
 import com.ynov.capuches.opale.mappers.RequestMapper;
 import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.repositories.RequestRepository;
+import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import static com.ynov.capuches.opale.mappers.RequestMapper.*;
 
@@ -27,7 +30,24 @@ public class RequestService {
         this.requestRepository = requestRepository;
     }
 
-    public RequestDTO createRequest(RequestDTO requestDTO) {
+    public RequestDTO createRequest(RequestDTO requestDTO) throws BadRequestException {
+        LocalDate today = LocalDate.now();
+        LocalDate minDueDate = today.plusDays(requestDTO.getEstimatedDuration());
+
+        if (requestDTO.getDueDate().isBefore(minDueDate)) {
+            throw new BadRequestException("Due date must be before request date");
+        } else if (requestDTO.getTitle().length() < 10 || requestDTO.getTitle().length() > 30) {
+            throw new BadRequestException("The title should be between 10 and 30 characters");
+        } else if (requestDTO.getDescription().length() < 100) {
+            throw new BadRequestException("The description should be lower than 100 characters");
+        } else if (requestDTO.getBounty().compareTo(BigDecimal.ONE) < 0) {
+            throw new BadRequestException("The bounty must be greater than 0");
+        } else if (requestDTO.getBacker().length() < 5 || requestDTO.getBacker().length() > 100) {
+            throw new BadRequestException("The backer should be between 5 and 100 characters");
+        } else if (requestDTO.getEstimatedDuration() < 1) {
+            throw new BadRequestException("The estimated duration must be greater than 0");
+        }
+
         Request requestEntity = requestMapper.toEntity(requestDTO);
         Request savedRequest = this.requestRepository.save(requestEntity);
         return requestMapper.toDTO(savedRequest);

@@ -30,7 +30,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AdventurerDTO'
+                  $ref: '#/components/schemas/AdventurerResponseDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -71,7 +71,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AdventurerDTO'
+                $ref: '#/components/schemas/AdventurerResponseDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -96,7 +96,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AdventurerDTO'
+                $ref: '#/components/schemas/AdventurerResponseDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -126,7 +126,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AdventurerDTO'
+                $ref: '#/components/schemas/AdventurerResponseDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -158,9 +158,9 @@ paths:
           schema:
             type: string
             properties:
-                status:
-                    type: string
-                    enum: [PENDING, REFUSED, ABANDONED, VALIDATED, FAILURE, SUCCESS]
+              status:
+                type: string
+                enum: [ PENDING, REFUSED, ABANDONED, VALIDATED, FAILURE, SUCCESS ]
         - in: query
           name: backerFilter
           schema:
@@ -228,13 +228,15 @@ components:
     ArchetypeEnum:
       description: Archetype of the adventurer (pre-defined list)
       type: string
-      enum: [DEATH_KNIGHT, DEMON_HUNTER, DRUID, EVOKER, HUNTER, MAGE, MONK, PALADIN, PRIEST, ROGUE, SHAMAN, WARLOCK, WARRIOR]
+      enum: [ DEATH_KNIGHT, DEMON_HUNTER, DRUID, EVOKER, HUNTER, MAGE, MONK, PALADIN, PRIEST, ROGUE, SHAMAN, WARLOCK, WARRIOR ]
     AdventurerCommonProperties:
       description: Common properties of adventurer related DTOs
       properties:
         name:
           description: Name of the adventurer
           type: string
+          minLength: 5
+          maxLength: 100
         archetype:
           $ref: '#/components/schemas/ArchetypeEnum'
     AdventurerCreationDTO:
@@ -250,6 +252,7 @@ components:
             initialDailyRate:
               type: number
               format: double
+              minimum: 1
     AdventurerUpdateDTO:
       description: DTO used to update an existing adventurer
       allOf:
@@ -260,7 +263,8 @@ components:
               description: Professional experience of the adventurer
               type: integer
               format: int64
-    AdventurerDTO:
+              minimum: 1
+    AdventurerResponseDTO:
       description: Representation of an adventurer
       allOf:
         - $ref: '#/components/schemas/AdventurerCommonProperties'
@@ -277,26 +281,33 @@ components:
               type: number
               format: double
     RequestDTO:
-      description: Representation of a request
+      description: Representation of a mission request
       properties:
         id:
           type: integer
           format: int64
         title:
           type: string
+          minLength: 10
+          maxLength: 30
         description:
           type: string
+          minLength: 100
         bounty:
           type: number
           format: double
+          minimum: 1
         status:
           type: string
-          enum: [PENDING, REFUSED, ABANDONED, VALIDATED, FAILURE, SUCCESS]
+          enum: [ PENDING, REFUSED, ABANDONED, VALIDATED, FAILURE, SUCCESS ]
         dueDate:
+          description: Due date of the mission, should be equal or later than today + estimated duration
           type: string
           format: date
         backer:
           type: string
+          minLength: 5
+          maxLength: 100
         estimatedDuration:
           type: integer
           format: int32
