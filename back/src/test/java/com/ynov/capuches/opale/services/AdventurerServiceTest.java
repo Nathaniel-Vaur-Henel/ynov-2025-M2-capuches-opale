@@ -5,10 +5,11 @@ import com.ynov.capuches.opale.enums.Archetype;
 import com.ynov.capuches.opale.exceptions.NotFoundException;
 import com.ynov.capuches.opale.mappers.AdventurerMapper;
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
-import com.ynov.capuches.opale.model.AdventurerDTO;
+import com.ynov.capuches.opale.model.AdventurerResponseDTO;
 import com.ynov.capuches.opale.model.AdventurerUpdateDTO;
 import com.ynov.capuches.opale.model.ArchetypeEnum;
 import com.ynov.capuches.opale.repositories.AdventurerRepository;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -39,7 +40,7 @@ public class AdventurerServiceTest {
     private AdventurerMapper adventurerMapper;
 
     @Test
-    public void canCreateAdventurer() {
+    public void canCreateAdventurer() throws BadRequestException {
         AdventurerCreationDTO adventurerCreationDTO = new AdventurerCreationDTO();
         adventurerCreationDTO.setName("string");
         adventurerCreationDTO.setArchetype(ArchetypeEnum.WARRIOR);
@@ -48,7 +49,7 @@ public class AdventurerServiceTest {
         Adventurer adventurer = new Adventurer(
                 1L,"string", Archetype.WARRIOR, 1L, BigDecimal.TEN);
 
-        AdventurerDTO adventurerDTO = new AdventurerDTO();
+        AdventurerResponseDTO adventurerDTO = new AdventurerResponseDTO();
         adventurerDTO.setId(1L);
         adventurerDTO.setName("string");
         adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
@@ -57,8 +58,8 @@ public class AdventurerServiceTest {
 
         given(adventurerMapper.adventurerCreationDTOToEntity(adventurerCreationDTO)).willReturn(adventurer);
         given(adventurerRepository.save(adventurer)).willReturn(adventurer);
-        given(adventurerMapper.entityToAdventurerDTO(adventurer)).willReturn(adventurerDTO);
-        AdventurerDTO adventurerSaved = this.adventurerService.createAdventurer(adventurerCreationDTO);
+        given(adventurerMapper.entityToAdventurerResponseDTO(adventurer)).willReturn(adventurerDTO);
+        AdventurerResponseDTO adventurerSaved = this.adventurerService.createAdventurer(adventurerCreationDTO);
 
         assertNotNull(adventurerSaved);
         assertNotNull(adventurerSaved.getId());
@@ -67,7 +68,7 @@ public class AdventurerServiceTest {
 
     @Test
     public void testGetAllAdventurers() {
-        AdventurerDTO adventurerDTO = new AdventurerDTO();
+        AdventurerResponseDTO adventurerDTO = new AdventurerResponseDTO();
         adventurerDTO.setId(1L);
         adventurerDTO.setName("string");
         adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
@@ -78,14 +79,14 @@ public class AdventurerServiceTest {
                 1L,"string", Archetype.WARRIOR, 1L, BigDecimal.TEN);
 
         given(adventurerRepository.findAll()).willReturn(List.of(adventurer));
-        given(adventurerMapper.entityToAdventurerDTO(adventurer)).willReturn(adventurerDTO);
+        given(adventurerMapper.entityToAdventurerResponseDTO(adventurer)).willReturn(adventurerDTO);
 
         assertEquals(1L, this.adventurerService.getAllAdventurers().size());
     }
 
     @Test
     public void canGetAdventurer() {
-        AdventurerDTO adventurerDTO = new AdventurerDTO();
+        AdventurerResponseDTO adventurerDTO = new AdventurerResponseDTO();
         adventurerDTO.setId(1L);
         adventurerDTO.setName("string");
         adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
@@ -96,8 +97,8 @@ public class AdventurerServiceTest {
                 new Adventurer(1L, "string", Archetype.WARRIOR, 1L, BigDecimal.TEN));
 
         given(adventurerRepository.findById(1L)).willReturn(adventurer);
-        given(adventurerMapper.entityToAdventurerDTO(adventurer.get())).willReturn(adventurerDTO);
-        AdventurerDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
+        given(adventurerMapper.entityToAdventurerResponseDTO(adventurer.get())).willReturn(adventurerDTO);
+        AdventurerResponseDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
 
         assertNotNull(adventurerGet);
         assertNotNull(adventurerGet.getId());
@@ -106,7 +107,7 @@ public class AdventurerServiceTest {
     @Test
     public void canTGetAdventurer() {
         given(adventurerRepository.findById(1L)).willReturn(Optional.empty());
-        AdventurerDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
+        AdventurerResponseDTO adventurerGet = this.adventurerService.getOneAdventurer(1L);
         assertNull(adventurerGet);
     }
 
@@ -121,7 +122,7 @@ public class AdventurerServiceTest {
         updateDTO.setArchetype(ArchetypeEnum.MAGE);
 
         Adventurer updatedAdventurer = new Adventurer(id, "Updated Name", Archetype.MAGE, 20L, BigDecimal.TEN);
-        AdventurerDTO updatedAdventurerDTO = new AdventurerDTO();
+        AdventurerResponseDTO updatedAdventurerDTO = new AdventurerResponseDTO();
         updatedAdventurerDTO.setId(id);
         updatedAdventurerDTO.setName("Updated Name");
         updatedAdventurerDTO.setArchetype(ArchetypeEnum.MAGE);
@@ -130,11 +131,11 @@ public class AdventurerServiceTest {
 
         given(adventurerRepository.findById(id)).willReturn(Optional.of(existingAdventurer));
         given(adventurerMapper.adventurerUpdateDTOToEntity(updateDTO)).willReturn(updatedAdventurer);
-        given(adventurerMapper.entityToAdventurerDTO(refEq(updatedAdventurer))).willReturn(updatedAdventurerDTO);
+        given(adventurerMapper.entityToAdventurerResponseDTO(refEq(updatedAdventurer))).willReturn(updatedAdventurerDTO);
 
-        AdventurerDTO result = adventurerService.updateAdventurer(id, updateDTO);
+        AdventurerResponseDTO result = adventurerService.updateAdventurer(id, updateDTO);
 
-        verify(adventurerMapper).entityToAdventurerDTO(refEq(updatedAdventurer));
+        verify(adventurerMapper).entityToAdventurerResponseDTO(refEq(updatedAdventurer));
 
         assertNotNull(result);
         assertEquals("Updated Name", result.getName());
@@ -154,6 +155,6 @@ public class AdventurerServiceTest {
         assertEquals("Adventurer not found", exception.getMessage());
 
         verify(adventurerRepository, never()).save(any());
-        verify(adventurerMapper, never()).entityToAdventurerDTO(any());
+        verify(adventurerMapper, never()).entityToAdventurerResponseDTO(any());
     }
 }
