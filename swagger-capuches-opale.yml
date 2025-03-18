@@ -36,23 +36,23 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
       parameters:
-        - name: name
+        - name: nameFilter
           in: query
           required: false
           schema:
             type: string
-        - name: archetype
+        - name: archetypeFilter
           in: query
           required: false
           schema:
             type: string
             enum: [ DEATH_KNIGHT, DEMON_HUNTER, DRUID, EVOKER, HUNTER, MAGE, MONK, PALADIN, PRIEST, ROGUE, SHAMAN, WARLOCK, WARRIOR ]
-        - name: experience
+        - name: experienceFilter
           in: query
           required: false
           schema:
             type: integer
-        - name: dailyRate
+        - name: dailyRateFilter
           in: query
           required: false
           schema:

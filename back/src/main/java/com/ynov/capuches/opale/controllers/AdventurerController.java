@@ -47,14 +47,15 @@ public class AdventurerController implements AdventurerApiDelegate {
 
     @Override
     public ResponseEntity<List<AdventurerResponseDTO>> getAdventurers(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String archetype,
-            @RequestParam(required = false) Integer experience,
-            @RequestParam(required = false) BigDecimal dailyRate
+            String nameFilter,
+            String archetypeFilter,
+            Integer experienceFilter,
+            BigDecimal dailyRateFilter
     ) {
-        Long experienceAsLong = (experience != null) ? experience.longValue() : null;
+        Long experienceAsLong = (experienceFilter != null) ? experienceFilter.longValue() : null;
 
-        List<AdventurerResponseDTO> adventurers = adventurerService.getFilteredAdventurers(name, archetype, experienceAsLong, dailyRate);
+        List<AdventurerResponseDTO> adventurers = adventurerService.getFilteredAdventurers(
+                nameFilter, archetypeFilter, experienceAsLong, dailyRateFilter);
         return ResponseEntity.status(HttpStatus.OK).body(adventurers);
     }
 
