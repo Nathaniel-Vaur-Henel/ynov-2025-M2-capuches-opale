@@ -28,4 +28,8 @@ public class Request {
     private LocalDate dueDate;
     private String backer;
 
+    @OneToOne
+    @JoinColumn(name = "complementary_info_id", unique = true, nullable = true)
+    private ComplementaryInformation complementaryInformation;
+
 }
