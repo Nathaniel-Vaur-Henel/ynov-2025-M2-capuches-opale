@@ -24,15 +24,12 @@ public class ComplementaryInformationController implements ComplementaryInformat
     public ResponseEntity<ComplementaryInformationDTO> createComplementaryInformation(Long requestId, CreateComplementaryInformationDTO createComplementaryInformationDTO) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(complementaryInformationService.createComplementaryInformation(requestId, createComplementaryInformationDTO));
-        } catch (Exception e) {
-            if (e instanceof NotFoundException) {
-                log.error(e.getMessage(), e);
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            } else if (e instanceof IllegalArgumentException) {
-                log.error(e.getMessage(), e);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }
-            return null;
+        } catch (NotFoundException e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
