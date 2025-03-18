@@ -117,7 +117,7 @@ public class RequestServiceTest {
         requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
         requestDTO.setDescription("description");
 
-        Request request = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING, LocalDate.parse("2025-05-05") ,"string", 10, null);
+        Request requestToUpdate = new Request(1L, "string", "string", BigDecimal.ZERO, Status.PENDING, LocalDate.parse("2025-05-05") ,"string", 10, null);
         given(requestMapper.toEntity(requestDTO)).willReturn(requestToUpdate);
         given(requestRepository.save(requestToUpdate)).willReturn(requestToUpdate);
         given(requestMapper.toDTO(requestToUpdate)).willReturn(requestDTO);
