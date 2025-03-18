@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { fetchData } from "../api/api.ts";
-import type Adventurer from "../types/Adventurer";
-
+import Adventurer from "../types/Adventurer.ts";
 import { Archetype } from "../utils/enum.ts";
 
 async function fetchAdventurers(): Promise<Adventurer[]> {
