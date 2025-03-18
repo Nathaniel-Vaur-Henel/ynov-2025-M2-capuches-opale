@@ -4,7 +4,7 @@ import {
 	useQuery,
 } from "@tanstack/react-query";
 import { deleteData, fetchData, postData, putData } from "../api/api.ts";
-import { Adventurer } from "./useFilteredAdventurers.ts";
+import Adventurer from "../types/Adventurer.ts";
 
 // 🔹 Définition du type des aventurier
 
