@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -38,8 +40,14 @@ public class AdventurerController implements AdventurerApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<AdventurerDTO>> getAdventurers() {
-        return new ResponseEntity<>(adventurerService.getAllAdventurers(), HttpStatus.OK);
+    public ResponseEntity<List<AdventurerDTO>> getAdventurers(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String archetype,
+            @RequestParam(required = false) Integer experience,
+            @RequestParam(required = false) BigDecimal dailyRate
+    ) {
+        List<AdventurerDTO> adventurers = adventurerService.getFilteredAdventurers(name, archetype, experience, dailyRate);
+        return ResponseEntity.status(HttpStatus.OK).body(adventurers);
     }
 
     @Override

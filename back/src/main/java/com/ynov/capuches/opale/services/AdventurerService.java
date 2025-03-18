@@ -9,6 +9,7 @@ import com.ynov.capuches.opale.model.AdventurerUpdateDTO;
 import com.ynov.capuches.opale.repositories.AdventurerRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,4 +63,15 @@ public class AdventurerService {
 
         return adventurerMapper.entityToAdventurerDTO(adventurer);
     }
+
+    public List<AdventurerDTO> getFilteredAdventurers(String name, String archetype, Integer experience, BigDecimal dailyRate) {
+        return getAllAdventurers()
+                .stream()
+                .filter(adventurer -> name == null || adventurer.getName().equalsIgnoreCase(name))
+                .filter(adventurer -> archetype == null || adventurer.getArchetype().name().equalsIgnoreCase(archetype))
+                .filter(adventurer -> experience == null || adventurer.getExperience().equals(experience))
+                .filter(adventurer -> dailyRate == null || adventurer.getDailyRate().compareTo(dailyRate) == 0)
+                .toList();
+    }
+
 }

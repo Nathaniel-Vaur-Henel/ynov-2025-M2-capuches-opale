@@ -35,6 +35,29 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: archetype
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [ DEATH_KNIGHT, DEMON_HUNTER, DRUID, EVOKER, HUNTER, MAGE, MONK, PALADIN, PRIEST, ROGUE, SHAMAN, WARLOCK, WARRIOR ]
+        - name: experience
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: dailyRate
+          in: query
+          required: false
+          schema:
+            type: number
+            format: double
     post:
       tags:
         - Adventurer
