@@ -205,7 +205,7 @@ export default function AdventurersFilters({
 									},
 								}}
 							>
-								<MenuItem value="">Tous les archétypes</MenuItem>
+								<MenuItem value="">Toutes les spécialités</MenuItem>
 								{archetypes.map((archetype) => (
 									<MenuItem key={archetype} value={archetype}>
 										{archetype}
