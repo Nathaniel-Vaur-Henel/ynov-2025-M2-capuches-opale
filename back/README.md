@@ -32,6 +32,8 @@ The following guides illustrate how to use some features concretely:
 
 Le swagger de l'API est accessible **[ici](../swagger-capuches-opale.yml)**.
 
+⚠️ <span style="color:orange">**À chaque modification du swagger, penser à recompiler le projet back afin de vérifier que les changements ne cassent pas la compilation.**</span> ⚠️
+
 ## 🛠️ Configuration du JDK
 
 1. **Ouvrir les paramètres du projet**

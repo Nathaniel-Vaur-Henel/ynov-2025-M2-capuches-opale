@@ -2,12 +2,14 @@ import { render, screen } from "@testing-library/react";
 import AdventurerCard from "../components/ui/AdventurerCard";
 import { describe, it, expect } from "vitest";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { MemoryRouter } from "react-router-dom";
 
 // Création du thème pour le test
 const theme = createTheme();
 
 // Définition du type des props attendues par AdventurerCard
 type AdventurerCardProps = {
+    id: number;
     name: string;
     experience: number;
     archetype: string;
@@ -15,16 +17,19 @@ type AdventurerCardProps = {
     image: string;
 };
 
-// Fonction pour rendre le composant avec le ThemeProvider
+// Fonction pour rendre le composant avec le ThemeProvider et MemoryRouter
 const renderAdventurerCard = (props: AdventurerCardProps) =>
     render(
-        <ThemeProvider theme={theme}>
-            <AdventurerCard {...props} />
-        </ThemeProvider>
+        <MemoryRouter>
+            <ThemeProvider theme={theme}>
+                <AdventurerCard {...props} />
+            </ThemeProvider>
+        </MemoryRouter>
     );
 
 describe("AdventurerCard Component", () => {
     const defaultProps: AdventurerCardProps = {
+        id: 1,
         name: "Test Aventurier",
         experience: 500,
         archetype: "Guerrier",
@@ -56,5 +61,11 @@ describe("AdventurerCard Component", () => {
         renderAdventurerCard(defaultProps);
         const avatar = screen.getByAltText(/Test Aventurier/i);
         expect(avatar).toHaveAttribute("src", "test-image-url");
+    });
+
+    it("doit contenir le bouton 'Consulter' avec le bon lien", () => {
+        renderAdventurerCard(defaultProps);
+        const consulterButton = screen.getByText(/Consulter/i);
+        expect(consulterButton.closest("a")).toHaveAttribute("href", "/aventuriers/1");
     });
 });

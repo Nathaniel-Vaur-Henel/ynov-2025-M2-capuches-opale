@@ -5,15 +5,11 @@ import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.openapi.api.RequestApiDelegate;
 import com.ynov.capuches.opale.services.RequestService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -28,8 +24,18 @@ public class RequestController implements RequestApiDelegate {
 
     @Override
     public ResponseEntity<RequestDTO> createRequest(RequestDTO requestDTO) {
-        if (requestDTO == null || requestDTO.getDueDate() == null || requestDTO.getBacker() == null || requestDTO.getTitle() == null ) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        LocalDate today = LocalDate.now();
+        if (requestDTO == null || requestDTO.getDueDate() == null || requestDTO.getBacker() == null
+                || requestDTO.getTitle() == null || requestDTO.getEstimatedDuration() == null
+                || requestDTO.getEstimatedDuration() <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
+        LocalDate minDueDate = today.plusDays(requestDTO.getEstimatedDuration());
+        if (requestDTO.getDueDate().isBefore(minDueDate)) {
+            log.error("Due date is before minimum due date");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .build();
         }
         if (requestDTO.getStatus() == null) {
             requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
@@ -55,8 +61,14 @@ public class RequestController implements RequestApiDelegate {
     }
     
     @Override
-    public ResponseEntity<List<RequestDTO>> getRequests() {
-        return new ResponseEntity<>(requestService.getAllRequests(), HttpStatus.OK);
+    public ResponseEntity<List<RequestDTO>> getRequests(
+            String status,
+            String backer,
+            LocalDate dueDate,
+            BigDecimal bounty
+    ) {
+        List<RequestDTO> requests = requestService.getAllRequests(status, backer, dueDate, bounty);
+        return ResponseEntity.status(HttpStatus.OK).body(requests);
     }
 
 }

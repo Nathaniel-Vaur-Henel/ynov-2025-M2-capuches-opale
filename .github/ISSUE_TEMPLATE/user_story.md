@@ -2,7 +2,7 @@
 name: "\U0001F4D6 User Story"
 about: Décrire une nouvelle fonctionnalité ou besoin utilisateur
 title: "[USER STORY] "
-labels: ''
+labels: Global
 assignees: ''
 
 ---
@@ -15,3 +15,6 @@ assignees: ''
 
 # Afin
 <!-- Décris l'objectif ou le bénéfice attendu -->
+
+ # Informations complémentaires
+<!-- Ajoute ici tout élément qui pourrait aider à la compréhension de la User Story -->

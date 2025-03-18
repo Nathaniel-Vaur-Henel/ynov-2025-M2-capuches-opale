@@ -1,6 +1,7 @@
 import {
 	alpha,
 	Box,
+	Button,
 	Container,
 	Paper,
 	Typography,
@@ -64,6 +65,20 @@ export default function Requests() {
 					zIndex: -1,
 				}}
 			/>
+			<Button
+				variant="contained"
+				color="primary"
+				sx={{
+					position: "absolute",
+					top: 0,
+					right: 0,
+					m: 2,
+					zIndex: 10,
+				}}
+				href="requetes/creer"
+			>
+				Créer une requête
+			</Button>
 
 			<Container maxWidth="xl" sx={{ px: { xs: 2, md: 3, lg: 4 } }}>
 				<motion.div initial="initial" animate="animate" variants={pageVariants}>

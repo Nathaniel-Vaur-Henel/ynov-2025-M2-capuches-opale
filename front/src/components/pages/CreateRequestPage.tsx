@@ -4,9 +4,9 @@ import {
     Button,
 	alpha,
 } from "@mui/material";
-import AdventurerForm from "../forms/createAdventurerForm";
+import RequestForm from "../forms/AddRequestForm";
 
-export default function CreateAdventurerPage() {
+export default function CreateRequestPage() {
 	const theme = useTheme();
 
 
@@ -38,7 +38,7 @@ export default function CreateAdventurerPage() {
 					zIndex: -1,
 				}}
 			/>
-            <AdventurerForm />
+            <RequestForm />
             {/* Bouton de retour a la liste des aventuriers */}
             <Button
                 variant="contained"
@@ -50,7 +50,7 @@ export default function CreateAdventurerPage() {
                     m: 2,
                     zIndex: 10,
                 }}
-                href="/aventuriers"
+                href="/requetes"
             >
                 Retour à la liste
             </Button>
