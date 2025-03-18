@@ -156,4 +156,26 @@ public class AdventurerServiceTest {
         verify(adventurerRepository, never()).save(any());
         verify(adventurerMapper, never()).entityToAdventurerDTO(any());
     }
+
+    @Test
+    public void getAdventurersFiltered() {
+        AdventurerDTO adventurerDTO = new AdventurerDTO();
+        adventurerDTO.setId(1L);
+        adventurerDTO.setName("string");
+        adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
+        adventurerDTO.setExperience(1L);
+        adventurerDTO.setDailyRate(BigDecimal.TEN);
+
+        Adventurer adventurer = new Adventurer(
+                1L,"string", Archetype.WARRIOR, 1L, BigDecimal.TEN);
+        given(adventurerRepository.findAll()).willReturn(List.of(adventurer));
+        given(adventurerMapper.entityToAdventurerDTO(adventurer)).willReturn(adventurerDTO);
+
+        assertEquals(1, this.adventurerService.getFilteredAdventurers(null, null, null,null).size());
+        assertEquals(1, this.adventurerService.getFilteredAdventurers("string", null, null,null).size());
+        assertEquals(1, this.adventurerService.getFilteredAdventurers(null, "WARRIOR", null,null).size());
+        assertEquals(1, this.adventurerService.getFilteredAdventurers(null, null, 1L, null).size());
+        assertEquals(1, this.adventurerService.getFilteredAdventurers(null, null, null,BigDecimal.TEN).size());
+        assertEquals(0, this.adventurerService.getFilteredAdventurers("string", "MAGE", 1L,BigDecimal.TEN).size());
+    }
 }
