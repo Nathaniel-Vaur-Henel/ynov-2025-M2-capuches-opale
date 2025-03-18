@@ -133,6 +133,7 @@ export default function RequestsList({
 						<Grid item xs={12} sm={6} md={4} lg={3} key={request.id}>
 							<motion.div variants={itemVariants}>
 								<RequestCard
+									id={request.id}
 									title={request.title}
 									description={request.description}
 									bounty={request.bounty}

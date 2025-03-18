@@ -12,8 +12,12 @@ export function useFilteredAdventurers() {
 	const [searchParams] = useSearchParams();
 	const searchTerm = searchParams.get("search") || "";
 	const selectedArchetype = searchParams.get("archetype") as Archetype | "";
-	const sortField = searchParams.get("sort") as "experience" | "dailyRate" | undefined;
-	const sortDirection = (searchParams.get("direction") as "asc" | "desc") || "desc";
+	const sortField = searchParams.get("sort") as
+		| "experience"
+		| "dailyRate"
+		| undefined;
+	const sortDirection =
+		(searchParams.get("direction") as "asc" | "desc") || "desc";
 
 	const query = useQuery({
 		queryKey: ["adventurers"],
