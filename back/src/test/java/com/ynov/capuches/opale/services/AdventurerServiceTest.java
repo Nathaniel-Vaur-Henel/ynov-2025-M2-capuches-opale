@@ -160,7 +160,7 @@ public class AdventurerServiceTest {
 
     @Test
     public void getAdventurersFiltered() {
-        AdventurerDTO adventurerDTO = new AdventurerDTO();
+        AdventurerResponseDTO adventurerDTO = new AdventurerResponseDTO();
         adventurerDTO.setId(1L);
         adventurerDTO.setName("string");
         adventurerDTO.setArchetype(ArchetypeEnum.WARRIOR);
@@ -170,7 +170,7 @@ public class AdventurerServiceTest {
         Adventurer adventurer = new Adventurer(
                 1L,"string", Archetype.WARRIOR, 1L, BigDecimal.TEN);
         given(adventurerRepository.findAll()).willReturn(List.of(adventurer));
-        given(adventurerMapper.entityToAdventurerDTO(adventurer)).willReturn(adventurerDTO);
+        given(adventurerMapper.entityToAdventurerResponseDTO(adventurer)).willReturn(adventurerDTO);
 
         assertEquals(1, this.adventurerService.getFilteredAdventurers(null, null, null,null).size());
         assertEquals(1, this.adventurerService.getFilteredAdventurers("string", null, null,null).size());

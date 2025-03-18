@@ -76,7 +76,7 @@ public class AdventurerService {
         return adventurerMapper.entityToAdventurerResponseDTO(adventurer);
     }
 
-    public List<AdventurerDTO> getFilteredAdventurers(String name, String archetype, Long experience, BigDecimal dailyRate) {
+    public List<AdventurerResponseDTO> getFilteredAdventurers(String name, String archetype, Long experience, BigDecimal dailyRate) {
         return getAllAdventurers()
                 .stream()
                 .filter(adventurer -> name == null || adventurer.getName().equalsIgnoreCase(name))
