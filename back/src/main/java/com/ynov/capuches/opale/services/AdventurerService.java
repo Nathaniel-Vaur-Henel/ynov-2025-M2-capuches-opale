@@ -5,8 +5,10 @@ import com.ynov.capuches.opale.mappers.AdventurerMapper;
 import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerResponseDTO;
 import com.ynov.capuches.opale.repositories.AdventurerRepository;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +22,17 @@ public class AdventurerService {
         this.adventurerMapper = adventurerMapper;
     }
 
-    public AdventurerResponseDTO createAdventurer(AdventurerCreationDTO adventurerCreationDTO) {
+    public AdventurerResponseDTO createAdventurer(AdventurerCreationDTO adventurerCreationDTO) throws BadRequestException {
+        if (adventurerCreationDTO.getArchetype() == null || adventurerCreationDTO.getName() == null ||
+                adventurerCreationDTO.getInitialDailyRate() == null) {
+            throw new BadRequestException("Must specify archetype, name and initial daily rate");
+        } else if (adventurerCreationDTO.getInitialDailyRate().compareTo(BigDecimal.ONE) < 0) {
+            throw new BadRequestException("The initial daily rate must be greater than 0");
+        } else if (adventurerCreationDTO.getName().trim().length() < 5 ||
+                adventurerCreationDTO.getName().trim().length() > 100) {
+            throw new BadRequestException("The name should be between 5 and 100 characters");
+        }
+
         Adventurer adventurerEntity = adventurerMapper.adventurerCreationDTOToEntity(adventurerCreationDTO);
         Adventurer savedAdventurer = this.adventurerRepository.save(adventurerEntity);
         return adventurerMapper.entityToAdventurerResponseDTO(savedAdventurer);

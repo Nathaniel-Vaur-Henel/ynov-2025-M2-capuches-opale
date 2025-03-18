@@ -5,6 +5,7 @@ import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.openapi.api.RequestApiDelegate;
 import com.ynov.capuches.opale.services.RequestService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,16 +25,20 @@ public class RequestController implements RequestApiDelegate {
 
     @Override
     public ResponseEntity<RequestDTO> createRequest(RequestDTO requestDTO) {
-        if (requestDTO == null || requestDTO.getDueDate() == null || requestDTO.getBacker() == null || requestDTO.getTitle() == null ) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        try {
+            if (requestDTO == null || requestDTO.getDueDate() == null ||
+                    requestDTO.getBacker() == null || requestDTO.getTitle() == null || requestDTO.getBounty() == null ) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            if (requestDTO.getStatus() == null) {
+                requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
+        } catch (BadRequestException e) {
+            log.error(e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (requestDTO.getStatus() == null) {
-            requestDTO.setStatus(RequestDTO.StatusEnum.PENDING);
-        }
-        if (requestDTO.getBounty() == null) {
-            requestDTO.setBounty(new BigDecimal(0));
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(requestService.createRequest(requestDTO));
+
     }
 
     @Override

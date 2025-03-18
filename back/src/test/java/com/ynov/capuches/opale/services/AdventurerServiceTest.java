@@ -7,6 +7,7 @@ import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerResponseDTO;
 import com.ynov.capuches.opale.model.ArchetypeEnum;
 import com.ynov.capuches.opale.repositories.AdventurerRepository;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,7 +34,7 @@ public class AdventurerServiceTest {
     private AdventurerMapper adventurerMapper;
 
     @Test
-    public void canCreateAdventurer() {
+    public void canCreateAdventurer() throws BadRequestException {
         AdventurerCreationDTO adventurerCreationDTO = new AdventurerCreationDTO();
         adventurerCreationDTO.setName("string");
         adventurerCreationDTO.setArchetype(ArchetypeEnum.WARRIOR);

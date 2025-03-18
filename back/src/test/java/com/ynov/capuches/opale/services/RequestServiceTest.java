@@ -5,6 +5,7 @@ import com.ynov.capuches.opale.enums.Status;
 import com.ynov.capuches.opale.mappers.RequestMapper;
 import com.ynov.capuches.opale.model.RequestDTO;
 import com.ynov.capuches.opale.repositories.RequestRepository;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,7 +32,7 @@ public class RequestServiceTest {
     private RequestMapper requestMapper;
 
     @Test
-    public void canGenerateRequest() {
+    public void canGenerateRequest() throws BadRequestException {
         RequestDTO requestDTO = new RequestDTO();
         requestDTO.setBacker("string");
         requestDTO.setDescription("string");

@@ -5,6 +5,8 @@ import com.ynov.capuches.opale.model.AdventurerCreationDTO;
 import com.ynov.capuches.opale.model.AdventurerResponseDTO;
 import com.ynov.capuches.opale.openapi.api.AdventurerApiDelegate;
 import com.ynov.capuches.opale.services.AdventurerService;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import java.util.List;
 
 @Controller
+@Slf4j
 public class AdventurerController implements AdventurerApiDelegate {
     private final AdventurerService adventurerService;
 
@@ -21,7 +24,12 @@ public class AdventurerController implements AdventurerApiDelegate {
 
     @Override
     public ResponseEntity<AdventurerResponseDTO> createAdventurer(AdventurerCreationDTO adventurerCreationDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(adventurerService.createAdventurer(adventurerCreationDTO));
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(adventurerService.createAdventurer(adventurerCreationDTO));
+        } catch (BadRequestException e) {
+            log.error(e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override
