@@ -27,5 +27,5 @@ public class Request {
 
     private LocalDate dueDate;
     private String backer;
-
+    private Integer estimatedDuration;
 }
