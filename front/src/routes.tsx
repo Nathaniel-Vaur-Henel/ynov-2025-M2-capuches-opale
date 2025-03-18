@@ -1,18 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
-import ApiDocs from "./ApiDocs.tsx";
+import ApiDocs from "./ApiDocs";
 import Layout from "./components/layout/Layout";
-import AdventurerFormPage from "./components/pages/AdventurerFormPage.tsx";
-import Adventurers from "./components/pages/Adventurers.tsx";
-import AdventurerProfil from "./components/pages/AdventurerProfil.tsx";
-import CreateRequestPage from "./components/pages/CreateRequestPage.tsx";
-import Home from "./components/pages/Home.tsx";
-import Requests from "./components/pages/Requests.tsx";
+import AdventurerFormPage from "./components/pages/AdventurerFormPage";
+import AdventurerProfil from "./components/pages/AdventurerProfil";
+import Adventurers from "./components/pages/Adventurers";
+import CreateRequestPage from "./components/pages/CreateRequestPage";
+import Home from "./components/pages/Home";
+import NotFound from "./components/pages/NotFound";
+import Requests from "./components/pages/Requests";
 import LazyWrapper from "./components/ui/LazyWrapper";
 
 export const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <Layout />,
+		errorElement: <NotFound />,
 		children: [
 			{
 				index: true,
@@ -62,6 +64,16 @@ export const router = createBrowserRouter([
 					</LazyWrapper>
 				),
 			},
+			/* Route temporairement commentée - fichier RequestDetail manquant
+			{
+				path: "requetes/:id",
+				element: (
+					<LazyWrapper>
+						<RequestDetail />
+					</LazyWrapper>
+				),
+			},
+			*/
 			{
 				path: "requetes/creer",
 				element: (

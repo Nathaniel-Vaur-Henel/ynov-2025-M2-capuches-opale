@@ -23,6 +23,7 @@ import { format, isAfter } from "date-fns";
 import { fr } from "date-fns/locale";
 
 interface RequestCardProps {
+	id: number;
 	title: string;
 	description: string;
 	bounty: number;
